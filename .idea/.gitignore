@@ -1,0 +1,12 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../:\ZingPayWorkSpace\zingpay-ms\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+/zingpay-ms.iml
+/misc.xml
+/modules.xml
+/vcs.xml
