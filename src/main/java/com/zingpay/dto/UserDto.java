@@ -5,7 +5,6 @@ import com.zingpay.entity.User;
 import com.zingpay.util.AgentType;
 import com.zingpay.util.HouseType;
 import com.zingpay.util.PlaceType;
-import com.zingpay.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,6 +43,7 @@ public class UserDto {
     private String cnicF;
     private String cnicB;
     private String otherAttachment;
+    private String tPin;
 
     public static User convertToEntity(UserDto userDto) {
         User user = new User();
@@ -58,6 +58,7 @@ public class UserDto {
         user.setEmailPin(userDto.getEmailPin());
 
         user.setActive(userDto.isActive());
+        user.setTPin(userDto.getTPin());
 
         if(userDto.getPicture() != null) {
             user.setPicture(userDto.getPicture());

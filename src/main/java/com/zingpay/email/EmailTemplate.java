@@ -29,8 +29,8 @@ public class EmailTemplate {
 
     public EmailDto createSuccessActivationEmail(User user) {
         String to = user.getEmail();
-        String text = "";
-        String subject = "";
+        String text = "Hi " + user.getFullName() + ", \nYour account has been successfully activated, please use your this T-PIN to login:" + user.getTPin();
+        String subject = "Account Activated successfully";
         //FileSystemResource file;
         EmailDto emailDto = new EmailDto();
         emailDto.setTo(to);

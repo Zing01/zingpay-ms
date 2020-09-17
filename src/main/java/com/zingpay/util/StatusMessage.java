@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum StatusMessage {
     FAILURE(0,"FAILURE", HttpStatus.NOT_FOUND),
     SUCCESS(1,"SUCCESS", HttpStatus.OK),
-    USER_ACTIVATED_SUCCESS(2,"User Activated Successfully", HttpStatus.OK),
+    ACCOUNT_ACTIVATED_SUCCESS(2,"Account Activated Successfully", HttpStatus.OK),
 
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(50001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),

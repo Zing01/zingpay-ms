@@ -19,7 +19,7 @@ public class Regex {
     }
 
     public static boolean validateEmail(String email) {
-        String patterns = "/^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/";
+        String patterns = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(patterns);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

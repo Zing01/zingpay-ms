@@ -25,11 +25,11 @@ public class User {
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
-    @Column(name="fullName")
+    @Column(name="full_name")
     private String fullName;
-    @Column(name="mobileNumber")
+    @Column(name="mobile_number")
     private String mobileNumber;
-    @Column(name="smsPin")
+    @Column(name="sms_pin")
     private String smsPin;
     @Column(name="password")
     private String password;
@@ -37,35 +37,37 @@ public class User {
     private String cnic;
     @Column(name="email")
     private String email;
-    @Column(name="emailPin")
+    @Column(name="email_pin")
     private String emailPin;
 
     @Column(name="active")
     private boolean active;
 
-    @Column(name="securityCode")
+    @Column(name="security_code")
     private String securityCode;
 
     @Column(name="picture")
     private String picture;
-    @Column(name="personName")
+    @Column(name="person_name")
     private String personName;
-    @Column(name="placeType")
+    @Column(name="place_type")
     private String placeType;
-    @Column(name="agentType")
+    @Column(name="agent_type")
     private String agentType;
     @Column(name="address")
     private String address;
-    @Column(name="houseType")
+    @Column(name="house_type")
     private String houseType;
     @Column(name="location")
     private String location;
-    @Column(name="CNICF")
+    @Column(name="cnicf")
     private String cnicF;
-    @Column(name="CNICB")
+    @Column(name="cnicb")
     private String cnicB;
-    @Column(name="otherAttachment")
+    @Column(name="other_attachment")
     private String otherAttachment;
+    @Column(name="t_pin")
+    private String tPin;
 
     public static UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
