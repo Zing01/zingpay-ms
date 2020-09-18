@@ -14,7 +14,7 @@ import java.util.Properties;
 
 @Configuration
 public class EmailConfig {
-    public static final String EMAIL_FROM = "perceptionit2000@gmail.com";
+    public static final String EMAIL_FROM = "zingpay1122@gmail.com";
 
     @Bean
     public JavaMailSender getMailSender() {
@@ -22,7 +22,7 @@ public class EmailConfig {
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(587);
         javaMailSender.setUsername(EMAIL_FROM);
-        javaMailSender.setPassword("OpsAlerts@2020");
+        javaMailSender.setPassword("zing1122pay");
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail.smtp.starttls.enable", "true");
