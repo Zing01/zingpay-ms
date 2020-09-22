@@ -33,7 +33,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("ZingPay Microservice")
-                .description("ZingPay Microservice Description")
+                .description("ZingPay Microservice")
                 .build();
     }
 }

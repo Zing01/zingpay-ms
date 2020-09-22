@@ -37,7 +37,7 @@ public class UnsecuredController extends BaseController {
                 if(Regex.validateEmail(userDto.getEmail())) {
                     userDto.setSmsPin(Utils.generateFourDigitPin()+"");
                     userDto.setEmailPin(Utils.generateFourDigitPin()+"");
-                    userDto.setTPin(Utils.generateFourDigitPin()+"");
+                    userDto.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
                     User user = UserDto.convertToEntity(userDto);
                     User savedUser = userService.save(user);
                     emailService.sendSignupEmail(savedUser);
@@ -59,7 +59,7 @@ public class UnsecuredController extends BaseController {
         User user = userService.getById(userDto.getId());
         if(user.getEmailPin().equals(userDto.getEmailPin())) {
             user.setActive(true);
-            userService.update(user);
+            userService.save(user);
             emailService.sendSuccessActivationEmail(user);
             return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
         } else {
@@ -69,14 +69,71 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Activate User through sms pin by calling this api.", response = Status.class)
     @PutMapping("/activate-sms")
-    public Status activateWithSMSPin(@RequestBody UserDto userDto) throws Exception {
+    public Status activateWithSMSPin(@RequestBody UserDto userDto) {
         User user = userService.getById(userDto.getId());
         if(user.getSmsPin().equals(userDto.getSmsPin())) {
             user.setActive(true);
-            userService.update(user);
+            userService.save(user);
             return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
         } else {
             return response(StatusMessage.EMAIL_PIN_NOT_VALID);
+        }
+    }
+
+    @ApiOperation(value = "Generates a new tpin", response = Status.class)
+    @PutMapping("/generate-new-tpin")
+    public Status generateNewTPin(@RequestBody UserDto userDto) {
+        try {
+            User user = userService.getById(userDto.getId());
+            user.setTPin(Utils.encodePassword(Utils.generateFourDigitPin() + ""));
+            userService.save(user);
+            return response(StatusMessage.TPIN_GENERATED_SUCCESS);
+        } catch (Exception e) {
+            return response(StatusMessage.TPIN_GENERATED_FAILED);
+        }
+    }
+
+    @ApiOperation(value = "Forget Password", response = Status.class)
+    @GetMapping("/forget-password")
+    public Status forgetPassword(@RequestBody UserDto userDto) {
+        try {
+            User user = userService.getById(userDto.getId());
+            emailService.sendForgetPasswordEmail(user);
+            return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
+        } catch (Exception e) {
+            return response(StatusMessage.EMAIL_SENT_FAILED);
+        }
+    }
+
+    @ApiOperation(value = "Validate Email Pin", response = Status.class)
+    @GetMapping("/validate-email-pin")
+    public Status validateEmailPin(@RequestBody UserDto userDto) {
+        try {
+            User user = userService.getById(userDto.getId());
+            if(user.getEmailPin().equals(userDto.getEmailPin())) {
+                return response(StatusMessage.EMAIL_PIN_VALIDATION_SUCCESS);
+            } else {
+                return response(StatusMessage.EMAIL_PIN_NOT_VALID);
+            }
+        } catch (Exception e) {
+            return response(StatusMessage.EMAIL_PIN_NOT_VALID);
+        }
+    }
+
+    @ApiOperation(value = "Reset Password", response = Status.class)
+    @GetMapping("/reset-password")
+    public Status resetPassword(@RequestBody UserDto userDto) {
+        try {
+            if(userDto.getPassword().equals(userDto.getConfirmPassword())) {
+                User user = userService.getById(userDto.getId());
+                user.setPassword(userDto.getPassword());
+                userService.save(user);
+                return response(StatusMessage.PASSWORD_RESET_SUCCESS);
+            } else {
+                return response(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
+            }
+        } catch (Exception e) {
+            return response(StatusMessage.PASSWORD_RESET_FAILED);
         }
     }
 }

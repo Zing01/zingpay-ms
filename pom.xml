@@ -18,6 +18,11 @@
         <java.version>13</java.version>
         <lombok.version>1.18.10</lombok.version>
         <swagger.version>2.9.2</swagger.version>
+        <spring-cloud-starter-openfeign-version>2.2.1.RELEASE</spring-cloud-starter-openfeign-version>
+        <spring-cloud-starter-oauth2-version>2.2.0.RELEASE</spring-cloud-starter-oauth2-version>
+        <spring-boot-starter-security-version>2.3.3.RELEASE</spring-boot-starter-security-version>
+        <mysql-connector-java-version>5.1.46</mysql-connector-java-version>
+        <jackson-datatype-hibernate5-version>2.10.1</jackson-datatype-hibernate5-version>
     </properties>
 
     <dependencies>
@@ -28,12 +33,22 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.46</version>
+            <version>${mysql-connector-java-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot-starter-security-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <version>${spring-cloud-starter-oauth2-version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>
-            <version>2.10.1</version>
+            <version>${jackson-datatype-hibernate5-version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,6 +72,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${spring-cloud-starter-openfeign-version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,6 +91,9 @@
     <profiles>
         <profile>
             <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <resources>
                     <resource>
@@ -81,9 +104,6 @@
         </profile>
         <profile>
             <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <build>
                 <resources>
                     <resource>

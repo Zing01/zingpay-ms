@@ -3,9 +3,11 @@ package com.zingpay.service;
 import com.zingpay.entity.User;
 import com.zingpay.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 /**
@@ -20,11 +22,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     public User save(User user) {
+        if(user.getPassword() != null) {
+            String encodedPassword = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(user.getPassword());
+            user.setPassword(encodedPassword);
+        }
         return userRepository.save(user);
     }
 
     public User update(User user) {
+        if(user.getPassword() != null) {
+            String encodedPassword = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(user.getPassword());
+            user.setPassword(encodedPassword);
+        }
         return userRepository.save(user);
     }
 

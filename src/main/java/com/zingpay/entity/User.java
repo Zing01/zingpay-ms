@@ -6,10 +6,14 @@ import com.zingpay.util.HouseType;
 import com.zingpay.util.PlaceType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.LazyInitializationException;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Bilal Hassan on 10-Sep-2020
@@ -20,6 +24,7 @@ import java.util.List;
 @Setter
 @Table(name = "app_user")
 @Entity
+@DynamicUpdate
 public class User {
     @Id
     @Column(name="id")
@@ -68,6 +73,15 @@ public class User {
     private String otherAttachment;
     @Column(name="t_pin")
     private String tPin;
+
+    @ManyToMany(cascade = {
+            CascadeType.REFRESH
+    }, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     public static UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
@@ -129,6 +143,14 @@ public class User {
 
         if(user.getOtherAttachment() != null) {
             userDto.setOtherAttachment(user.getOtherAttachment());
+        }
+
+        if(user.getRoles() != null) {
+            try {
+                userDto.setRoles(Role.convertToDto(user.getRoles().stream().collect(Collectors.toList())));
+            } catch (LazyInitializationException e) {
+
+            }
         }
 
         return userDto;

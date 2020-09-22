@@ -1,14 +1,17 @@
 package com.zingpay.dto;
 
 
+import com.zingpay.entity.Role;
 import com.zingpay.entity.User;
 import com.zingpay.util.AgentType;
 import com.zingpay.util.HouseType;
 import com.zingpay.util.PlaceType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.LazyInitializationException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -44,6 +47,8 @@ public class UserDto {
     private String cnicB;
     private String otherAttachment;
     private String tPin;
+
+    private List<RoleDto> roles;
 
     public static User convertToEntity(UserDto userDto) {
         User user = new User();
@@ -98,6 +103,14 @@ public class UserDto {
 
         if(userDto.getOtherAttachment() != null) {
             user.setOtherAttachment(userDto.getOtherAttachment());
+        }
+
+        if(user.getRoles() != null) {
+            try {
+                user.setRoles(new HashSet<Role>(RoleDto.convertToEntity(userDto.getRoles())));
+            } catch (LazyInitializationException e) {
+
+            }
         }
 
         return user;

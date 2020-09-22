@@ -35,4 +35,10 @@ public class EmailService {
         EmailDto emailDto = emailTemplate.createSuccessActivationEmail(user);
         emailSender.sendEmail(emailDto);
     }
+
+    @Async
+    public void sendForgetPasswordEmail(User user) throws MessagingException {
+        EmailDto emailDto = emailTemplate.createForgetPasswordEmail(user);
+        emailSender.sendEmail(emailDto);
+    }
 }

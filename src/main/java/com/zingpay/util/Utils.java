@@ -514,6 +514,14 @@ public class Utils {
 	public static int generateFourDigitPin(){
 		return ThreadLocalRandom.current().nextInt(1111, 9998 + 1);
 	}
+
+	public static String encodePassword(String password) {
+		return Base64.getEncoder().encodeToString(password.getBytes());
+	}
+
+	public static String decodePassword(String password) {
+		return new String(Base64.getDecoder().decode(password));
+	}
 }
 
 

@@ -35,3 +35,12 @@
 /target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 /target/ZingPay-0.0.1-SNAPSHOT.jar
 /target/ZingPay-0.0.1-SNAPSHOT.jar.original
+/target/classes/com/zingpay/config/WebSecurityConfiguration.class
+/target/classes/com/zingpay/dto/AuthorityDto.class
+/target/classes/com/zingpay/dto/RoleDto.class
+/target/classes/com/zingpay/entity/Authority.class
+/target/classes/com/zingpay/entity/OAuthAccessToken.class
+/target/classes/com/zingpay/entity/OAuthRefreshToken.class
+/target/classes/com/zingpay/entity/Role.class
+/target/classes/com/zingpay/feign/AuthServiceClient.class
+/target/classes/META-INF/zingpay-ms.kotlin_module
