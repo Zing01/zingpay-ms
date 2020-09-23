@@ -25,6 +25,7 @@ public enum StatusMessage {
     TPIN_GENERATED_FAILED(50005,"Unable to generate TPin", HttpStatus.INTERNAL_SERVER_ERROR),
     EMAIL_SENT_FAILED(50006,"Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR),
     PASSWORD_RESET_FAILED(50007,"Unable to reset Password", HttpStatus.INTERNAL_SERVER_ERROR),
+    EMAIL_NOT_FOUND(50008,"Email not found", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

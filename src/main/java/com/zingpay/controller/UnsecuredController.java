@@ -80,16 +80,18 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Generates a new tpin", response = Status.class)
-    @PutMapping("/generate-new-tpin")
-    public Status generateNewTPin(@RequestBody UserDto userDto) {
+    @ApiOperation(value = "Resend Email", response = Status.class)
+    @PutMapping("/resend-email")
+    public Status resendEmail(@RequestBody UserDto userDto) {
         try {
-            User user = userService.getById(userDto.getId());
-            user.setTPin(Utils.encodePassword(Utils.generateFourDigitPin() + ""));
-            userService.save(user);
-            return response(StatusMessage.TPIN_GENERATED_SUCCESS);
+            User user = userService.getByEmail(userDto.getEmail());
+            if(user == null) {
+                return response(StatusMessage.EMAIL_NOT_FOUND);
+            }
+            emailService.sendForgetPasswordEmail(user);
+            return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
         } catch (Exception e) {
-            return response(StatusMessage.TPIN_GENERATED_FAILED);
+            return response(StatusMessage.EMAIL_SENT_FAILED);
         }
     }
 
@@ -97,7 +99,10 @@ public class UnsecuredController extends BaseController {
     @GetMapping("/forget-password")
     public Status forgetPassword(@RequestBody UserDto userDto) {
         try {
-            User user = userService.getById(userDto.getId());
+            User user = userService.getByEmail(userDto.getEmail());
+            if(user == null) {
+                return response(StatusMessage.EMAIL_NOT_FOUND);
+            }
             emailService.sendForgetPasswordEmail(user);
             return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
         } catch (Exception e) {
