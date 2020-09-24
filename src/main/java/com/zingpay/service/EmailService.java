@@ -3,7 +3,7 @@ package com.zingpay.service;
 import com.zingpay.dto.EmailDto;
 import com.zingpay.email.EmailSender;
 import com.zingpay.email.EmailTemplate;
-import com.zingpay.entity.User;
+import com.zingpay.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -25,20 +25,20 @@ public class EmailService {
     private EmailTemplate emailTemplate;
 
     @Async
-    public void sendSignupEmail(User user) throws MessagingException {
-        EmailDto emailDto = emailTemplate.createSignupEmail(user);
+    public void sendSignupEmail(AppUser appUser) throws MessagingException {
+        EmailDto emailDto = emailTemplate.createSignupEmail(appUser);
         emailSender.sendEmail(emailDto);
     }
 
     @Async
-    public void sendSuccessActivationEmail(User user) throws MessagingException {
-        EmailDto emailDto = emailTemplate.createSuccessActivationEmail(user);
+    public void sendSuccessActivationEmail(AppUser appUser) throws MessagingException {
+        EmailDto emailDto = emailTemplate.createSuccessActivationEmail(appUser);
         emailSender.sendEmail(emailDto);
     }
 
     @Async
-    public void sendForgetPasswordEmail(User user) throws MessagingException {
-        EmailDto emailDto = emailTemplate.createForgetPasswordEmail(user);
+    public void sendForgetPasswordEmail(AppUser appUser) throws MessagingException {
+        EmailDto emailDto = emailTemplate.createForgetPasswordEmail(appUser);
         emailSender.sendEmail(emailDto);
     }
 }

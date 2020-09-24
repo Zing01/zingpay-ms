@@ -1,3 +1,4 @@
+/*
 package com.zingpay.entity;
 
 import com.zingpay.dto.RoleDto;
@@ -12,10 +13,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+*/
 /**
  * @author Bilal Hassan on 9/21/2020
  * @project zingpay-ms
- */
+ *//*
+
 
 @Entity
 @Table(name = "role")
@@ -66,3 +69,4 @@ public class Role {
         return roleDtos;
     }
 }
+*/

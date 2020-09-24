@@ -1,3 +1,4 @@
+/*
 package com.zingpay.entity;
 
 import com.zingpay.dto.AuthorityDto;
@@ -8,10 +9,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * @author Bilal Hassan on 9/21/2020
  * @project zingpay-ms
- */
+ *//*
+
 
 @Entity
 @Table(name = "authority")
@@ -45,3 +48,4 @@ public class Authority {
         return authorityDtos;
     }
 }
+*/

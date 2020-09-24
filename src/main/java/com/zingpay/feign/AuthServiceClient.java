@@ -1,11 +1,8 @@
 package com.zingpay.feign;
 
-import com.zingpay.entity.Authority;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-
-import java.util.List;
 
 /**
  * @author Bilal Hassan on 9/21/2020
@@ -16,6 +13,6 @@ import java.util.List;
 public interface AuthServiceClient {
     @GetMapping("/feign-email-against-token")
     String fetchEmail(@RequestHeader(name = "Authorization") String token);
-    @GetMapping("/fetch-authorities-against-token")
-    List<Authority> fetchAuthorities(@RequestHeader(name = "Authorization") String token);
+    /*@GetMapping("/fetch-authorities-against-token")
+    List<Authority> fetchAuthorities(@RequestHeader(name = "Authorization") String token);*/
 }

@@ -1,28 +1,32 @@
 create table app_user
 (
-	id int auto_increment,
-	full_name varchar(255) null,
-	mobile_number varchar(255) null,
-	sms_pin int null,
-	password varchar(255) null,
-	cnic varchar(255) null,
-	email varchar(255) null,
-	email_pin int null,
-	active boolean null,
-	security_code varchar(255) null,
-	picture varchar(255) null,
-	person_name varchar(255) null,
-	place_type varchar(255) null,
-	agent_type varchar(255) null,
-	address varchar(255) null,
-	house_type varchar(255) null,
-	location varchar(255) null,
-	cnicf varchar(255) null,
-	cnicb varchar(255) null,
-	other_attachment varchar(255) null,
-	t_pin varchar(255) null,
-	constraint app_user_pk
-		primary key (id)
+    account_id int auto_increment,
+    parent_id int null,
+    branch_id int null,
+    group_id int null,
+    account_type_id int null,
+    account_status_id int null,
+    username varchar(255) null,
+    password varchar(255) null,
+    full_name varchar(255) null,
+    address varchar(255) null,
+    cell_phone varchar(255) null,
+    email varchar(255) null,
+    cnic_number varchar(255) null,
+    alternate_cell_phone varchar(255) null,
+    last_login long null,
+    created_date_time long null,
+    created_by int null,
+    modified_date_time long null,
+    modified_by int null,
+    suspend_date_time long null,
+    t_pin varchar(255) null,
+    login_failed_count int null,
+    is_generated_t_pin boolean null,
+    sms_pin varchar(255) null,
+    email_pin varchar(255) null,
+    constraint app_user_pk
+        primary key (account_id)
 );
 
 create table authority
@@ -40,5 +44,39 @@ create unique index authority_name_uindex
 create unique index app_user_email_uindex
 	on app_user (email);
 
-create unique index app_user_mobile_number_uindex
-	on app_user (mobile_number);
+create unique index app_user_cell_phone_uindex
+	on app_user (cell_phone);
+
+create table user_account_type
+(
+    user_account_type_id int auto_increment,
+    account_type_value varchar(255) null,
+    description varchar(255) null,
+    constraint user_account_type_pk
+        primary key (user_account_type_id)
+);
+
+create table user_account_status
+(
+    user_account_status_id int auto_increment,
+    account_status_value varchar(255) null,
+    description varchar(255) null,
+    constraint user_account_status_pk
+        primary key (user_account_status_id)
+);
+
+create table user_group
+(
+    user_group_id int auto_increment,
+    name varchar(255) null,
+    type varchar(255) null,
+    effective_start_date long null,
+    effective_end_date long null,
+    active_ind tinyint null,
+    constraint user_group_pk
+        primary key (user_group_id)
+);
+
+create unique index user_group_name_uindex
+    on user_group (name);
+

@@ -1,13 +1,10 @@
 package com.zingpay.controller;
 
-import com.zingpay.dto.UserDto;
-import com.zingpay.entity.User;
+import com.zingpay.dto.AppUserDto;
+import com.zingpay.entity.AppUser;
+import com.zingpay.service.AppUserService;
 import com.zingpay.service.EmailService;
-import com.zingpay.service.UserService;
-import com.zingpay.util.Regex;
-import com.zingpay.util.Status;
-import com.zingpay.util.StatusMessage;
-import com.zingpay.util.Utils;
+import com.zingpay.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +21,30 @@ import org.springframework.web.bind.annotation.*;
 public class UnsecuredController extends BaseController {
 
     @Autowired
-    private UserService userService;
+    private AppUserService appUserService;
 
     @Autowired
     private EmailService emailService;
 
     @ApiOperation(value = "Signup call, this call takes in UserDto object as request body.", response = Status.class)
     @PostMapping("/signup")
-    public Status signup(@RequestBody UserDto userDto) throws Exception {
-        if(Regex.validateMobileNumber(userDto.getMobileNumber())) {
-            if(Regex.validateCNIC(userDto.getCnic())) {
-                if(Regex.validateEmail(userDto.getEmail())) {
-                    userDto.setSmsPin(Utils.generateFourDigitPin()+"");
-                    userDto.setEmailPin(Utils.generateFourDigitPin()+"");
-                    userDto.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
-                    User user = UserDto.convertToEntity(userDto);
-                    User savedUser = userService.save(user);
-                    emailService.sendSignupEmail(savedUser);
-                    return response(StatusMessage.SUCCESS, savedUser.getId());
+    public Status signup(@RequestBody AppUserDto appUserDto) throws Exception {
+        if(Regex.validateMobileNumber(appUserDto.getCellPhone())) {
+            if(Regex.validateCNIC(appUserDto.getCnicNumber())) {
+                if(Regex.validateEmail(appUserDto.getEmail())) {
+                    appUserDto.setSmsPin(Utils.generateFourDigitPin()+"");
+                    appUserDto.setEmailPin(Utils.generateFourDigitPin()+"");
+                    appUserDto.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
+
+                    appUserDto.setGroupId(1);
+                    appUserDto.setAccountTypeId(AccountType.RETAILER);
+                    appUserDto.setAccountStatusId(AccountStatus.PENDING);
+                    appUserDto.setUsername(appUserDto.getCellPhone());
+
+                    AppUser appUser = AppUserDto.convertToEntity(appUserDto);
+                    AppUser savedAppUser = appUserService.save(appUser);
+                    emailService.sendSignupEmail(savedAppUser);
+                    return response(StatusMessage.SUCCESS, savedAppUser.getAccountId());
                 } else {
                     return response(StatusMessage.EMAIL_ADDRESS_NOT_VALID);
                 }
@@ -55,12 +58,12 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Activate User through email pin by calling this api.", response = Status.class)
     @PutMapping("/activate-email")
-    public Status activateWithEmailPin(@RequestBody UserDto userDto) throws Exception {
-        User user = userService.getById(userDto.getId());
-        if(user.getEmailPin().equals(userDto.getEmailPin())) {
-            user.setActive(true);
-            userService.save(user);
-            emailService.sendSuccessActivationEmail(user);
+    public Status activateWithEmailPin(@RequestBody AppUserDto appUserDto) throws Exception {
+        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+        if(appUser.getEmailPin().equals(appUserDto.getEmailPin())) {
+            appUser.setAccountStatusId(AccountStatus.ACTIVE.getId());
+            appUserService.save(appUser);
+            emailService.sendSuccessActivationEmail(appUser);
             return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
         } else {
             return response(StatusMessage.EMAIL_PIN_NOT_VALID);
@@ -69,11 +72,11 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Activate User through sms pin by calling this api.", response = Status.class)
     @PutMapping("/activate-sms")
-    public Status activateWithSMSPin(@RequestBody UserDto userDto) {
-        User user = userService.getById(userDto.getId());
-        if(user.getSmsPin().equals(userDto.getSmsPin())) {
-            user.setActive(true);
-            userService.save(user);
+    public Status activateWithSMSPin(@RequestBody AppUserDto appUserDto) {
+        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+        if(appUser.getSmsPin().equals(appUserDto.getSmsPin())) {
+            appUser.setAccountStatusId(AccountStatus.ACTIVE.getId());
+            appUserService.save(appUser);
             return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
         } else {
             return response(StatusMessage.EMAIL_PIN_NOT_VALID);
@@ -81,14 +84,16 @@ public class UnsecuredController extends BaseController {
     }
 
     @ApiOperation(value = "Resend Email", response = Status.class)
-    @PutMapping("/resend-email")
-    public Status resendEmail(@RequestBody UserDto userDto) {
+    @GetMapping("/resend-email")
+    public Status resendEmail(@RequestParam(name = "email", required = true) String email) {
         try {
-            User user = userService.getByEmail(userDto.getEmail());
-            if(user == null) {
+            AppUser appUser = appUserService.getByEmail(email);
+            if(appUser == null) {
                 return response(StatusMessage.EMAIL_NOT_FOUND);
             }
-            emailService.sendForgetPasswordEmail(user);
+            appUser.setEmailPin(Utils.generateFourDigitPin()+"");
+            appUserService.save(appUser);
+            emailService.sendForgetPasswordEmail(appUser);
             return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
         } catch (Exception e) {
             return response(StatusMessage.EMAIL_SENT_FAILED);
@@ -97,13 +102,15 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Forget Password", response = Status.class)
     @GetMapping("/forget-password")
-    public Status forgetPassword(@RequestBody UserDto userDto) {
+    public Status forgetPassword(@RequestParam(name = "email", required = true) String email) {
         try {
-            User user = userService.getByEmail(userDto.getEmail());
-            if(user == null) {
+            AppUser appUser = appUserService.getByEmail(email);
+            if(appUser == null) {
                 return response(StatusMessage.EMAIL_NOT_FOUND);
             }
-            emailService.sendForgetPasswordEmail(user);
+            appUser.setEmailPin(Utils.generateFourDigitPin()+"");
+            appUserService.save(appUser);
+            emailService.sendForgetPasswordEmail(appUser);
             return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
         } catch (Exception e) {
             return response(StatusMessage.EMAIL_SENT_FAILED);
@@ -111,11 +118,11 @@ public class UnsecuredController extends BaseController {
     }
 
     @ApiOperation(value = "Validate Email Pin", response = Status.class)
-    @GetMapping("/validate-email-pin")
-    public Status validateEmailPin(@RequestBody UserDto userDto) {
+    @PutMapping("/validate-email-pin")
+    public Status validateEmailPin(@RequestBody AppUserDto appUserDto) {
         try {
-            User user = userService.getById(userDto.getId());
-            if(user.getEmailPin().equals(userDto.getEmailPin())) {
+            AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+            if(appUser.getEmailPin().equals(appUserDto.getEmailPin())) {
                 return response(StatusMessage.EMAIL_PIN_VALIDATION_SUCCESS);
             } else {
                 return response(StatusMessage.EMAIL_PIN_NOT_VALID);
@@ -126,13 +133,13 @@ public class UnsecuredController extends BaseController {
     }
 
     @ApiOperation(value = "Reset Password", response = Status.class)
-    @GetMapping("/reset-password")
-    public Status resetPassword(@RequestBody UserDto userDto) {
+    @PutMapping("/reset-password")
+    public Status resetPassword(@RequestBody AppUserDto appUserDto) {
         try {
-            if(userDto.getPassword().equals(userDto.getConfirmPassword())) {
-                User user = userService.getById(userDto.getId());
-                user.setPassword(userDto.getPassword());
-                userService.save(user);
+            if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
+                AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+                appUser.setPassword(appUserDto.getPassword());
+                appUserService.save(appUser);
                 return response(StatusMessage.PASSWORD_RESET_SUCCESS);
             } else {
                 return response(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
