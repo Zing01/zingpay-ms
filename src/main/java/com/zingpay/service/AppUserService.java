@@ -7,6 +7,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Bilal Hassan on 11-Sep-2020
  * @project ZingPay
@@ -54,5 +56,9 @@ public class AppUserService {
 
     public AppUser getByEmail(String email) {
         return appUserRepository.findByEmail(email);
+    }
+
+    public List<AppUser> getAll() {
+        return (List<AppUser>) appUserRepository.findAll();
     }
 }

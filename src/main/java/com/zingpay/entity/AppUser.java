@@ -109,12 +109,12 @@ public class AppUser {
         appUserDto.setModifiedBy(appUser.getModifiedBy());
         appUserDto.setModifiedDateTime(appUser.getModifiedDateTime());
         appUserDto.setParentId(appUser.getParentId());
-        appUserDto.setPassword(appUser.getPassword());
-        appUserDto.setTPin(appUser.getTPin());
+        //appUserDto.setPassword(appUser.getPassword());
+        //appUserDto.setTPin(appUser.getTPin());
         appUserDto.setSuspendDateTime(appUser.getSuspendDateTime());
         appUserDto.setUsername(appUser.getUsername());
-        appUserDto.setSmsPin(appUser.getSmsPin());
-        appUserDto.setEmail(appUser.getEmailPin());
+        //appUserDto.setSmsPin(appUser.getSmsPin());
+        //appUserDto.setEmailPin(appUser.getEmailPin());
 
         return appUserDto;
     }
