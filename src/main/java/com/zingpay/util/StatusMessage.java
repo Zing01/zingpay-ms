@@ -17,6 +17,7 @@ public enum StatusMessage {
     PASSWORD_RESET_SUCCESS(6,"Password reset Successfully", HttpStatus.OK),
     ACCOUNT_SETUP_SUCCESS(7,"Account setup Successfully", HttpStatus.OK),
     ACCOUNT_SETTING_SUCCESS(8,"Account settings saved Successfully", HttpStatus.OK),
+    ACCOUNT_CREATION_SUCCESS(9,"Your account has been created Successfully", HttpStatus.OK),
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(50001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),
     MOBILE_NUMBER_NOT_VALID(50002, "Please enter a valid mobile number", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -28,6 +29,7 @@ public enum StatusMessage {
     PASSWORD_RESET_FAILED(50007,"Unable to reset Password", HttpStatus.INTERNAL_SERVER_ERROR),
     EMAIL_NOT_FOUND(50008,"Email not found", HttpStatus.INTERNAL_SERVER_ERROR),
     USERNAME_NOT_CHANGE(50009,"You cannot change username", HttpStatus.INTERNAL_SERVER_ERROR),
+    CNIC_NOT_FOUND(50010,"CNIC not found", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

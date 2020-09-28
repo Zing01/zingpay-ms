@@ -44,7 +44,7 @@ public class UnsecuredController extends BaseController {
                     AppUser appUser = AppUserDto.convertToEntity(appUserDto);
                     AppUser savedAppUser = appUserService.save(appUser);
                     emailService.sendSignupEmail(savedAppUser);
-                    return response(StatusMessage.SUCCESS, savedAppUser.getAccountId());
+                    return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
                 } else {
                     return response(StatusMessage.EMAIL_ADDRESS_NOT_VALID);
                 }
@@ -102,11 +102,14 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Forget Password", response = Status.class)
     @GetMapping("/forget-password")
-    public Status forgetPassword(@RequestParam(name = "email", required = true) String email) {
+    public Status forgetPassword(@RequestParam(name = "email", required = true) String email, @RequestParam(name = "cnic", required = true) String cnic) {
         try {
             AppUser appUser = appUserService.getByEmail(email);
             if(appUser == null) {
                 return response(StatusMessage.EMAIL_NOT_FOUND);
+            }
+            if(!appUser.getCnicNumber().equals(cnic)) {
+                return response(StatusMessage.CNIC_NOT_FOUND);
             }
             appUser.setEmailPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
