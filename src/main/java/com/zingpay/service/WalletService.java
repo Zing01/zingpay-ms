@@ -28,20 +28,24 @@ public class WalletService {
     @Autowired
     private AppUserRepository appUserRepository;
 
-    public double getCurrentBalanceByAccountId(String email) {
+    public double getCurrentBalance(String email) {
         AppUser appUser = appUserRepository.findByEmail(email);
-        List<Object> objects = transactionRepository.findAllByCustomQuery(appUser.getAccountId());
-        List<TransactionResponseDto> transactionResponseDtos = new ArrayList<TransactionResponseDto>();
-        for (Object object : objects) {
-            TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
-            Object[] objArray = (Object[]) object;
-            transactionResponseDto.setAmount(Double.parseDouble(objArray[0].toString()));
-            transactionResponseDto.setTransactionTypeId(Long.parseLong(objArray[1].toString()));
-            transactionResponseDto.setTransactionStatusId(Long.parseLong(objArray[2].toString()));
-            transactionResponseDtos.add(transactionResponseDto);
-        }
+        if(appUser.getAccountStatusId() == 1) {
+            List<Object> objects = transactionRepository.findAllTransactions(appUser.getAccountId());
+            List<TransactionResponseDto> transactionResponseDtos = new ArrayList<TransactionResponseDto>();
+            for (Object object : objects) {
+                TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
+                Object[] objArray = (Object[]) object;
+                transactionResponseDto.setAmount(Double.parseDouble(objArray[0].toString()));
+                transactionResponseDto.setTransactionTypeId(Long.parseLong(objArray[1].toString()));
+                transactionResponseDto.setTransactionStatusId(Long.parseLong(objArray[2].toString()));
+                transactionResponseDtos.add(transactionResponseDto);
+            }
 
-        return calculateBalance(transactionResponseDtos);
+            return calculateBalance(transactionResponseDtos);
+        } else {
+            return 0.0;
+        }
     }
 
 
