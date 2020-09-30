@@ -61,3 +61,11 @@
 /target/classes/com/zingpay/service/AppUserService.class
 /target/classes/com/zingpay/util/AccountStatus.class
 /target/classes/com/zingpay/util/AccountType.class
+/target/classes/com/zingpay/controller/WalletController.class
+/target/classes/com/zingpay/dto/TransactionDto.class
+/target/classes/com/zingpay/dto/TransactionResponseDto.class
+/target/classes/com/zingpay/entity/Transaction.class
+/target/classes/com/zingpay/service/WalletService.class
+/target/classes/com/zingpay/util/TransactionStatus.class
+/target/classes/com/zingpay/util/TransactionType.class
+/target/classes/com/zingpay/repository/TransactionRepository.class

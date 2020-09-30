@@ -7,9 +7,9 @@ package com.zingpay.util;
 
 public enum AccountStatus {
     ACTIVE(1, "ACTIVE"),
-    INACTIVE(2, "PENDING"),
-    PENDING(3, "SUSPEND"),
-    SUSPEND(4, "INACTIVE");
+    PENDING(2, "PENDING"),
+    SUSPEND(3, "SUSPEND"),
+    INACTIVE(4, "INACTIVE");
 
     private int id;
     private String name;

@@ -2,6 +2,7 @@ package com.zingpay.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zingpay.feign.AuthServiceClient;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class BaseController {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private AuthServiceClient authServiceClient;
 
     public ObjectMapper getJson() {
         return json;
@@ -138,4 +142,8 @@ public class BaseController {
     /*protected PaginationResponse initializePaginationEntity(Predicate predicate, int page, int size, String sortType, String[] sortProperties) {
         return new PaginationResponse(predicate,page,size,sortProperties,sortType);
     }*/
+
+    public String getLoggedInUserEmail() {
+        return authServiceClient.fetchEmail(getToken());
+    }
 }

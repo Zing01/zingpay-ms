@@ -1,4 +1,1 @@
-INSERT INTO user_account_status (user_account_status_id, account_status_value, description) VALUES (1, "ACTIVE", "Active state");
-INSERT INTO user_account_status (user_account_status_id, account_status_value, description) VALUES (2, "PENDING", "Pending state is used until user activates his account by verifying email or cell phone number");
-INSERT INTO user_account_status (user_account_status_id, account_status_value, description) VALUES (3, "SUSPEND", "Suspend state is used when user tries for wrong password");
-INSERT INTO user_account_status (user_account_status_id, account_status_value, description) VALUES (4, "INACTIVE", "Inactive state is used when we need to block user");
+INSERT INTO `user_account_status` VALUES (1, "ACTIVE", "Active state"), (2, "PENDING", "Pending state is used until user activates his account by verifying email or cell phone number"), (3, "SUSPEND", "Suspend state is used when user tries for wrong password"), (4, "INACTIVE", "Inactive state is used when we need to block user");

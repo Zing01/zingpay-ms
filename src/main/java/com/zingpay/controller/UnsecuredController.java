@@ -114,7 +114,7 @@ public class UnsecuredController extends BaseController {
             appUser.setEmailPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
             emailService.sendForgetPasswordEmail(appUser);
-            return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
+            return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY, appUser.getAccountId());
         } catch (Exception e) {
             return response(StatusMessage.EMAIL_SENT_FAILED);
         }

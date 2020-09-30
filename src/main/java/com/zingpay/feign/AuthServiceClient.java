@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(value = "${feign.auth.name}", url = "${feign.auth.url:#{null}}")
 public interface AuthServiceClient {
-    @GetMapping("/feign-email-against-token")
+    @GetMapping("/fetch-email-against-token")
     String fetchEmail(@RequestHeader(name = "Authorization") String token);
     /*@GetMapping("/fetch-authorities-against-token")
     List<Authority> fetchAuthorities(@RequestHeader(name = "Authorization") String token);*/
