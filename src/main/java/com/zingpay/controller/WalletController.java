@@ -2,6 +2,7 @@ package com.zingpay.controller;
 
 import com.zingpay.service.WalletService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class WalletController extends BaseController {
     @Autowired
     private WalletService walletService;
 
+    @ApiOperation(value = "Get account balance of loggedIn user", response = Double.class)
     @GetMapping
     public double getAccountBalance() {
          return walletService.getCurrentBalance(getLoggedInUserEmail());

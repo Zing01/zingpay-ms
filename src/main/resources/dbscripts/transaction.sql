@@ -4,7 +4,7 @@ create table transaction
 	account_id int not null,
 	transaction_type_id int null,
 	transaction_status_id int null,
-	one_load_transaction_type_id int null,
+    zingpay_transaction_type_id int null,
 	amount double default 0.00 not null,
 	retailer_network varchar(20) null,
 	service_provider varchar(15) null,
@@ -23,3 +23,8 @@ create table transaction
 		foreign key (transaction_type_id) references transaction_type (id)
 );
 
+alter table transaction
+    add retailer_ref_num varchar(255) null;
+
+alter table transaction
+    add provider_ref_num int null;

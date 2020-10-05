@@ -69,3 +69,6 @@
 /target/classes/com/zingpay/util/TransactionStatus.class
 /target/classes/com/zingpay/util/TransactionType.class
 /target/classes/com/zingpay/repository/TransactionRepository.class
+/target/classes/com/zingpay/controller/TransactionController.class
+/target/classes/com/zingpay/service/TransactionService.class
+/target/classes/com/zingpay/util/ZingpayTransactionType.class

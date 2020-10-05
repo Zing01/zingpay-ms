@@ -56,7 +56,7 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Activate User through email pin by calling this api.", response = Status.class)
+    @ApiOperation(value = "Activate User through email pin by calling this api. Takes in accountId and email pin as request body", response = Status.class)
     @PutMapping("/activate-email")
     public Status activateWithEmailPin(@RequestBody AppUserDto appUserDto) throws Exception {
         AppUser appUser = appUserService.getById(appUserDto.getAccountId());
@@ -70,7 +70,7 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Activate User through sms pin by calling this api.", response = Status.class)
+    @ApiOperation(value = "Activate User through sms pin by calling this api. Takes in accountId and sms pin as request body", response = Status.class)
     @PutMapping("/activate-sms")
     public Status activateWithSMSPin(@RequestBody AppUserDto appUserDto) {
         AppUser appUser = appUserService.getById(appUserDto.getAccountId());
@@ -83,9 +83,10 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Resend Email", response = Status.class)
+    @ApiOperation(value = "Resend Email, takes in email as request param", response = Status.class)
     @GetMapping("/resend-email")
-    public Status resendEmail(@RequestParam(name = "email", required = true) String email) {
+    public Status resendEmail(@RequestParam(name = "email", required = true) String email,
+                              @RequestParam(name = "isForgetPassword", required = true) boolean isForgetPassword) {
         try {
             AppUser appUser = appUserService.getByEmail(email);
             if(appUser == null) {
@@ -93,14 +94,18 @@ public class UnsecuredController extends BaseController {
             }
             appUser.setEmailPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
-            emailService.sendForgetPasswordEmail(appUser);
+            if(isForgetPassword) {
+                emailService.sendForgetPasswordEmail(appUser);
+            } else {
+                emailService.sendSignupEmail(appUser);
+            }
             return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY);
         } catch (Exception e) {
             return response(StatusMessage.EMAIL_SENT_FAILED);
         }
     }
 
-    @ApiOperation(value = "Forget Password", response = Status.class)
+    @ApiOperation(value = "Forget Password, takes in email and cnic as request param", response = Status.class)
     @GetMapping("/forget-password")
     public Status forgetPassword(@RequestParam(name = "email", required = true) String email, @RequestParam(name = "cnic", required = true) String cnic) {
         try {
@@ -120,7 +125,7 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Validate Email Pin", response = Status.class)
+    @ApiOperation(value = "Validate Email Pin, takes in accountId and emailPin as request body", response = Status.class)
     @PutMapping("/validate-email-pin")
     public Status validateEmailPin(@RequestBody AppUserDto appUserDto) {
         try {
@@ -135,7 +140,7 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Reset Password", response = Status.class)
+    @ApiOperation(value = "Reset Password, takes in password, confirm password and accountId as request body", response = Status.class)
     @PutMapping("/reset-password")
     public Status resetPassword(@RequestBody AppUserDto appUserDto) {
         try {

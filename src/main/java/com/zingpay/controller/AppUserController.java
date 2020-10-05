@@ -6,6 +6,7 @@ import com.zingpay.service.AppUserService;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class AppUserController extends BaseController {
     @Autowired
     private AppUserService appUserService;
 
+    @ApiOperation(value = "Account Setup call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setup")
     //@PreAuthorize("hasAuthority('USER_UPDATE')")
     public Status accountSetup(@RequestBody AppUserDto appUserDto) {
@@ -45,6 +47,7 @@ public class AppUserController extends BaseController {
         return response(StatusMessage.FAILURE);
     }
 
+    @ApiOperation(value = "Account Setting call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setting")
     public Status accountSetting(@RequestBody AppUserDto appUserDto) {
         AppUser appUser = appUserService.getById(appUserDto.getAccountId());
@@ -68,6 +71,7 @@ public class AppUserController extends BaseController {
         return response(StatusMessage.FAILURE);
     }
 
+    @ApiOperation(value = "Get all app users", response = List.class)
     @GetMapping
     public List<AppUserDto> getAll() {
         return AppUser.convertToDto(appUserService.getAll());

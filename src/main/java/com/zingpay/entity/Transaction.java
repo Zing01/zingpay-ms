@@ -3,11 +3,13 @@ package com.zingpay.entity;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.util.TransactionStatus;
 import com.zingpay.util.TransactionType;
+import com.zingpay.util.ZingpayTransactionType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,8 +39,8 @@ public class Transaction {
     @Column(name = "transaction_status_id")
     private long transactionStatusId;
 
-    @Column(name = "one_load_transaction_type_id")
-    private long oneLoadTransactionTypeId;
+    @Column(name = "zingpay_transaction_type_id")
+    private long zingpayTransactionTypeId;
 
     @Column(name = "amount")
     private double amount;
@@ -59,7 +61,7 @@ public class Transaction {
     private String refTo;
 
     @Column(name = "datetime")
-    private long dateTime;
+    private Date dateTime;
 
     public static TransactionDto convertToDto(Transaction transaction) {
         TransactionDto transactionDto = new TransactionDto();
@@ -81,9 +83,26 @@ public class Transaction {
             transactionDto.setTransactionType(TransactionType.CREDIT);
         }
 
-        transactionDto.setOneLoadTransactionTypeId(transaction.getOneLoadTransactionTypeId());
+        if(transaction.getZingpayTransactionTypeId() == 1) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_RECHARGE);
+        } else if(transaction.getZingpayTransactionTypeId() == 2) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_FUND_TRANSFER);
+        } else if(transaction.getZingpayTransactionTypeId() == 3) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BUY);
+        } else if(transaction.getZingpayTransactionTypeId() == 4) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BILL_PAYMENT);
+        } else if(transaction.getZingpayTransactionTypeId() == 5) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_COMMISSION);
+        } else if(transaction.getZingpayTransactionTypeId() == 6) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_SERVICE_CHARGE);
+        } else if(transaction.getZingpayTransactionTypeId() == 7) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
+        } else if(transaction.getZingpayTransactionTypeId() == 8) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_CASH_IN);
+        }
+
         transactionDto.setAmount(transaction.getAmount());
-        transactionDto.setRetailerNetwork(transaction.getRetailerNetwork());
+        //transactionDto.setRetailerNetwork(transaction.getRetailerNetwork());
         transactionDto.setServiceProvider(transaction.getServiceProvider());
         transactionDto.setDescription(transaction.getDescription());
         transactionDto.setRefFrom(transaction.getRefFrom());
