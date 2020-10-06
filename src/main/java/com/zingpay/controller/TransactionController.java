@@ -1,6 +1,7 @@
 package com.zingpay.controller;
 
 import com.zingpay.dto.TransactionDto;
+import com.zingpay.dto.TransactionSummaryDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
 import com.zingpay.service.TransactionService;
@@ -38,8 +39,8 @@ public class TransactionController extends BaseController {
     }
 
     @GetMapping("/transaction-summary")
-    public List<TransactionDto> getTransactionSummary(@RequestParam("fromDate") String fromDate,
-                                                   @RequestParam("toDate") String toDate) {
+    public TransactionSummaryDto getTransactionSummary(@RequestParam("fromDate") String fromDate,
+                                                             @RequestParam("toDate") String toDate) {
         String loggedInUserEmail = getLoggedInUserEmail();
         AppUser appUser = appUserService.getByEmail(loggedInUserEmail);
         return transactionService.getTransactionSummary(appUser.getAccountId(), fromDate, toDate);

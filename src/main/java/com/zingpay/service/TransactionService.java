@@ -1,6 +1,7 @@
 package com.zingpay.service;
 
 import com.zingpay.dto.TransactionDto;
+import com.zingpay.dto.TransactionSummaryDto;
 import com.zingpay.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class TransactionService {
         return TransactionDto.convertHistoryToDto(transactions);
     }
 
-    public List<TransactionDto> getTransactionSummary(long accountId, String fromDate, String toDate) {
+    public TransactionSummaryDto getTransactionSummary(long accountId, String fromDate, String toDate) {
         /*int transactionStatus = TransactionStatus.SUCCESS.getId();
         List<Integer> transactionStatuses = new ArrayList<Integer>();
         transactionStatuses.add(transactionStatus);
@@ -59,6 +60,7 @@ public class TransactionService {
         zingpayTransactionTypes.add(zingpayTransactionType_TX_CASH_IN);*/
 
         List<Object> transactions = transactionRepository.findTransactionSummary(accountId, fromDate, toDate);
-        return TransactionDto.convertSummaryToDto(transactions);
+        List<TransactionDto> transactionDtos = TransactionDto.convertSummaryToDto(transactions);
+        return TransactionSummaryDto.convertToDto(transactionDtos);
     }
 }
