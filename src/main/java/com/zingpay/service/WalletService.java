@@ -60,14 +60,13 @@ public class WalletService {
             long transactionTypeId = transactionResponseDto.getTransactionTypeId();
             long transactionStatusId = transactionResponseDto.getTransactionStatusId();
             double amount = transactionResponseDto.getAmount();
-            if (TransactionStatus.FAILED.getId() == transactionStatusId) {
+            /*if (TransactionStatus.FAILED.getId() == transactionStatusId) {
                 //continue;
-            }
+            }*/
             if (TransactionType.CREDIT.getId() == transactionTypeId) {
                 // pending CREDIT transactions should not reflect
                 // in balance but pending DEBIT transactions should.
                 if (TransactionStatus.PENDING.getId() != transactionStatusId) {
-
                     totalCredit = totalCredit+amount;
                 }
             } else if (TransactionType.DEBIT.getId() == transactionTypeId) {

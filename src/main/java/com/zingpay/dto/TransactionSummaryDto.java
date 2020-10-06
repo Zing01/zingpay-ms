@@ -22,7 +22,7 @@ public class TransactionSummaryDto {
     private double totalServiceCharge;
     private double totalTransfer;
     private double totalRecharge;
-    private double totalTransactionsCount;
+    private long totalTransactionsCount;
 
     public static TransactionSummaryDto convertToDto(List<TransactionDto> transactionDtos) {
         TransactionSummaryDto transactionSummaryDto = new TransactionSummaryDto();
