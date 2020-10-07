@@ -1,6 +1,6 @@
 package com.zingpay.controller;
 
-import com.zingpay.dto.TransactionDto;
+import com.zingpay.dto.TransactionPaginationDto;
 import com.zingpay.dto.TransactionSummaryDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author Bilal Hassan on 10/2/2020
@@ -31,11 +29,13 @@ public class TransactionController extends BaseController {
     private AppUserService appUserService;
 
     @GetMapping("/transaction-history")
-    public List<TransactionDto> getTransactionHistory(@RequestParam("fromDate") String fromDate,
-                                                   @RequestParam("toDate") String toDate) {
+    public TransactionPaginationDto getTransactionHistory(@RequestParam("fromDate") String fromDate,
+                                                          @RequestParam("toDate") String toDate,
+                                                          @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                          @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         String loggedInUserEmail = getLoggedInUserEmail();
         AppUser appUser = appUserService.getByEmail(loggedInUserEmail);
-        return transactionService.getTransactionHistory(appUser.getAccountId(), fromDate, toDate);
+        return transactionService.getTransactionHistory(appUser.getAccountId(), fromDate, toDate, page, size);
     }
 
     @GetMapping("/transaction-summary")

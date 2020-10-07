@@ -1,9 +1,13 @@
 package com.zingpay.service;
 
 import com.zingpay.dto.TransactionDto;
+import com.zingpay.dto.TransactionPaginationDto;
 import com.zingpay.dto.TransactionSummaryDto;
 import com.zingpay.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +25,7 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public List<TransactionDto> getTransactionHistory(long accountId, String fromDate, String toDate) {
+    public TransactionPaginationDto getTransactionHistory(long accountId, String fromDate, String toDate, int page, int size) {
         /*int transactionStatus = TransactionStatus.SUCCESS.getId();
         List<Integer> transactionStatuses = new ArrayList<Integer>();
         transactionStatuses.add(transactionStatus);
@@ -31,9 +35,12 @@ public class TransactionService {
         int zingpayTransactionType = ZingpayTransactionType.TX_RECHARGE.getId();
         List<Integer> zingpayTransactionTypes = new ArrayList<Integer>();
         zingpayTransactionTypes.add(zingpayTransactionType);*/
-
-        List<Object> transactions = transactionRepository.findTransactionHistory(accountId, fromDate, toDate);
-        return TransactionDto.convertHistoryToDto(transactions);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Object> transactions = transactionRepository.findTransactionHistory(accountId, fromDate, toDate, pageable);
+        transactions.getTotalPages();
+        List<TransactionDto> transactionDto = TransactionDto.convertHistoryToDto(transactions.getContent());
+        TransactionPaginationDto transactionPaginationDto = new TransactionPaginationDto(transactions.getTotalPages(), transactionDto);
+        return transactionPaginationDto;
     }
 
     public TransactionSummaryDto getTransactionSummary(long accountId, String fromDate, String toDate) {

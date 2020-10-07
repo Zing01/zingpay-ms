@@ -1,7 +1,10 @@
 package com.zingpay.repository;
 
 import com.zingpay.entity.Transaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +16,7 @@ import java.util.List;
  */
 
 @Repository
-public interface TransactionRepository extends BaseRepository<Transaction, Long> {
+public interface TransactionRepository extends BaseRepository<Transaction, Long>, PagingAndSortingRepository<Transaction, Long> {
     @Query(value = "SELECT sum(t.amount) as amount, " +
             "t.transaction_type_id as transactionTypeId, " +
             "t.transaction_status_id as transactionStatusId FROM transaction t " +
@@ -42,8 +45,21 @@ public interface TransactionRepository extends BaseRepository<Transaction, Long>
             "AND (transaction_type_id in (1)) " +
             "AND (zingpay_transaction_type_id in (1)) " +
             //"AND (retailer_ref_num = :retailerRefNum) " +
+            "ORDER BY datetime DESC",
+            countQuery = "SELECT " +
+            "count(*) FROM transaction T " +
+            "LEFT OUTER JOIN app_user u1 ON T.ref_to = u1.username " +
+            "LEFT OUTER JOIN app_user u2 ON T.ref_from = u2.username " +
+            "WHERE " +
+            "(T.account_id = :accountId) " +
+            "AND (datetime >= :fromDate) " +
+            "AND (datetime <= :toDate) " +
+            "AND (transaction_status_id in (1)) " +
+            "AND (transaction_type_id in (1)) " +
+            "AND (zingpay_transaction_type_id in (1)) " +
+            //"AND (retailer_ref_num = :retailerRefNum) " +
             "ORDER BY datetime DESC", nativeQuery = true)
-    List<Object> findTransactionHistory(@Param("accountId") long accountId, @Param("fromDate") String fromDate, @Param("toDate") String toDate);
+    Page<Object> findTransactionHistory(@Param("accountId") long accountId, @Param("fromDate") String fromDate, @Param("toDate") String toDate, Pageable pageable);
 
 
     @Query(value = "SELECT " +
@@ -60,6 +76,7 @@ public interface TransactionRepository extends BaseRepository<Transaction, Long>
             "AND (T.zingpay_transaction_type_id in (1,2,3,4,5,6,7,8)) " +
             "AND (TRANSACTION_STATUS_ID in (1)) " +
             "group by T.transaction_status_id, T.transaction_type_id, T.zingpay_transaction_type_id " +
-            "order by T.transaction_status_id, T.transaction_type_id, T.zingpay_transaction_type_id", nativeQuery = true)
+            "order by T.transaction_status_id, T.transaction_type_id, T.zingpay_transaction_type_id",
+            nativeQuery = true)
     List<Object> findTransactionSummary(long accountId, String fromDate, String toDate);
 }
