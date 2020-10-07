@@ -1,5 +1,6 @@
 package com.zingpay.controller;
 
+import com.zingpay.dto.WalletDto;
 import com.zingpay.service.WalletService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,9 @@ public class WalletController extends BaseController {
 
     @ApiOperation(value = "Get account balance of loggedIn user", response = Double.class)
     @GetMapping
-    public double getAccountBalance() {
-         return walletService.getCurrentBalance(getLoggedInUserEmail());
+    public WalletDto getAccountBalance() {
+        WalletDto walletDto = new WalletDto();
+         walletDto.setAccountBalance(walletService.getCurrentBalance(getLoggedInUserEmail()));
+         return walletDto;
     }
 }
