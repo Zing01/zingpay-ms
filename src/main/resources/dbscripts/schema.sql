@@ -25,6 +25,11 @@ create table app_user
     is_generated_t_pin boolean null,
     sms_pin varchar(255) null,
     email_pin varchar(255) null,
+    house_number varchar(255) null,
+    transaction_amount long,
+    transaction_date long,
+    transaction_id varchar(255),
+    business_name varchar(255),
     constraint app_user_pk
         primary key (account_id)
 );

@@ -5,6 +5,7 @@ import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
 import com.zingpay.service.EmailService;
 import com.zingpay.util.*;
+import com.zingpay.validator.AppUserValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,30 +30,23 @@ public class UnsecuredController extends BaseController {
     @ApiOperation(value = "Signup call, this call takes in UserDto object as request body.", response = Status.class)
     @PostMapping("/signup")
     public Status signup(@RequestBody AppUserDto appUserDto) throws Exception {
-        if(Regex.validateMobileNumber(appUserDto.getCellPhone())) {
-            if(Regex.validateCNIC(appUserDto.getCnicNumber())) {
-                if(Regex.validateEmail(appUserDto.getEmail())) {
-                    appUserDto.setSmsPin(Utils.generateFourDigitPin()+"");
-                    appUserDto.setEmailPin(Utils.generateFourDigitPin()+"");
-                    appUserDto.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
+        Status status = AppUserValidator.validateOnRegister(appUserDto);
+        if(status.getCode() == 1) {
+            appUserDto.setSmsPin(Utils.generateFourDigitPin()+"");
+            appUserDto.setEmailPin(Utils.generateFourDigitPin()+"");
+            appUserDto.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
 
-                    appUserDto.setGroupId(1);
-                    appUserDto.setAccountTypeId(AccountType.RETAILER);
-                    appUserDto.setAccountStatusId(AccountStatus.PENDING);
-                    appUserDto.setUsername(appUserDto.getCellPhone());
+            appUserDto.setGroupId(1);
+            appUserDto.setAccountType(AccountType.RETAILER);
+            appUserDto.setAccountStatus(AccountStatus.PENDING);
+            appUserDto.setUsername(appUserDto.getCellPhone());
 
-                    AppUser appUser = AppUserDto.convertToEntity(appUserDto);
-                    AppUser savedAppUser = appUserService.save(appUser);
-                    emailService.sendSignupEmail(savedAppUser);
-                    return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
-                } else {
-                    return response(StatusMessage.EMAIL_ADDRESS_NOT_VALID);
-                }
-            } else {
-                return response(StatusMessage.CNIC_NOT_VALID);
-            }
+            AppUser appUser = AppUserDto.convertToEntity(appUserDto);
+            AppUser savedAppUser = appUserService.save(appUser);
+            emailService.sendSignupEmail(savedAppUser);
+            return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
         } else {
-            return response(StatusMessage.MOBILE_NUMBER_NOT_VALID);
+            return status;
         }
     }
 

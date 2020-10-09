@@ -72,3 +72,9 @@
 /target/classes/com/zingpay/controller/TransactionController.class
 /target/classes/com/zingpay/service/TransactionService.class
 /target/classes/com/zingpay/util/ZingpayTransactionType.class
+/target/classes/com/zingpay/dto/TransactionPaginationDto.class
+/target/classes/com/zingpay/dto/TransactionSummaryDto.class
+/target/classes/com/zingpay/dto/WalletDto.class
+/target/classes/com/zingpay/validator/AppUserValidator.class
+/target/classes/com/zingpay/util/DepositType.class
+/target/classes/com/zingpay/util/ServiceType.class

@@ -3,6 +3,8 @@ package com.zingpay.entity;
 import com.zingpay.dto.AppUserDto;
 import com.zingpay.util.AccountStatus;
 import com.zingpay.util.AccountType;
+import com.zingpay.util.DepositType;
+import com.zingpay.util.HouseType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -73,24 +75,56 @@ public class AppUser {
     @Column(name = "email_pin")
     private String emailPin;
 
+
+    @Column(name = "house_type_id")
+    private int houseTypeId;
+    @Column(name = "deposit_type_id")
+    private int depositTypeId;
+    @Column(name = "business_name")
+    private String businessName;
+    @Column(name = "mobile_location")
+    private String mobileLocation;
+    @Column(name = "cnic_issue_date")
+    private long cnicIssueDate;
+    @Column(name = "cnic_front")
+    private byte[] cnicFront;
+    @Column(name = "cnic_back")
+    private byte[] cnicBack;
+    @Column(name = "other_attachment")
+    private byte[] otherAttachment;
+    @Column(name = "transaction_id")
+    private String transactionId;
+    @Column(name = "transaction_date")
+    private long transactionDate;
+    @Column(name = "transaction_amount")
+    private long transactionAmount;
+    @Column(name = "house_number")
+    private String houseNumber;
+
     public static AppUserDto convertToDto(AppUser appUser) {
         AppUserDto appUserDto = new AppUserDto();
         appUserDto.setAccountId(appUser.getAccountId());
 
         if(appUser.getAccountStatusId() == 1) {
-            appUserDto.setAccountStatusId(AccountStatus.ACTIVE);
+            appUserDto.setAccountStatus(AccountStatus.ACTIVE);
         } else if(appUser.getAccountStatusId() == 2) {
-            appUserDto.setAccountStatusId(AccountStatus.PENDING);
+            appUserDto.setAccountStatus(AccountStatus.PENDING);
         } else if(appUser.getAccountStatusId() == 3) {
-            appUserDto.setAccountStatusId(AccountStatus.SUSPEND);
+            appUserDto.setAccountStatus(AccountStatus.SUSPEND);
         } else if(appUser.getAccountStatusId() == 4) {
-            appUserDto.setAccountStatusId(AccountStatus.INACTIVE);
+            appUserDto.setAccountStatus(AccountStatus.INACTIVE);
         }
 
         if(appUser.getAccountTypeId() == 1) {
-            appUserDto.setAccountTypeId(AccountType.VIRTUAL_AGENT);
+            appUserDto.setAccountType(AccountType.VIRTUAL_AGENT);
         } else if(appUser.getAccountTypeId() == 2) {
-            appUserDto.setAccountTypeId(AccountType.RETAILER);
+            appUserDto.setAccountType(AccountType.RETAILER);
+        } else if(appUser.getAccountTypeId() == 3) {
+            appUserDto.setAccountType(AccountType.SUPER_SUPER_REP);
+        } else if(appUser.getAccountTypeId() == 4) {
+            appUserDto.setAccountType(AccountType.SUPER_REP);
+        } else if(appUser.getAccountTypeId() == 5) {
+            appUserDto.setAccountType(AccountType.REP);
         }
 
         appUserDto.setAddress(appUser.getAddress());
@@ -115,6 +149,33 @@ public class AppUser {
         appUserDto.setUsername(appUser.getUsername());
         //appUserDto.setSmsPin(appUser.getSmsPin());
         //appUserDto.setEmailPin(appUser.getEmailPin());
+
+        if(appUser.getHouseTypeId() == 1) {
+            appUserDto.setHouseType(HouseType.RENT);
+        } else if(appUser.getHouseTypeId() == 2) {
+            appUserDto.setHouseType(HouseType.OWN);
+        }
+
+        if(appUser.getDepositTypeId() == 1) {
+            appUserDto.setDepositType(DepositType.BANK_DEPOSIT);
+        } else if(appUser.getDepositTypeId() == 2) {
+            appUserDto.setDepositType(DepositType.BANK_TRANSFER);
+        } else if(appUser.getDepositTypeId() == 3) {
+            appUserDto.setDepositType(DepositType.EASY_PAISA);
+        }
+
+        appUserDto.setBusinessName(appUser.getBusinessName());
+        appUserDto.setMobileLocation(appUser.getMobileLocation());
+        appUserDto.setCnicIssueDate(appUser.getCnicIssueDate());
+
+        appUserDto.setCnicFront(new String(appUser.getCnicFront()));
+        appUserDto.setCnicBack(new String(appUser.getCnicBack()));
+        appUserDto.setOtherAttachment(new String(appUser.getOtherAttachment()));
+
+        appUserDto.setTransactionId(appUser.getTransactionId());
+        appUserDto.setTransactionDate(appUser.getTransactionDate());
+        appUserDto.setTransactionAmount(appUser.getTransactionAmount());
+        appUserDto.setHouseNumber(appUser.getHouseNumber());
 
         return appUserDto;
     }

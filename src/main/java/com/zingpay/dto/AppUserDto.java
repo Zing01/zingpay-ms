@@ -3,6 +3,8 @@ package com.zingpay.dto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.util.AccountStatus;
 import com.zingpay.util.AccountType;
+import com.zingpay.util.DepositType;
+import com.zingpay.util.HouseType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +23,8 @@ public class AppUserDto {
     private int parentId;
     private int branchId;
     private int groupId;
-    private AccountStatus accountStatusId;
-    private AccountType accountTypeId;
+    private AccountStatus accountStatus;
+    private AccountType accountType;
     private String username;
     private String password;
     private String confirmPassword;
@@ -44,11 +46,24 @@ public class AppUserDto {
     private String smsPin;
     private String emailPin;
 
+    private HouseType houseType;
+    private DepositType depositType;
+    private String businessName;
+    private String mobileLocation;
+    private long cnicIssueDate;
+    private String cnicFront;
+    private String cnicBack;
+    private String otherAttachment;
+    private String transactionId;
+    private long transactionDate;
+    private long transactionAmount;
+    private String houseNumber;
+
     public static AppUser convertToEntity(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();
         appUser.setAccountId(appUserDto.getAccountId());
-        appUser.setAccountStatusId(appUserDto.getAccountStatusId().getId());
-        appUser.setAccountTypeId(appUserDto.getAccountTypeId().getId());
+        appUser.setAccountStatusId(appUserDto.getAccountStatus().getId());
+        appUser.setAccountTypeId(appUserDto.getAccountType().getId());
         appUser.setAddress(appUserDto.getAddress());
         appUser.setAlternateCellPhone(appUserDto.getAlternateCellPhone());
         appUser.setBranchId(appUserDto.getBranchId());
@@ -71,6 +86,21 @@ public class AppUserDto {
         appUser.setUsername(appUserDto.getUsername());
         appUser.setSmsPin(appUserDto.getSmsPin());
         appUser.setEmailPin(appUserDto.getEmailPin());
+
+        appUser.setHouseTypeId(appUserDto.getHouseType().getId());
+        appUser.setDepositTypeId(appUserDto.getDepositType().getId());
+        appUser.setBusinessName(appUserDto.getBusinessName());
+        appUser.setMobileLocation(appUserDto.getMobileLocation());
+        appUser.setCnicIssueDate(appUserDto.getCnicIssueDate());
+
+        appUser.setCnicFront(appUserDto.getCnicFront().getBytes());
+        appUser.setCnicBack(appUserDto.getCnicBack().getBytes());
+        appUser.setOtherAttachment(appUserDto.getOtherAttachment().getBytes());
+
+        appUser.setTransactionId(appUserDto.getTransactionId());
+        appUser.setTransactionAmount(appUserDto.getTransactionAmount());
+        appUser.setTransactionDate(appUserDto.getTransactionDate());
+        appUser.setHouseNumber(appUserDto.getHouseNumber());
 
         return appUser;
     }

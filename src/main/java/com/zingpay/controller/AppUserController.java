@@ -5,6 +5,7 @@ import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
+import com.zingpay.validator.AppUserValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,33 @@ public class AppUserController extends BaseController {
 
     @ApiOperation(value = "Account Setup call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setup")
-    //@PreAuthorize("hasAuthority('USER_UPDATE')")
     public Status accountSetup(@RequestBody AppUserDto appUserDto) {
         AppUser appUser = appUserService.getById(appUserDto.getAccountId());
         if(appUser != null) {
-            if(appUserDto.getPassword() != null) {
+            Status status = AppUserValidator.validateOnAccountSetup(appUserDto);
+            if(status.getCode() == 1) {
+                appUser.setBusinessName(appUserDto.getBusinessName());
+                appUser.setMobileLocation(appUserDto.getMobileLocation());
+                appUser.setAccountTypeId(appUserDto.getAccountType().getId());
+                appUser.setDepositTypeId(appUserDto.getDepositType().getId());
+                appUser.setTransactionId(appUserDto.getTransactionId());
+                appUser.setTransactionDate(appUserDto.getTransactionDate());
+                appUser.setTransactionAmount(appUserDto.getTransactionAmount());
+                appUser.setCnicIssueDate(appUserDto.getCnicIssueDate());
+                appUser.setCnicFront(appUserDto.getCnicFront().getBytes());
+                appUser.setCnicBack(appUserDto.getCnicBack().getBytes());
+                if(appUserDto.getOtherAttachment() != null) {
+                    appUser.setOtherAttachment(appUserDto.getOtherAttachment().getBytes());
+                }
+                appUser.setHouseNumber(appUserDto.getHouseNumber());
+                appUser.setHouseTypeId(appUserDto.getHouseType().getId());
+
+                AppUser savedAppUser = appUserService.update(appUser);
+                return new Status(StatusMessage.ACCOUNT_SETUP_SUCCESS, savedAppUser.getAccountId());
+            } else {
+                return status;
+            }
+            /*if(appUserDto.getPassword() != null) {
                 if (appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
                     appUserDto.setTPin(appUser.getTPin());
                     appUserDto.setEmailPin(appUser.getEmailPin());
@@ -42,7 +65,8 @@ public class AppUserController extends BaseController {
                 } else {
                     return response(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
                 }
-            }
+            }*/
+
         }
         return response(StatusMessage.FAILURE);
     }
