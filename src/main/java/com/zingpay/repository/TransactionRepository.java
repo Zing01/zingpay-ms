@@ -25,7 +25,7 @@ public interface TransactionRepository extends BaseRepository<Transaction, Long>
     List<Object> findAllTransactions(long accountId);
 
     @Query(value = "SELECT " +
-            "transaction_id, T.account_id, transaction_status_id, " +
+            "T.transaction_id, T.account_id, transaction_status_id, " +
             "transaction_type_id, zingpay_transaction_type_id, " +
             "retailer_ref_num, provider_ref_num, " +
             "amount, service_provider, description, " +

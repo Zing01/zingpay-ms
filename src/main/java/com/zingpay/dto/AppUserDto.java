@@ -87,15 +87,28 @@ public class AppUserDto {
         appUser.setSmsPin(appUserDto.getSmsPin());
         appUser.setEmailPin(appUserDto.getEmailPin());
 
-        appUser.setHouseTypeId(appUserDto.getHouseType().getId());
-        appUser.setDepositTypeId(appUserDto.getDepositType().getId());
+        if(appUserDto.getHouseType() != null) {
+            appUser.setHouseTypeId(appUserDto.getHouseType().getId());
+        }
+
+        if(appUserDto.getDepositType() != null) {
+            appUser.setDepositTypeId(appUserDto.getDepositType().getId());
+        }
         appUser.setBusinessName(appUserDto.getBusinessName());
         appUser.setMobileLocation(appUserDto.getMobileLocation());
         appUser.setCnicIssueDate(appUserDto.getCnicIssueDate());
 
-        appUser.setCnicFront(appUserDto.getCnicFront().getBytes());
-        appUser.setCnicBack(appUserDto.getCnicBack().getBytes());
-        appUser.setOtherAttachment(appUserDto.getOtherAttachment().getBytes());
+        if(appUserDto.getCnicFront() != null) {
+            appUser.setCnicFront(appUserDto.getCnicFront().getBytes());
+        }
+
+        if(appUserDto.getCnicBack() != null) {
+            appUser.setCnicBack(appUserDto.getCnicBack().getBytes());
+        }
+
+        if(appUserDto.getOtherAttachment() != null) {
+            appUser.setOtherAttachment(appUserDto.getOtherAttachment().getBytes());
+        }
 
         appUser.setTransactionId(appUserDto.getTransactionId());
         appUser.setTransactionAmount(appUserDto.getTransactionAmount());
