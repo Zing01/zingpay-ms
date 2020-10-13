@@ -41,6 +41,7 @@ public enum StatusMessage {
     TRANSACTION_AMOUNT_IS_REQUIRED(50019,"Transaction Amount is required", HttpStatus.INTERNAL_SERVER_ERROR),
     ADDRESS_IS_REQUIRED(50020,"Address is required", HttpStatus.INTERNAL_SERVER_ERROR),
     HOUSE_NUMBER_IS_REQUIRED(50021,"House Number is required", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_PASSWORD(50022,"Invalid Password", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

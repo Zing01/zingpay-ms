@@ -100,4 +100,14 @@ public class AppUserController extends BaseController {
     public List<AppUserDto> getAll() {
         return AppUser.convertToDto(appUserService.getAll());
     }
+
+    @ApiOperation(value = "Reset Password, takes in password, confirm password, old password and accountId as request body", response = Status.class)
+    @PutMapping("/reset-password")
+    public Status resetPassword(@RequestBody AppUserDto appUserDto) {
+        try {
+            return appUserService.resetPassword(appUserDto);
+        } catch (Exception e) {
+            return response(StatusMessage.PASSWORD_RESET_FAILED);
+        }
+    }
 }

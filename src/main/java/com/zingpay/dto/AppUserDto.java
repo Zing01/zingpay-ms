@@ -58,6 +58,7 @@ public class AppUserDto {
     private long transactionDate;
     private long transactionAmount;
     private String houseNumber;
+    private String oldPassword;
 
     public static AppUser convertToEntity(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();
