@@ -6,6 +6,8 @@ create table app_user
     group_id int null,
     account_type_id int null,
     account_status_id int null,
+    service_status_id int null,
+    service_type_id int null,
     username varchar(255) null,
     password varchar(255) null,
     full_name varchar(255) null,
@@ -30,6 +32,7 @@ create table app_user
     transaction_date long,
     transaction_id varchar(255),
     business_name varchar(255),
+    profile_picture blob,
     constraint app_user_pk
         primary key (account_id)
 );

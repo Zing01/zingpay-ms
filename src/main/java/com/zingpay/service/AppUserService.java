@@ -68,7 +68,7 @@ public class AppUserService {
         return (List<AppUser>) appUserRepository.findAll();
     }
 
-    public Status resetPassword(AppUserDto appUserDto) {
+    public Status changePassword(AppUserDto appUserDto) {
         AppUser appUser = appUserRepository.findByAccountId(appUserDto.getAccountId());
 
         if(passwordEncoder.matches(appUserDto.getOldPassword(), appUser.getPassword())) {

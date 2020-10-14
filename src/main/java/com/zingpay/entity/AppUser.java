@@ -1,10 +1,7 @@
 package com.zingpay.entity;
 
 import com.zingpay.dto.AppUserDto;
-import com.zingpay.util.AccountStatus;
-import com.zingpay.util.AccountType;
-import com.zingpay.util.DepositType;
-import com.zingpay.util.HouseType;
+import com.zingpay.util.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,6 +33,8 @@ public class AppUser {
     private int accountStatusId;
     @Column(name = "account_type_id")
     private int accountTypeId;
+    @Column(name = "service_type_id")
+    private int serviceTypeId;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -74,7 +73,8 @@ public class AppUser {
     private String smsPin;
     @Column(name = "email_pin")
     private String emailPin;
-
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
 
     @Column(name = "house_type_id")
     private int houseTypeId;
@@ -127,6 +127,12 @@ public class AppUser {
             appUserDto.setAccountType(AccountType.REP);
         }
 
+        if(appUser.getServiceTypeId() == 1) {
+            appUserDto.setServiceType(ServiceType.HOUSE);
+        } else if(appUser.getServiceTypeId() == 2) {
+            appUserDto.setServiceType(ServiceType.SHOP);
+        }
+
         appUserDto.setAddress(appUser.getAddress());
         appUserDto.setAlternateCellPhone(appUser.getAlternateCellPhone());
         appUserDto.setBranchId(appUser.getBranchId());
@@ -149,6 +155,7 @@ public class AppUser {
         appUserDto.setUsername(appUser.getUsername());
         //appUserDto.setSmsPin(appUser.getSmsPin());
         //appUserDto.setEmailPin(appUser.getEmailPin());
+        appUserDto.setProfilePicture(new String(appUser.getProfilePicture()));
 
         if(appUser.getHouseTypeId() == 1) {
             appUserDto.setHouseType(HouseType.RENT);

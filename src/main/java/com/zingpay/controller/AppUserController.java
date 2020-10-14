@@ -29,25 +29,38 @@ public class AppUserController extends BaseController {
     @ApiOperation(value = "Account Setup call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setup")
     public Status accountSetup(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+        AppUser appUser = appUserService.getByEmail(getLoggedInUserEmail());
         if(appUser != null) {
             Status status = AppUserValidator.validateOnAccountSetup(appUserDto);
             if(status.getCode() == 1) {
                 appUser.setBusinessName(appUserDto.getBusinessName());
                 appUser.setMobileLocation(appUserDto.getMobileLocation());
                 appUser.setAccountTypeId(appUserDto.getAccountType().getId());
-                appUser.setDepositTypeId(appUserDto.getDepositType().getId());
+                if(appUserDto.getDepositType() != null) {
+                    appUser.setDepositTypeId(appUserDto.getDepositType().getId());
+                }
                 appUser.setTransactionId(appUserDto.getTransactionId());
                 appUser.setTransactionDate(appUserDto.getTransactionDate());
                 appUser.setTransactionAmount(appUserDto.getTransactionAmount());
                 appUser.setCnicIssueDate(appUserDto.getCnicIssueDate());
                 appUser.setCnicFront(appUserDto.getCnicFront().getBytes());
                 appUser.setCnicBack(appUserDto.getCnicBack().getBytes());
+                if(appUserDto.getProfilePicture() != null) {
+                    appUser.setProfilePicture(appUserDto.getProfilePicture().getBytes());
+                }
+                if(appUserDto.getServiceType() != null) {
+                    appUser.setServiceTypeId(appUserDto.getServiceType().getId());
+                }
+
                 if(appUserDto.getOtherAttachment() != null) {
                     appUser.setOtherAttachment(appUserDto.getOtherAttachment().getBytes());
+                } else {
+
                 }
                 appUser.setHouseNumber(appUserDto.getHouseNumber());
-                appUser.setHouseTypeId(appUserDto.getHouseType().getId());
+                if(appUserDto.getHouseType() != null) {
+                    appUser.setHouseTypeId(appUserDto.getHouseType().getId());
+                }
 
                 AppUser savedAppUser = appUserService.update(appUser);
                 return new Status(StatusMessage.ACCOUNT_SETUP_SUCCESS, savedAppUser.getAccountId());
@@ -74,7 +87,7 @@ public class AppUserController extends BaseController {
     @ApiOperation(value = "Account Setting call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setting")
     public Status accountSetting(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+        AppUser appUser = appUserService.getByEmail(getLoggedInUserEmail());
         if(appUser != null) {
             if(appUserDto.getPassword() != null) {
                 if (appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
@@ -101,11 +114,11 @@ public class AppUserController extends BaseController {
         return AppUser.convertToDto(appUserService.getAll());
     }
 
-    @ApiOperation(value = "Reset Password, takes in password, confirm password, old password and accountId as request body", response = Status.class)
-    @PutMapping("/reset-password")
-    public Status resetPassword(@RequestBody AppUserDto appUserDto) {
+    @ApiOperation(value = "Change Password, takes in password, confirm password, old password and accountId as request body", response = Status.class)
+    @PutMapping("/change-password")
+    public Status changePassword(@RequestBody AppUserDto appUserDto) {
         try {
-            return appUserService.resetPassword(appUserDto);
+            return appUserService.changePassword(appUserDto);
         } catch (Exception e) {
             return response(StatusMessage.PASSWORD_RESET_FAILED);
         }

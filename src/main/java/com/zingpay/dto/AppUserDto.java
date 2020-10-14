@@ -1,10 +1,7 @@
 package com.zingpay.dto;
 
 import com.zingpay.entity.AppUser;
-import com.zingpay.util.AccountStatus;
-import com.zingpay.util.AccountType;
-import com.zingpay.util.DepositType;
-import com.zingpay.util.HouseType;
+import com.zingpay.util.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +22,7 @@ public class AppUserDto {
     private int groupId;
     private AccountStatus accountStatus;
     private AccountType accountType;
+    private ServiceType serviceType;
     private String username;
     private String password;
     private String confirmPassword;
@@ -45,6 +43,7 @@ public class AppUserDto {
     private boolean isGeneratedTpin;
     private String smsPin;
     private String emailPin;
+    private String profilePicture;
 
     private HouseType houseType;
     private DepositType depositType;
@@ -65,6 +64,9 @@ public class AppUserDto {
         appUser.setAccountId(appUserDto.getAccountId());
         appUser.setAccountStatusId(appUserDto.getAccountStatus().getId());
         appUser.setAccountTypeId(appUserDto.getAccountType().getId());
+        if(appUserDto.getServiceType() != null) {
+            appUser.setServiceTypeId(appUserDto.getServiceType().getId());
+        }
         appUser.setAddress(appUserDto.getAddress());
         appUser.setAlternateCellPhone(appUserDto.getAlternateCellPhone());
         appUser.setBranchId(appUserDto.getBranchId());
@@ -87,6 +89,9 @@ public class AppUserDto {
         appUser.setUsername(appUserDto.getUsername());
         appUser.setSmsPin(appUserDto.getSmsPin());
         appUser.setEmailPin(appUserDto.getEmailPin());
+        if(appUserDto.getProfilePicture() != null) {
+            appUser.setProfilePicture(appUserDto.getProfilePicture().getBytes());
+        }
 
         if(appUserDto.getHouseType() != null) {
             appUser.setHouseTypeId(appUserDto.getHouseType().getId());
