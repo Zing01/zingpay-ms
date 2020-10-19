@@ -33,16 +33,16 @@ public class TransactionController extends BaseController {
                                                           @RequestParam("toDate") String toDate,
                                                           @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                           @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
-        String loggedInUserEmail = getLoggedInUserEmail();
-        AppUser appUser = appUserService.getByEmail(loggedInUserEmail);
+        int loggedInUserAccountId = getLoggedInUserAccountId();
+        AppUser appUser = appUserService.getById(loggedInUserAccountId);
         return transactionService.getTransactionHistory(appUser.getAccountId(), fromDate, toDate, page, size);
     }
 
     @GetMapping("/transaction-summary")
     public TransactionSummaryDto getTransactionSummary(@RequestParam("fromDate") String fromDate,
                                                              @RequestParam("toDate") String toDate) {
-        String loggedInUserEmail = getLoggedInUserEmail();
-        AppUser appUser = appUserService.getByEmail(loggedInUserEmail);
+        int loggedInUserAccountId = getLoggedInUserAccountId();
+        AppUser appUser = appUserService.getById(loggedInUserAccountId);
         return transactionService.getTransactionSummary(appUser.getAccountId(), fromDate, toDate);
     }
 }

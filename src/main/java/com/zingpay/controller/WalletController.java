@@ -26,7 +26,7 @@ public class WalletController extends BaseController {
     @GetMapping
     public WalletDto getAccountBalance() {
         WalletDto walletDto = new WalletDto();
-         walletDto.setAccountBalance(walletService.getCurrentBalance(getLoggedInUserEmail()));
-         return walletDto;
+        walletDto.setAccountBalance(walletService.getCurrentBalance(getLoggedInUserAccountId()));
+        return walletDto;
     }
 }

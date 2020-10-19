@@ -78,3 +78,5 @@
 /target/classes/com/zingpay/validator/AppUserValidator.class
 /target/classes/com/zingpay/util/DepositType.class
 /target/classes/com/zingpay/util/ServiceType.class
+/target/classes/com/zingpay/rabbitmq/RabbitMQConsumer.class
+/target/classes/com/zingpay/util/ChannelType.class

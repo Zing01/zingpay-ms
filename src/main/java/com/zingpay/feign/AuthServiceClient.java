@@ -15,4 +15,7 @@ public interface AuthServiceClient {
     String fetchEmail(@RequestHeader(name = "Authorization") String token);
     /*@GetMapping("/fetch-authorities-against-token")
     List<Authority> fetchAuthorities(@RequestHeader(name = "Authorization") String token);*/
+
+    @GetMapping("/fetch-accountId-against-token")
+    int fetchAccountId(@RequestHeader(name = "Authorization") String token);
 }

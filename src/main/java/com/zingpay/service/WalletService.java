@@ -28,8 +28,8 @@ public class WalletService {
     @Autowired
     private AppUserRepository appUserRepository;
 
-    public double getCurrentBalance(String email) {
-        AppUser appUser = appUserRepository.findByEmail(email);
+    public double getCurrentBalance(int accountId) {
+        AppUser appUser = appUserRepository.findByAccountId(accountId);
         if(appUser.getAccountStatusId() == 1) {
             List<Object> objects = transactionRepository.findAllTransactions(appUser.getAccountId());
             List<TransactionResponseDto> transactionResponseDtos = new ArrayList<TransactionResponseDto>();

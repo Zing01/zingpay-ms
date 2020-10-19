@@ -515,12 +515,20 @@ public class Utils {
 		return ThreadLocalRandom.current().nextInt(1111, 9998 + 1);
 	}
 
+	public static long generateTenDigitsNumber(){
+		return (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
+	}
+
 	public static String encodePassword(String password) {
 		return Base64.getEncoder().encodeToString(password.getBytes());
 	}
 
 	public static String decodePassword(String password) {
 		return new String(Base64.getDecoder().decode(password));
+	}
+
+	public static <T> T parseToObject(String jsonString, Class<T> type) throws JsonProcessingException {
+		return json.readValue(jsonString, type);
 	}
 }
 

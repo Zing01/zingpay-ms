@@ -1,10 +1,7 @@
 package com.zingpay.dto;
 
 import com.zingpay.entity.Transaction;
-import com.zingpay.util.TransactionStatus;
-import com.zingpay.util.TransactionType;
-import com.zingpay.util.Utils;
-import com.zingpay.util.ZingpayTransactionType;
+import com.zingpay.util.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +23,8 @@ public class TransactionDto {
     private TransactionType transactionType;
     private TransactionStatus transactionStatus;
     private ZingpayTransactionType zingpayTransactionType;
+    private ChannelType channelType;
+    private String retailerRefNumber;
     private Double amount;
     private String serviceProvider;
     private String description;
@@ -43,6 +42,8 @@ public class TransactionDto {
         transaction.setTransactionStatusId(transactionDto.getTransactionStatus().getId());
         transaction.setTransactionTypeId(transactionDto.getTransactionType().getId());
         transaction.setZingpayTransactionTypeId(transactionDto.getZingpayTransactionType().getId());
+        transaction.setChannelTypeId(transactionDto.getChannelType().getId());
+        transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber());
         transaction.setAmount(transactionDto.getAmount());
         transaction.setServiceProvider(transactionDto.getServiceProvider());
         transaction.setDescription(transactionDto.getDescription());

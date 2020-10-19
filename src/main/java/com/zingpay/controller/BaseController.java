@@ -146,4 +146,8 @@ public class BaseController {
     public String getLoggedInUserEmail() {
         return authServiceClient.fetchEmail(getToken());
     }
+
+    public int getLoggedInUserAccountId() {
+        return authServiceClient.fetchAccountId(getToken());
+    }
 }

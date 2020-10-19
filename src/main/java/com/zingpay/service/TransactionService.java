@@ -1,9 +1,12 @@
 package com.zingpay.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.dto.TransactionPaginationDto;
 import com.zingpay.dto.TransactionSummaryDto;
+import com.zingpay.entity.Transaction;
 import com.zingpay.repository.TransactionRepository;
+import com.zingpay.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,5 +72,32 @@ public class TransactionService {
         List<Object> transactions = transactionRepository.findTransactionSummary(accountId, fromDate, toDate);
         List<TransactionDto> transactionDtos = TransactionDto.convertSummaryToDto(transactions);
         return TransactionSummaryDto.convertToDto(transactionDtos);
+    }
+
+    public void processTransaction(String jsonString) {
+        TransactionDto transactionDto = convertJSONStringToDto(jsonString);
+        Transaction transaction = TransactionDto.convertToEntity(transactionDto);
+        transactionRepository.save(transaction);
+    }
+
+    public TransactionDto convertJSONStringToDto(String jsonString) {
+        TransactionDto transactionDto = new TransactionDto();
+        try {
+            transactionDto = Utils.parseToObject(jsonString, TransactionDto.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        transactionDto.setRefFrom("zingpay");
+
+        transactionDto.setTransactionStatus(TransactionStatus.PENDING);
+        transactionDto.setTransactionType(TransactionType.DEBIT);
+        if(transactionDto.getRetailerRefNumber().equalsIgnoreCase("Mobile")) {
+            transactionDto.setChannelType(ChannelType.MOBILE);
+        } else if(transactionDto.getRetailerRefNumber().equalsIgnoreCase("Web")) {
+            transactionDto.setChannelType(ChannelType.WEB);
+        }
+        transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
+        transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"_"+Utils.generateTenDigitsNumber());
+        return transactionDto;
     }
 }

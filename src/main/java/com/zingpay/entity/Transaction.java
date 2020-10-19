@@ -1,6 +1,7 @@
 package com.zingpay.entity;
 
 import com.zingpay.dto.TransactionDto;
+import com.zingpay.util.ChannelType;
 import com.zingpay.util.TransactionStatus;
 import com.zingpay.util.TransactionType;
 import com.zingpay.util.ZingpayTransactionType;
@@ -41,6 +42,12 @@ public class Transaction {
 
     @Column(name = "zingpay_transaction_type_id")
     private long zingpayTransactionTypeId;
+
+    @Column(name = "channel_type_id")
+    private long channelTypeId;
+
+    @Column(name = "retailer_ref_num")
+    private String retailerRefNumber;
 
     @Column(name = "amount")
     private double amount;
@@ -101,6 +108,13 @@ public class Transaction {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_CASH_IN);
         }
 
+        if(transaction.getChannelTypeId() == 1) {
+            transactionDto.setChannelType(ChannelType.MOBILE);
+        } else if(transaction.getChannelTypeId() == 2) {
+            transactionDto.setChannelType(ChannelType.WEB);
+        }
+
+        transactionDto.setRetailerRefNumber(transaction.getRetailerRefNumber());
         transactionDto.setAmount(transaction.getAmount());
         //transactionDto.setRetailerNetwork(transaction.getRetailerNetwork());
         transactionDto.setServiceProvider(transaction.getServiceProvider());
