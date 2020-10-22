@@ -41,8 +41,7 @@ public class AppUserDto {
     private String tPin;
     private int loginFailedCount;
     private boolean isGeneratedTpin;
-    private String smsPin;
-    private String emailPin;
+    private String pin;
     private String profilePicture;
 
     private HouseType houseType;
@@ -87,8 +86,7 @@ public class AppUserDto {
         appUser.setTPin(appUserDto.getTPin());
         appUser.setSuspendDateTime(appUserDto.getSuspendDateTime());
         appUser.setUsername(appUserDto.getUsername());
-        appUser.setSmsPin(appUserDto.getSmsPin());
-        appUser.setEmailPin(appUserDto.getEmailPin());
+        appUser.setPin(appUserDto.getPin());
         if(appUserDto.getProfilePicture() != null) {
             appUser.setProfilePicture(appUserDto.getProfilePicture().getBytes());
         }

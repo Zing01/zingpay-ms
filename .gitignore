@@ -80,3 +80,7 @@
 /target/classes/com/zingpay/util/ServiceType.class
 /target/classes/com/zingpay/rabbitmq/RabbitMQConsumer.class
 /target/classes/com/zingpay/util/ChannelType.class
+/target/classes/com/zingpay/dto/SmsDto.class
+/target/classes/com/zingpay/service/SmsService.class
+/target/classes/com/zingpay/sms/SmsSender.class
+/target/classes/com/zingpay/sms/SmsTemplate.class

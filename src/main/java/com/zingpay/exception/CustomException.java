@@ -111,26 +111,20 @@ public class CustomException {
         String message = "Database constraint error";
         String errorMessage = sic.getMessage();
         String actualConstraintViolated = "";
-        if (errorMessage.contains("duplicate")) {
+        if (errorMessage.contains("duplicate") || errorMessage.contains("Duplicate")) {
             /*actualConstraintViolated = errorMessage.split("'")[1];
             if(errorMessage.contains("pin")){
                 message = "PIN already exist";
             }else{
                 message = "Entry with '" + actualConstraintViolated + "' already exist";
             }*/
-            actualConstraintViolated = errorMessage.split("=")[0].split("Key ")[1].split("\\(")[1].split(",")[0];
+            //actualConstraintViolated = errorMessage.split("=")[0].split("Key ")[1].split("\\(")[1].split(",")[0];
+            actualConstraintViolated = errorMessage.split("=")[0].split("key ")[1];
 
-            if (errorMessage.contains("app_group_name_organization_id_uindex")) {
-                message = "Group already exists";
-            } else if (errorMessage.contains("organization_name_uindex")) {
-                message = "Organization already exists";
-            //} else if (errorMessage.contains("app_user_organization_id_email_uindex")) {
-            } else if (errorMessage.contains("organization_official_email_uindex")) {
+            if (errorMessage.contains("app_user.app_user_email_uindex")) {
                 message = "Email already exists";
-            } else if (errorMessage.contains("organization_filter_organization_id_name_uindex")) {
-                message = "Name already exists";
-            } else if (errorMessage.contains("collector_service_pk")){
-                message = "Service name already exists";
+            } else if(errorMessage.contains("app_user.app_user_cell_phone_uindex")) {
+                message = "Cell Phone already exists";
             } else {
                 message = actualConstraintViolated + " already exists";
             }

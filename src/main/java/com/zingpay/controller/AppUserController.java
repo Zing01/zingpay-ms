@@ -95,8 +95,7 @@ public class AppUserController extends BaseController {
                         return response(StatusMessage.USERNAME_NOT_CHANGE);
                     }
                     appUserDto.setTPin(appUser.getTPin());
-                    appUserDto.setEmailPin(appUser.getEmailPin());
-                    appUserDto.setSmsPin(appUser.getSmsPin());
+                    appUserDto.setPin(appUser.getPin());
                     appUser = AppUserDto.convertToEntity(appUserDto);
                     appUserService.update(appUser);
                     return response(StatusMessage.ACCOUNT_SETTING_SUCCESS);

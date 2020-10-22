@@ -1,1 +1,0 @@
-INSERT INTO `user_account_status` VALUES (1, "ACTIVE", "Active state"), (2, "PENDING", "Pending state is used until user activates his account by verifying email or cell phone number"), (3, "SUSPEND", "Suspend state is used when user tries for wrong password"), (4, "INACTIVE", "Inactive state is used when we need to block user");

@@ -64,6 +64,10 @@ public class AppUserService {
         return appUserRepository.findByEmail(email);
     }
 
+    public AppUser getByCellPhone(String cellPhone) {
+        return appUserRepository.findByCellPhone(cellPhone);
+    }
+
     public List<AppUser> getAll() {
         return (List<AppUser>) appUserRepository.findAll();
     }

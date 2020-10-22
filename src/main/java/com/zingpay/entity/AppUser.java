@@ -69,10 +69,8 @@ public class AppUser {
     private int loginFailedCount;
     @Column(name = "is_generated_t_pin")
     private boolean isGeneratedTpin;
-    @Column(name = "sms_pin")
-    private String smsPin;
-    @Column(name = "email_pin")
-    private String emailPin;
+    @Column(name = "pin")
+    private String pin;
     @Column(name = "profile_picture")
     private byte[] profilePicture;
 

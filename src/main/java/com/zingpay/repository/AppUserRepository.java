@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface AppUserRepository extends BaseRepository<AppUser, Integer> {
     AppUser findByEmail(String email);
     AppUser findByAccountId(int accountId);
+    AppUser findByCellPhone(String cellPhone);
 }

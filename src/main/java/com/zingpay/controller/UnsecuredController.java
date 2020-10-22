@@ -4,6 +4,7 @@ import com.zingpay.dto.AppUserDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
 import com.zingpay.service.EmailService;
+import com.zingpay.service.SmsService;
 import com.zingpay.util.*;
 import com.zingpay.validator.AppUserValidator;
 import io.swagger.annotations.Api;
@@ -27,13 +28,16 @@ public class UnsecuredController extends BaseController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private SmsService smsService;
+
+
     @ApiOperation(value = "Signup call, this call takes in UserDto object as request body.", response = Status.class)
     @PostMapping("/signup")
     public Status signup(@RequestBody AppUserDto appUserDto) throws Exception {
         Status status = AppUserValidator.validateOnRegister(appUserDto);
         if(status.getCode() == 1) {
-            appUserDto.setSmsPin(Utils.generateFourDigitPin()+"");
-            appUserDto.setEmailPin(Utils.generateFourDigitPin()+"");
+            appUserDto.setPin(Utils.generateFourDigitPin()+"");
             appUserDto.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
 
             appUserDto.setGroupId(1);
@@ -44,33 +48,22 @@ public class UnsecuredController extends BaseController {
             AppUser appUser = AppUserDto.convertToEntity(appUserDto);
             AppUser savedAppUser = appUserService.save(appUser);
             emailService.sendSignupEmail(savedAppUser);
+            smsService.sendSignupSms(savedAppUser);
             return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
         } else {
             return status;
         }
     }
 
-    @ApiOperation(value = "Activate User through email pin by calling this api. Takes in accountId and email pin as request body", response = Status.class)
-    @PutMapping("/activate-email")
-    public Status activateWithEmailPin(@RequestBody AppUserDto appUserDto) throws Exception {
+    @ApiOperation(value = "Activate User through pin by calling this api. Takes in accountId and pin as request body", response = Status.class)
+    @PutMapping("/activate")
+    public Status activate(@RequestBody AppUserDto appUserDto) throws Exception {
         AppUser appUser = appUserService.getById(appUserDto.getAccountId());
-        if(appUser.getEmailPin().equals(appUserDto.getEmailPin())) {
+        if(appUser.getPin().equals(appUserDto.getPin())) {
             appUser.setAccountStatusId(AccountStatus.ACTIVE.getId());
             appUserService.save(appUser);
             emailService.sendSuccessActivationEmail(appUser);
-            return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
-        } else {
-            return response(StatusMessage.EMAIL_PIN_NOT_VALID);
-        }
-    }
-
-    @ApiOperation(value = "Activate User through sms pin by calling this api. Takes in accountId and sms pin as request body", response = Status.class)
-    @PutMapping("/activate-sms")
-    public Status activateWithSMSPin(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
-        if(appUser.getSmsPin().equals(appUserDto.getSmsPin())) {
-            appUser.setAccountStatusId(AccountStatus.ACTIVE.getId());
-            appUserService.save(appUser);
+            smsService.sendSuccessActivationSms(appUser);
             return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
         } else {
             return response(StatusMessage.EMAIL_PIN_NOT_VALID);
@@ -86,7 +79,7 @@ public class UnsecuredController extends BaseController {
             if(appUser == null) {
                 return response(StatusMessage.EMAIL_NOT_FOUND);
             }
-            appUser.setEmailPin(Utils.generateFourDigitPin()+"");
+            appUser.setPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
             if(isForgetPassword) {
                 emailService.sendForgetPasswordEmail(appUser);
@@ -99,9 +92,31 @@ public class UnsecuredController extends BaseController {
         }
     }
 
+    @ApiOperation(value = "Resend Sms, takes in cell phone as request param", response = Status.class)
+    @GetMapping("/resend-sms")
+    public Status resendSms(@RequestParam(name = "cellPhone", required = true) String cellPhone,
+                              @RequestParam(name = "isForgetPassword", required = true) boolean isForgetPassword) {
+        try {
+            AppUser appUser = appUserService.getByCellPhone(cellPhone);
+            if(appUser == null) {
+                return response(StatusMessage.CELL_PHONE_NOT_FOUND);
+            }
+            appUser.setPin(Utils.generateFourDigitPin()+"");
+            appUserService.save(appUser);
+            if(isForgetPassword) {
+                smsService.sendForgetPasswordSms(appUser);
+            } else {
+                smsService.sendSignupSms(appUser);
+            }
+            return response(StatusMessage.SMS_SENT_SUCCESSFULLY);
+        } catch (Exception e) {
+            return response(StatusMessage.SMS_SENT_FAILED);
+        }
+    }
+
     @ApiOperation(value = "Forget Password, takes in email and cnic as request param", response = Status.class)
-    @GetMapping("/forget-password")
-    public Status forgetPassword(@RequestParam(name = "email", required = true) String email, @RequestParam(name = "cnic", required = true) String cnic) {
+    @GetMapping("/forget-password-email")
+    public Status forgetPasswordEmail(@RequestParam(name = "email", required = true) String email, @RequestParam(name = "cnic", required = true) String cnic) {
         try {
             AppUser appUser = appUserService.getByEmail(email);
             if(appUser == null) {
@@ -110,7 +125,7 @@ public class UnsecuredController extends BaseController {
             if(!appUser.getCnicNumber().equals(cnic)) {
                 return response(StatusMessage.CNIC_NOT_FOUND);
             }
-            appUser.setEmailPin(Utils.generateFourDigitPin()+"");
+            appUser.setPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
             emailService.sendForgetPasswordEmail(appUser);
             return response(StatusMessage.EMAIL_SENT_SUCCESSFULLY, appUser.getAccountId());
@@ -119,12 +134,32 @@ public class UnsecuredController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "Validate Email Pin, takes in accountId and emailPin as request body", response = Status.class)
-    @PutMapping("/validate-email-pin")
-    public Status validateEmailPin(@RequestBody AppUserDto appUserDto) {
+    @ApiOperation(value = "Forget Password, takes in cell phone and cnic as request param", response = Status.class)
+    @GetMapping("/forget-password-cell-phone")
+    public Status forgetPasswordCellPhone(@RequestParam(name = "cellPhone", required = true) String cellPhone, @RequestParam(name = "cnic", required = true) String cnic) {
+        try {
+            AppUser appUser = appUserService.getByCellPhone(cellPhone);
+            if(appUser == null) {
+                return response(StatusMessage.CELL_PHONE_NOT_FOUND);
+            }
+            if(!appUser.getCnicNumber().equals(cnic)) {
+                return response(StatusMessage.CNIC_NOT_FOUND);
+            }
+            appUser.setPin(Utils.generateFourDigitPin()+"");
+            appUserService.save(appUser);
+            smsService.sendForgetPasswordSms(appUser);
+            return response(StatusMessage.SMS_SENT_SUCCESSFULLY, appUser.getAccountId());
+        } catch (Exception e) {
+            return response(StatusMessage.SMS_SENT_FAILED);
+        }
+    }
+
+    @ApiOperation(value = "Validate Pin, takes in accountId and pin as request body", response = Status.class)
+    @PutMapping("/validate")
+    public Status validatePin(@RequestBody AppUserDto appUserDto) {
         try {
             AppUser appUser = appUserService.getById(appUserDto.getAccountId());
-            if(appUser.getEmailPin().equals(appUserDto.getEmailPin())) {
+            if(appUser.getPin().equals(appUserDto.getPin())) {
                 return response(StatusMessage.EMAIL_PIN_VALIDATION_SUCCESS);
             } else {
                 return response(StatusMessage.EMAIL_PIN_NOT_VALID);

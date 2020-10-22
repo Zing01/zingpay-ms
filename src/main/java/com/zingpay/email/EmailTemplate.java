@@ -3,7 +3,6 @@ package com.zingpay.email;
 import com.zingpay.dto.EmailDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.util.Utils;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,13 +10,12 @@ import org.springframework.stereotype.Component;
  * @project ZingPay
  */
 
-@Data
 @Component
 public class EmailTemplate {
 
     public EmailDto createSignupEmail(AppUser appUser) {
         String to = appUser.getEmail();
-        String text = "Hi " + appUser.getFullName() + ",\nYour activation PIN code is:" + appUser.getEmailPin();
+        String text = "Hi " + appUser.getFullName() + ",\nYour activation PIN code is:" + appUser.getPin();
         String subject = "Welcome to Zing Pay";
         //FileSystemResource file;
         EmailDto emailDto = new EmailDto();
@@ -43,7 +41,7 @@ public class EmailTemplate {
 
     public EmailDto createForgetPasswordEmail(AppUser appUser) {
         String to = appUser.getEmail();
-        String text = "Hi " + appUser.getFullName() + ",\nPlease use this code to reset your password: " + appUser.getEmailPin();
+        String text = "Hi " + appUser.getFullName() + ",\nPlease use this code to reset your password: " + appUser.getPin();
         String subject = "Forget Password";
         EmailDto emailDto = new EmailDto();
         emailDto.setTo(to);

@@ -1,1 +1,0 @@
-INSERT INTO user_group(user_group_id, name, type, effective_start_date, effective_end_date, active_ind) VALUES (1, "zingpay", "", "", "", 1);

@@ -25,14 +25,21 @@ create table app_user
     t_pin varchar(255) null,
     login_failed_count int null,
     is_generated_t_pin boolean null,
-    sms_pin varchar(255) null,
-    email_pin varchar(255) null,
+    pin varchar(255) null,
     house_number varchar(255) null,
     transaction_amount long,
     transaction_date long,
     transaction_id varchar(255),
     business_name varchar(255),
     profile_picture blob,
+    house_type_id int null,
+    deposit_type_id int null,
+    bussiness_name varchar(255) null,
+    mobile_location varchar(255) null,
+    cnic_issue_date mediumtext null,
+    cnic_front blob null,
+    cnic_back blob null,
+    other_attachment blob null,
     constraint app_user_pk
         primary key (account_id)
 );
@@ -88,3 +95,94 @@ create table user_group
 create unique index user_group_name_uindex
     on user_group (name);
 
+
+create table channel_type
+(
+    id int auto_increment,
+    value varchar(255) null,
+    description varchar(255) null,
+    constraint channel_type_pk
+        primary key (id)
+);
+
+create table deposit_type
+(
+    id int null,
+    value varchar(255) null,
+    description varchar(255) null
+);
+
+create table service_type
+(
+    id int null,
+    value varchar(255) null,
+    description varchar(255) null
+);
+
+create table transaction_status
+(
+    id int auto_increment,
+    value varchar(255) null,
+    description varchar(255) null,
+    constraint transaction_status_pk
+        primary key (id)
+);
+
+create table transaction_type
+(
+    id int auto_increment,
+    value varchar(255) null,
+    description varchar(255) null,
+    constraint transaction_type_pk
+        primary key (id)
+);
+
+create table transaction
+(
+    transaction_id int auto_increment,
+    account_id int not null,
+    transaction_type_id int null,
+    transaction_status_id int null,
+    zingpay_transaction_type_id int null,
+    amount double default 0.00 not null,
+    retailer_network varchar(20) null,
+    service_provider varchar(15) null,
+    description varchar(1024) null,
+    ref_from varchar(20) null,
+    ref_to varchar(45) null,
+    datetime timestamp not null,
+    service_id int null,
+    retailer_ref_num varchar(255) null,
+    provider_ref_num int null,
+    channel_type_id int null,
+    constraint transaction_pk
+        primary key (transaction_id),
+    constraint transaction_app_user_account_id_fk
+        foreign key (account_id) references app_user (account_id),
+    constraint transaction_transaction_status_id_fk
+        foreign key (transaction_status_id) references transaction_status (id),
+    constraint transaction_transaction_type_id_fk
+        foreign key (transaction_type_id) references transaction_type (id)
+);
+
+create table zingpay_transaction_type
+(
+    zingpay_transaction_type_id int not null,
+    zingpay_tramsaction_type_value varchar(45) null,
+    description varchar(45) null,
+    primary_flg tinyint null,
+    constraint zingpay_transaction_type_pk
+        primary key (zingpay_transaction_type_id)
+);
+
+create table organization_branch
+(
+    branch_id int auto_increment,
+    organization_id int null,
+    branch_name varchar(255) null,
+    description varchar(255) null,
+    is_default boolean default true null,
+    default_retailer_group_id int null,
+    constraint organization_branch_pk
+        primary key (branch_id)
+);

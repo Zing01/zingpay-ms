@@ -18,6 +18,7 @@ public enum StatusMessage {
     ACCOUNT_SETUP_SUCCESS(7,"Account setup Successfully", HttpStatus.OK),
     ACCOUNT_SETTING_SUCCESS(8,"Account settings saved Successfully", HttpStatus.OK),
     ACCOUNT_CREATION_SUCCESS(9,"Your account has been created Successfully", HttpStatus.OK),
+    SMS_SENT_SUCCESSFULLY(10, "Sms Sent Successfully", HttpStatus.OK),
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(50001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),
     CELL_PHONE_NOT_VALID(50002, "Please enter a valid mobile number", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -42,6 +43,8 @@ public enum StatusMessage {
     ADDRESS_IS_REQUIRED(50020,"Address is required", HttpStatus.INTERNAL_SERVER_ERROR),
     HOUSE_NUMBER_IS_REQUIRED(50021,"House Number is required", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_PASSWORD(50022,"Invalid Password", HttpStatus.INTERNAL_SERVER_ERROR),
+    CELL_PHONE_NOT_FOUND(50023, "Please enter a valid cell phone", HttpStatus.INTERNAL_SERVER_ERROR),
+    SMS_SENT_FAILED(50024, "Unable to send sms", HttpStatus.INTERNAL_SERVER_ERROR)
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {
