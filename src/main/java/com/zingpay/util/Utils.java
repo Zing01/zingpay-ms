@@ -108,8 +108,8 @@ public class Utils {
 	      return certs;
 	  }
 	
-	
 	public static String executeURL(String urlString, String urlParameters, String method, String token,String auth) {
+		System.out.println(urlString);
 		StringBuffer response = new StringBuffer();
 		String exceptionMsg= "";
 		String msg[];

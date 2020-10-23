@@ -66,7 +66,7 @@ public class UnsecuredController extends BaseController {
             smsService.sendSuccessActivationSms(appUser);
             return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
         } else {
-            return response(StatusMessage.EMAIL_PIN_NOT_VALID);
+            return response(StatusMessage.PIN_NOT_VALID);
         }
     }
 
@@ -156,16 +156,16 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Validate Pin, takes in accountId and pin as request body", response = Status.class)
     @PutMapping("/validate")
-    public Status validatePin(@RequestBody AppUserDto appUserDto) {
+    public Status validate(@RequestBody AppUserDto appUserDto) {
         try {
             AppUser appUser = appUserService.getById(appUserDto.getAccountId());
             if(appUser.getPin().equals(appUserDto.getPin())) {
-                return response(StatusMessage.EMAIL_PIN_VALIDATION_SUCCESS);
+                return response(StatusMessage.PIN_VALIDATION_SUCCESS);
             } else {
-                return response(StatusMessage.EMAIL_PIN_NOT_VALID);
+                return response(StatusMessage.PIN_NOT_VALID);
             }
         } catch (Exception e) {
-            return response(StatusMessage.EMAIL_PIN_NOT_VALID);
+            return response(StatusMessage.PIN_NOT_VALID);
         }
     }
 

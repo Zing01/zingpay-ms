@@ -27,8 +27,13 @@ public class RabbitMQConsumer {
 
     @RabbitListener(queues = "${queue.name}")
     public void recievedMessage(Message message) {
-        String jsonString = new String(message.getBody(), StandardCharsets.UTF_8);
-        transactionService.processTransaction(jsonString);
+        try {
+            String jsonString = new String(message.getBody(), StandardCharsets.UTF_8);
+            System.out.println("Message Received : ------- " + jsonString);
+            transactionService.processTransaction(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Bean

@@ -84,3 +84,4 @@
 /target/classes/com/zingpay/service/SmsService.class
 /target/classes/com/zingpay/sms/SmsSender.class
 /target/classes/com/zingpay/sms/SmsTemplate.class
+/target/classes/com/zingpay/controller/ELoadServiceController.class

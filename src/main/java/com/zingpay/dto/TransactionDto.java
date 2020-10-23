@@ -39,10 +39,18 @@ public class TransactionDto {
         transaction.setId(transactionDto.getId());
         transaction.setAccountId(transactionDto.getAccountId());
         transaction.setServiceId(transactionDto.getServiceId());
-        transaction.setTransactionStatusId(transactionDto.getTransactionStatus().getId());
-        transaction.setTransactionTypeId(transactionDto.getTransactionType().getId());
-        transaction.setZingpayTransactionTypeId(transactionDto.getZingpayTransactionType().getId());
-        transaction.setChannelTypeId(transactionDto.getChannelType().getId());
+        if(transactionDto.getTransactionStatus() != null) {
+            transaction.setTransactionStatusId(transactionDto.getTransactionStatus().getId());
+        }
+        if(transactionDto.getTransactionType() != null) {
+            transaction.setTransactionTypeId(transactionDto.getTransactionType().getId());
+        }
+        if(transactionDto.getZingpayTransactionType() != null) {
+            transaction.setZingpayTransactionTypeId(transactionDto.getZingpayTransactionType().getId());
+        }
+        if(transactionDto.getChannelType() != null) {
+            transaction.setChannelTypeId(transactionDto.getChannelType().getId());
+        }
         transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber());
         transaction.setAmount(transactionDto.getAmount());
         transaction.setServiceProvider(transactionDto.getServiceProvider());
