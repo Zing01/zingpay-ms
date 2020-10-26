@@ -153,7 +153,9 @@ public class AppUser {
         appUserDto.setUsername(appUser.getUsername());
         //appUserDto.setSmsPin(appUser.getSmsPin());
         //appUserDto.setEmailPin(appUser.getEmailPin());
-        appUserDto.setProfilePicture(new String(appUser.getProfilePicture()));
+        if(appUser.getProfilePicture() != null) {
+            appUserDto.setProfilePicture(new String(appUser.getProfilePicture()));
+        }
 
         if(appUser.getHouseTypeId() == 1) {
             appUserDto.setHouseType(HouseType.RENT);
@@ -173,9 +175,15 @@ public class AppUser {
         appUserDto.setMobileLocation(appUser.getMobileLocation());
         appUserDto.setCnicIssueDate(appUser.getCnicIssueDate());
 
-        appUserDto.setCnicFront(new String(appUser.getCnicFront()));
-        appUserDto.setCnicBack(new String(appUser.getCnicBack()));
-        appUserDto.setOtherAttachment(new String(appUser.getOtherAttachment()));
+        if(appUser.getCnicFront() != null) {
+            appUserDto.setCnicFront(new String(appUser.getCnicFront()));
+        }
+        if(appUser.getCnicBack() != null) {
+            appUserDto.setCnicBack(new String(appUser.getCnicBack()));
+        }
+        if(appUser.getOtherAttachment() != null) {
+            appUserDto.setOtherAttachment(new String(appUser.getOtherAttachment()));
+        }
 
         appUserDto.setTransactionId(appUser.getTransactionId());
         appUserDto.setTransactionDate(appUser.getTransactionDate());

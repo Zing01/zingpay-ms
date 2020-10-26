@@ -107,10 +107,10 @@ public class AppUserController extends BaseController {
         return response(StatusMessage.FAILURE);
     }
 
-    @ApiOperation(value = "Get all app users", response = List.class)
+    @ApiOperation(value = "Get loggedin app user details", response = AppUserDto.class)
     @GetMapping
-    public List<AppUserDto> getAll() {
-        return AppUser.convertToDto(appUserService.getAll());
+    public AppUserDto get() {
+        return AppUser.convertToDto(appUserService.getById(getLoggedInUserAccountId()));
     }
 
     @ApiOperation(value = "Change Password, takes in password, confirm password, old password and accountId as request body", response = Status.class)
