@@ -11,8 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author Bilal Hassan on 11-Sep-2020
  * @project ZingPay
@@ -29,7 +27,7 @@ public class AppUserController extends BaseController {
     @ApiOperation(value = "Account Setup call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setup")
     public Status accountSetup(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = appUserService.getByEmail(getLoggedInUserEmail());
+        AppUser appUser = appUserService.getById(getLoggedInUserAccountId());
         if(appUser != null) {
             Status status = AppUserValidator.validateOnAccountSetup(appUserDto);
             if(status.getCode() == 1) {
@@ -87,7 +85,7 @@ public class AppUserController extends BaseController {
     @ApiOperation(value = "Account Setting call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setting")
     public Status accountSetting(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = appUserService.getByEmail(getLoggedInUserEmail());
+        AppUser appUser = appUserService.getById(getLoggedInUserAccountId());
         if(appUser != null) {
             if(appUserDto.getPassword() != null) {
                 if (appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
@@ -113,12 +111,26 @@ public class AppUserController extends BaseController {
         return AppUser.convertToDto(appUserService.getById(getLoggedInUserAccountId()));
     }
 
-    @ApiOperation(value = "Change Password, takes in password, confirm password, old password and accountId as request body", response = Status.class)
+    @ApiOperation(value = "Change Password, takes in password, confirm password and old password as request body", response = Status.class)
     @PutMapping("/change-password")
     public Status changePassword(@RequestBody AppUserDto appUserDto) {
         try {
+            appUserDto.setAccountId(getLoggedInUserAccountId());
             return appUserService.changePassword(appUserDto);
         } catch (Exception e) {
+            e.printStackTrace();
+            return response(StatusMessage.PASSWORD_RESET_FAILED);
+        }
+    }
+
+    @ApiOperation(value = "Change Password, takes in password, confirm password and tpin as request body", response = Status.class)
+    @PutMapping("/change-password-tpin")
+    public Status changePasswordTPin(@RequestBody AppUserDto appUserDto) {
+        try {
+            appUserDto.setAccountId(getLoggedInUserAccountId());
+            return appUserService.changePasswordTPin(appUserDto);
+        } catch (Exception e) {
+            e.printStackTrace();
             return response(StatusMessage.PASSWORD_RESET_FAILED);
         }
     }

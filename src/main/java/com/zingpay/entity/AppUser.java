@@ -98,6 +98,12 @@ public class AppUser {
     private long transactionAmount;
     @Column(name = "house_number")
     private String houseNumber;
+    @Column(name = "lat")
+    private String lat;
+    @Column(name = "lng")
+    private String lng;
+    @Column(name = "m_pin")
+    private String mPin;
 
     public static AppUserDto convertToDto(AppUser appUser) {
         AppUserDto appUserDto = new AppUserDto();
@@ -189,6 +195,11 @@ public class AppUser {
         appUserDto.setTransactionDate(appUser.getTransactionDate());
         appUserDto.setTransactionAmount(appUser.getTransactionAmount());
         appUserDto.setHouseNumber(appUser.getHouseNumber());
+
+        appUserDto.setLat(appUser.getLat());
+        appUserDto.setLng(appUser.getLng());
+
+        //appUserDto.setMPin(appUser.getMPin());
 
         return appUserDto;
     }

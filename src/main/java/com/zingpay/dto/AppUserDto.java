@@ -57,6 +57,9 @@ public class AppUserDto {
     private long transactionAmount;
     private String houseNumber;
     private String oldPassword;
+    private String lat;
+    private String lng;
+    private String mPin;
 
     public static AppUser convertToEntity(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();
@@ -118,6 +121,11 @@ public class AppUserDto {
         appUser.setTransactionAmount(appUserDto.getTransactionAmount());
         appUser.setTransactionDate(appUserDto.getTransactionDate());
         appUser.setHouseNumber(appUserDto.getHouseNumber());
+
+        appUser.setLat(appUserDto.getLat());
+        appUser.setLng(appUserDto.getLng());
+
+        appUser.setMPin(appUserDto.getMPin());
 
         return appUser;
     }

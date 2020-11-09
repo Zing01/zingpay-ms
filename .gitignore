@@ -85,3 +85,9 @@
 /target/classes/com/zingpay/sms/SmsSender.class
 /target/classes/com/zingpay/sms/SmsTemplate.class
 /target/classes/com/zingpay/controller/ELoadServiceController.class
+/target/classes/dbscripts/data.sql
+/target/classes/dbscripts/oauth2.sql
+/target/classes/dbscripts/schema.sql
+/target/classes/dev/application.properties
+/target/classes/local/application.properties
+/target/classes/com/zingpay/controller/BillPaymentServiceController.class

@@ -31,15 +31,16 @@ create table app_user
     transaction_date long,
     transaction_id varchar(255),
     business_name varchar(255),
-    profile_picture blob,
+    profile_picture longblob,
     house_type_id int null,
     deposit_type_id int null,
     bussiness_name varchar(255) null,
     mobile_location varchar(255) null,
     cnic_issue_date mediumtext null,
-    cnic_front blob null,
-    cnic_back blob null,
-    other_attachment blob null,
+    cnic_front longblob null,
+    cnic_back longblob null,
+    other_attachment longblob null,
+    m_pin varchar(255) null,
     constraint app_user_pk
         primary key (account_id)
 );

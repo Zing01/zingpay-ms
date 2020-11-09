@@ -15,7 +15,7 @@ public class SmsTemplate {
 
     public SmsDto createSignupSms(AppUser appUser) {
         String to = appUser.getCellPhone();
-        String text = "Hi " + appUser.getFullName() + ",\nYour activation PIN code is:" + appUser.getPin();
+        String text = "<#>Hi " + appUser.getFullName() + ",\nYour activation PIN code is:" + appUser.getPin();
         SmsDto smsDto = new SmsDto();
         smsDto.setTo(to);
         smsDto.setText(text);
@@ -24,7 +24,7 @@ public class SmsTemplate {
 
     public SmsDto createSuccessActivationSms(AppUser appUser) {
         String to = appUser.getCellPhone();
-        String text = "Hi " + appUser.getFullName() + ",\nYour account has been successfully activated, please use your T-PIN to login:" + Utils.decodePassword(appUser.getTPin());
+        String text = "<#>Hi " + appUser.getFullName() + ",\nYour account has been successfully activated, please use your T-PIN to login:" + Utils.decodePassword(appUser.getTPin());
         SmsDto smsDto = new SmsDto();
         smsDto.setTo(to);
         smsDto.setText(text);
@@ -33,7 +33,7 @@ public class SmsTemplate {
 
     public SmsDto createForgetPasswordSms(AppUser appUser) {
         String to = appUser.getCellPhone();
-        String text = "Hi " + appUser.getFullName() + ",\nPlease use this code to reset your password: " + appUser.getPin();
+        String text = "<#>Hi " + appUser.getFullName() + ",\nPlease use this code to reset your password: " + appUser.getPin();
         SmsDto smsDto = new SmsDto();
         smsDto.setTo(to);
         smsDto.setText(text);

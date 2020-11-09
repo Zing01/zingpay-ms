@@ -5,6 +5,7 @@ import com.zingpay.entity.AppUser;
 import com.zingpay.repository.AppUserRepository;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
+import com.zingpay.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,6 +77,23 @@ public class AppUserService {
         AppUser appUser = appUserRepository.findByAccountId(appUserDto.getAccountId());
 
         if(passwordEncoder.matches(appUserDto.getOldPassword(), appUser.getPassword())) {
+            if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
+                appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
+                AppUser savedAppUser = appUserRepository.save(appUser);
+                return new Status(StatusMessage.PASSWORD_RESET_SUCCESS, savedAppUser.getAccountId());
+            } else {
+                return new Status(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
+            }
+        } else {
+            return new Status(StatusMessage.INVALID_PASSWORD);
+        }
+    }
+
+    public Status changePasswordTPin(AppUserDto appUserDto) {
+        AppUser appUser = appUserRepository.findByAccountId(appUserDto.getAccountId());
+
+        String decodedTPin = Utils.decodePassword(appUser.getTPin());
+        if(decodedTPin.equals(appUserDto.getTPin())) {
             if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
                 appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
                 AppUser savedAppUser = appUserRepository.save(appUser);

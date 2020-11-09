@@ -19,6 +19,7 @@ public enum StatusMessage {
     ACCOUNT_SETTING_SUCCESS(8,"Account settings saved Successfully", HttpStatus.OK),
     ACCOUNT_CREATION_SUCCESS(9,"Your account has been created Successfully", HttpStatus.OK),
     SMS_SENT_SUCCESSFULLY(10, "Sms Sent Successfully", HttpStatus.OK),
+    USE_EXISTING_TPIN(11, "Please use your existing tpin", HttpStatus.OK),
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(5001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),
     CELL_PHONE_NOT_VALID(5002, "Please enter a valid mobile number", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -47,6 +48,7 @@ public enum StatusMessage {
     SMS_SENT_FAILED(5024, "Unable to send sms", HttpStatus.INTERNAL_SERVER_ERROR),
     ACCOUNT_NOT_ACTIVE(5025, "Account is not active", HttpStatus.INTERNAL_SERVER_ERROR),
     INSUFFICIENT_BALANCE(5026, "Insufficient balance to perform this transaction", HttpStatus.INTERNAL_SERVER_ERROR),
+    USER_ALREADY_EXISTS(5027, "User already exists", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

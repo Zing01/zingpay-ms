@@ -10,6 +10,7 @@ import com.zingpay.validator.AppUserValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,7 +35,7 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Signup call, this call takes in UserDto object as request body.", response = Status.class)
     @PostMapping("/signup")
-    public Status signup(@RequestBody AppUserDto appUserDto) throws Exception {
+    public Status signup(@RequestBody AppUserDto appUserDto) {
         Status status = AppUserValidator.validateOnRegister(appUserDto);
         if(status.getCode() == 1) {
             appUserDto.setPin(Utils.generateFourDigitPin()+"");
@@ -46,9 +47,18 @@ public class UnsecuredController extends BaseController {
             appUserDto.setUsername(appUserDto.getCellPhone());
 
             AppUser appUser = AppUserDto.convertToEntity(appUserDto);
-            AppUser savedAppUser = appUserService.save(appUser);
-            emailService.sendSignupEmail(savedAppUser);
-            smsService.sendSignupSms(savedAppUser);
+            AppUser savedAppUser = null;
+            try {
+                savedAppUser = appUserService.save(appUser);
+                emailService.sendSignupEmail(savedAppUser);
+                smsService.sendSignupSms(savedAppUser);
+            } catch (DataIntegrityViolationException e) {
+                AppUser appUser1 = appUserService.getByCellPhone(appUserDto.getCellPhone());
+                return response(StatusMessage.USER_ALREADY_EXISTS, appUser1.getAccountStatusId()
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
         } else {
             return status;
@@ -125,6 +135,10 @@ public class UnsecuredController extends BaseController {
             if(!appUser.getCnicNumber().equals(cnic)) {
                 return response(StatusMessage.CNIC_NOT_FOUND);
             }
+            if(appUser.getPassword() == null || appUser.getPassword().equals("")) {
+                return response(StatusMessage.USE_EXISTING_TPIN);
+            }
+
             appUser.setPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
             emailService.sendForgetPasswordEmail(appUser);
@@ -145,6 +159,10 @@ public class UnsecuredController extends BaseController {
             if(!appUser.getCnicNumber().equals(cnic)) {
                 return response(StatusMessage.CNIC_NOT_FOUND);
             }
+            if(appUser.getPassword() == null || appUser.getPassword().equals("")) {
+                return response(StatusMessage.USE_EXISTING_TPIN);
+            }
+
             appUser.setPin(Utils.generateFourDigitPin()+"");
             appUserService.save(appUser);
             smsService.sendForgetPasswordSms(appUser);
