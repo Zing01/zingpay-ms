@@ -18,8 +18,7 @@
 /target/classes/com/zingpay/repository/UserRepository.class
 /target/classes/com/zingpay/service/EmailService.class
 /target/classes/com/zingpay/service/UserService.class
-/target/classes/com/zingpay/util/AgentType.class
-/target/classes/com/zingpay/util/HouseType.class
+
 /target/classes/com/zingpay/util/PlaceType.class
 /target/classes/com/zingpay/util/Regex.class
 /target/classes/com/zingpay/util/Status.class
@@ -91,3 +90,4 @@
 /target/classes/dev/application.properties
 /target/classes/local/application.properties
 /target/classes/com/zingpay/controller/BillPaymentServiceController.class
+/target/classes/com/zingpay/util/HouseType.class

@@ -187,3 +187,6 @@ create table organization_branch
     constraint organization_branch_pk
         primary key (branch_id)
 );
+
+create unique index app_user_cnic_number_uindex
+    on app_user (cnic_number);
