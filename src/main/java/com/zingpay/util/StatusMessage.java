@@ -48,7 +48,9 @@ public enum StatusMessage {
     SMS_SENT_FAILED(5024, "Unable to send sms", HttpStatus.INTERNAL_SERVER_ERROR),
     ACCOUNT_NOT_ACTIVE(5025, "Account is not active", HttpStatus.INTERNAL_SERVER_ERROR),
     INSUFFICIENT_BALANCE(5026, "Insufficient balance to perform this transaction", HttpStatus.INTERNAL_SERVER_ERROR),
-    USER_ALREADY_EXISTS(5027, "User already exists", HttpStatus.INTERNAL_SERVER_ERROR),
+    OLD_PASSWORD_CANNOT_BE_USED(5027, "You cannot use old password again", HttpStatus.INTERNAL_SERVER_ERROR),
+    EMAIL_ALREADY_EXISTS(5028, "Email already in use", HttpStatus.INTERNAL_SERVER_ERROR),
+    CNIC_ALREADY_EXISTS(5029, "Cnic already exists", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

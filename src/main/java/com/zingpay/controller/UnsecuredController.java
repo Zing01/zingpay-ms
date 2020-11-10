@@ -11,7 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 
 /**
  * @author Bilal Hassan on 10-Sep-2020
@@ -32,6 +36,8 @@ public class UnsecuredController extends BaseController {
     @Autowired
     private SmsService smsService;
 
+    private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
 
     @ApiOperation(value = "Signup call, this call takes in UserDto object as request body.", response = Status.class)
     @PostMapping("/signup")
@@ -47,19 +53,37 @@ public class UnsecuredController extends BaseController {
             appUserDto.setUsername(appUserDto.getCellPhone());
 
             AppUser appUser = AppUserDto.convertToEntity(appUserDto);
-            AppUser savedAppUser = null;
             try {
-                savedAppUser = appUserService.save(appUser);
+                AppUser savedAppUser = appUserService.save(appUser);
                 emailService.sendSignupEmail(savedAppUser);
                 smsService.sendSignupSms(savedAppUser);
+                return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
             } catch (DataIntegrityViolationException e) {
-                AppUser appUser1 = appUserService.getByCellPhone(appUserDto.getCellPhone());
-                return response(StatusMessage.USER_ALREADY_EXISTS, appUser1.getAccountStatusId()
-                );
+                if(e.getLocalizedMessage().contains("app_user_cell_phone_uindex")) {
+                    AppUser appUser1 = appUserService.getByCellPhone(appUserDto.getCellPhone());
+                    appUser1.setCnicNumber(appUserDto.getCnicNumber());
+                    appUser1.setEmail(appUserDto.getEmail());
+                    appUser1.setFullName(appUserDto.getFullName());
+                    AppUser savedAppUser = appUserService.save(appUser1);
+                    try {
+                        emailService.sendSignupEmail(savedAppUser);
+                        smsService.sendSignupSms(savedAppUser);
+                    } catch (MessagingException ex) {
+                        ex.printStackTrace();
+                    }
+                    return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, appUser1.getAccountStatusId());
+                }
+                if(e.getLocalizedMessage().contains("app_user_email_uindex")) {
+                    return response(StatusMessage.EMAIL_ALREADY_EXISTS);
+                }
+                if(e.getLocalizedMessage().contains("app_user_cnic_number_uindex")) {
+                    return response(StatusMessage.CNIC_ALREADY_EXISTS);
+                }
+                return response(StatusMessage.FAILURE);
             } catch (Exception e) {
                 e.printStackTrace();
+                return response(StatusMessage.FAILURE);
             }
-            return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
         } else {
             return status;
         }
@@ -193,6 +217,9 @@ public class UnsecuredController extends BaseController {
         try {
             if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
                 AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+                if(passwordEncoder.matches(appUserDto.getPassword(), appUser.getPassword())) {
+                    return response(StatusMessage.OLD_PASSWORD_CANNOT_BE_USED);
+                }
                 appUser.setPassword(appUserDto.getPassword());
                 appUserService.save(appUser);
                 return response(StatusMessage.PASSWORD_RESET_SUCCESS);
