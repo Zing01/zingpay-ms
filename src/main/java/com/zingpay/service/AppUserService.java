@@ -77,6 +77,9 @@ public class AppUserService {
         AppUser appUser = appUserRepository.findByAccountId(appUserDto.getAccountId());
 
         if(passwordEncoder.matches(appUserDto.getOldPassword(), appUser.getPassword())) {
+            if(passwordEncoder.matches(appUserDto.getPassword(), appUser.getPassword())) {
+                return new Status(StatusMessage.OLD_PASSWORD_CANNOT_BE_USED);
+            }
             if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
                 appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
                 AppUser savedAppUser = appUserRepository.save(appUser);
