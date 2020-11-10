@@ -59,25 +59,35 @@ public class UnsecuredController extends BaseController {
                 smsService.sendSignupSms(savedAppUser);
                 return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, savedAppUser.getAccountId());
             } catch (DataIntegrityViolationException e) {
-                if(e.getLocalizedMessage().contains("app_user_cell_phone_uindex")) {
-                    AppUser appUser1 = appUserService.getByCellPhone(appUserDto.getCellPhone());
+                AppUser appUser1 = appUserService.getByCellPhone(appUserDto.getCellPhone());
+                if(appUser1 == null) {
+                    if(e.getLocalizedMessage().contains("app_user_email_uindex")) {
+                        return response(StatusMessage.EMAIL_ALREADY_EXISTS);
+                    }
+                    if(e.getLocalizedMessage().contains("app_user_cnic_number_uindex")) {
+                        return response(StatusMessage.CNIC_ALREADY_EXISTS);
+                    }
+                } else /*if(e.getLocalizedMessage().contains("app_user_cell_phone_uindex"))*/ {
                     appUser1.setCnicNumber(appUserDto.getCnicNumber());
                     appUser1.setEmail(appUserDto.getEmail());
                     appUser1.setFullName(appUserDto.getFullName());
-                    AppUser savedAppUser = appUserService.save(appUser1);
                     try {
-                        emailService.sendSignupEmail(savedAppUser);
-                        smsService.sendSignupSms(savedAppUser);
-                    } catch (MessagingException ex) {
-                        ex.printStackTrace();
+                        AppUser savedAppUser = appUserService.update(appUser1);
+                        try {
+                            emailService.sendSignupEmail(savedAppUser);
+                            smsService.sendSignupSms(savedAppUser);
+                        } catch (MessagingException ex) {
+                            ex.printStackTrace();
+                        }
+                    } catch (DataIntegrityViolationException ex) {
+                        if(ex.getLocalizedMessage().contains("app_user_email_uindex")) {
+                            return response(StatusMessage.EMAIL_ALREADY_EXISTS);
+                        }
+                        if(ex.getLocalizedMessage().contains("app_user_cnic_number_uindex")) {
+                            return response(StatusMessage.CNIC_ALREADY_EXISTS);
+                        }
                     }
-                    return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, appUser1.getAccountStatusId());
-                }
-                if(e.getLocalizedMessage().contains("app_user_email_uindex")) {
-                    return response(StatusMessage.EMAIL_ALREADY_EXISTS);
-                }
-                if(e.getLocalizedMessage().contains("app_user_cnic_number_uindex")) {
-                    return response(StatusMessage.CNIC_ALREADY_EXISTS);
+                    return response(StatusMessage.ACCOUNT_CREATION_SUCCESS, appUser1.getAccountId());
                 }
                 return response(StatusMessage.FAILURE);
             } catch (Exception e) {
