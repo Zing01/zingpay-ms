@@ -4,6 +4,9 @@ import com.zingpay.dto.AppUserDto;
 import com.zingpay.util.Regex;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
+import com.zingpay.util.Utils;
+
+import java.util.Date;
 
 /**
  * @author Bilal Hassan on 10/6/2020
@@ -15,6 +18,14 @@ public class AppUserValidator {
     public static Status validateOnRegister(AppUserDto appUserDto) {
         if(appUserDto.getFullName() == null || appUserDto.getFullName().equals("")) {
             return new Status(StatusMessage.FULLNAME_IS_REQUIRED);
+        }
+
+        if(appUserDto.getFullName() != null && appUserDto.getFullName().length() > 40) {
+            return new Status(StatusMessage.FULL_NAME_MAX_LIMIT_EXCEEDS);
+        }
+
+        if(!Regex.validateFullName(appUserDto.getFullName())) {
+            return new Status(StatusMessage.FULL_NAME_CAN_BE_ONLY_ALPHABETS);
         }
 
         if(appUserDto.getCellPhone() == null || appUserDto.getCellPhone().equals("")) {
@@ -58,6 +69,12 @@ public class AppUserValidator {
                 return new Status(StatusMessage.TRANSACTION_ID_IS_REQUIRED);
             }
 
+            String transactionDateString = Utils.getFormattedDate(appUserDto.getTransactionDate());
+            Date transactionDate = Utils.getFormattedDate(transactionDateString);
+            if(transactionDate.after(new Date())) {
+                return new Status(StatusMessage.TRANSACTION_DATE_CANNOT_BE_OF_FUTURE);
+            }
+
             if(appUserDto.getTransactionDate() == 0) {
                 return new Status(StatusMessage.TRANSACTION_DATE_IS_REQUIRED);
             }
@@ -65,6 +82,12 @@ public class AppUserValidator {
             if(appUserDto.getTransactionAmount() == 0) {
                 return new Status(StatusMessage.TRANSACTION_AMOUNT_IS_REQUIRED);
             }
+        }
+
+        String cnicIssueDateString = Utils.getFormattedDate(appUserDto.getCnicIssueDate());
+        Date cnicIssueDate = Utils.getFormattedDate(cnicIssueDateString);
+        if(cnicIssueDate.after(new Date())) {
+            return new Status(StatusMessage.CNIC_ISSUE_DATE_CANNOT_BE_OF_FUTURE);
         }
 
         if(appUserDto.getCnicIssueDate() == 0 ||

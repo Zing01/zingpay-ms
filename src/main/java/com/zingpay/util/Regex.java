@@ -24,4 +24,11 @@ public class Regex {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    public static boolean validateFullName(String fullName) {
+        String patterns = "^[A-Z a-z]+$";
+        Pattern pattern = Pattern.compile(patterns);
+        Matcher matcher = pattern.matcher(fullName);
+        return matcher.matches();
+    }
 }

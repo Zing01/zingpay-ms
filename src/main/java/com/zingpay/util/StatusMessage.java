@@ -51,6 +51,12 @@ public enum StatusMessage {
     OLD_PASSWORD_CANNOT_BE_USED(5027, "You cannot use old password again", HttpStatus.INTERNAL_SERVER_ERROR),
     EMAIL_ALREADY_EXISTS(5028, "Email already in use", HttpStatus.INTERNAL_SERVER_ERROR),
     CNIC_ALREADY_EXISTS(5029, "Cnic already exists", HttpStatus.INTERNAL_SERVER_ERROR),
+    ACCOUNT_ALREADY_EXISTS(5030, "Account already exists", HttpStatus.INTERNAL_SERVER_ERROR),
+    FULL_NAME_MAX_LIMIT_EXCEEDS(5031, "Full name cannot be more than 40 characters", HttpStatus.INTERNAL_SERVER_ERROR),
+    FULL_NAME_CAN_BE_ONLY_ALPHABETS(5032, "Full name can only be alphabets", HttpStatus.INTERNAL_SERVER_ERROR),
+    FULL_NAME_CANNOT_BE_CHANGED(5033, "You cannot change full name", HttpStatus.INTERNAL_SERVER_ERROR),
+    CNIC_ISSUE_DATE_CANNOT_BE_OF_FUTURE(5034, "You cannot enter future date", HttpStatus.INTERNAL_SERVER_ERROR),
+    TRANSACTION_DATE_CANNOT_BE_OF_FUTURE(5035, "You cannot enter future date", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

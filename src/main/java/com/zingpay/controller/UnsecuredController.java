@@ -68,9 +68,14 @@ public class UnsecuredController extends BaseController {
                         return response(StatusMessage.CNIC_ALREADY_EXISTS);
                     }
                 } else /*if(e.getLocalizedMessage().contains("app_user_cell_phone_uindex"))*/ {
+                    if(appUser1.getAccountStatusId() != 4) {
+                        return response(StatusMessage.ACCOUNT_ALREADY_EXISTS);
+                    }
                     appUser1.setCnicNumber(appUserDto.getCnicNumber());
                     appUser1.setEmail(appUserDto.getEmail());
                     appUser1.setFullName(appUserDto.getFullName());
+                    appUser1.setPin(Utils.generateFourDigitPin()+"");
+                    appUser1.setTPin(Utils.encodePassword(Utils.generateFourDigitPin()+""));
                     try {
                         AppUser savedAppUser = appUserService.update(appUser1);
                         try {
