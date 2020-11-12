@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class WalletService {
 
             return calculateBalance(transactionResponseDtos);
         } else {
-            return 0.0;
+            return 0.00;
         }
     }
 
@@ -73,6 +74,8 @@ public class WalletService {
                 totalDebit = totalDebit+amount;
             }
         }
-        return totalCredit-totalDebit;
+        double balance = totalCredit-totalDebit;
+        DecimalFormat df = new DecimalFormat("#.00");
+        return Double.parseDouble(df.format(balance));
     }
 }

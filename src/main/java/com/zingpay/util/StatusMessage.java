@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum StatusMessage {
     FAILURE(0,"FAILURE", HttpStatus.NOT_FOUND),
     SUCCESS(1,"SUCCESS", HttpStatus.OK),
-    ACCOUNT_ACTIVATED_SUCCESS(2,"Account Activated Successfully", HttpStatus.OK),
+    ACCOUNT_CREATED_SUCCESS(2,"Account Created Successfully", HttpStatus.OK),
     TPIN_GENERATED_SUCCESS(3,"TPin generated Successfully", HttpStatus.OK),
     EMAIL_SENT_SUCCESSFULLY(4,"Email sent Successfully", HttpStatus.OK),
     PIN_VALIDATION_SUCCESS(5,"Pin validated Successfully", HttpStatus.OK),
@@ -20,6 +20,7 @@ public enum StatusMessage {
     ACCOUNT_CREATION_SUCCESS(9,"Your account has been created Successfully", HttpStatus.OK),
     SMS_SENT_SUCCESSFULLY(10, "Sms Sent Successfully", HttpStatus.OK),
     USE_EXISTING_TPIN(11, "Please use your existing tpin", HttpStatus.OK),
+    SENT_SUCCESSFULLY(12, "Sent Successfully", HttpStatus.OK),
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(5001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),
     CELL_PHONE_NOT_VALID(5002, "Please enter a valid mobile number", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -57,6 +58,7 @@ public enum StatusMessage {
     FULL_NAME_CANNOT_BE_CHANGED(5033, "You cannot change full name", HttpStatus.INTERNAL_SERVER_ERROR),
     CNIC_ISSUE_DATE_CANNOT_BE_OF_FUTURE(5034, "You cannot enter future date", HttpStatus.INTERNAL_SERVER_ERROR),
     TRANSACTION_DATE_CANNOT_BE_OF_FUTURE(5035, "You cannot enter future date", HttpStatus.INTERNAL_SERVER_ERROR),
+    SENT_FAILED(5036, "Unable to send", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

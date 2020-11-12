@@ -31,8 +31,10 @@ public class AppUserController extends BaseController {
         if(appUser != null) {
             Status status = AppUserValidator.validateOnAccountSetup(appUserDto);
             if(status.getCode() == 1) {
-                if(!appUserDto.getFullName().equals(appUser.getFullName())) {
-                    return response(StatusMessage.FULL_NAME_CANNOT_BE_CHANGED);
+                if(appUserDto.getFullName() != null) {
+                    if (!appUserDto.getFullName().equals(appUser.getFullName())) {
+                        return response(StatusMessage.FULL_NAME_CANNOT_BE_CHANGED);
+                    }
                 }
                 appUser.setBusinessName(appUserDto.getBusinessName());
                 appUser.setMobileLocation(appUserDto.getMobileLocation());
@@ -95,8 +97,10 @@ public class AppUserController extends BaseController {
                     if (!appUserDto.getUsername().equals(appUser.getUsername())) {
                         return response(StatusMessage.USERNAME_NOT_CHANGE);
                     }
-                    if(!appUserDto.getFullName().equals(appUser.getFullName())) {
-                        return response(StatusMessage.FULL_NAME_CANNOT_BE_CHANGED);
+                    if(appUserDto.getFullName() != null) {
+                        if (!appUserDto.getFullName().equals(appUser.getFullName())) {
+                            return response(StatusMessage.FULL_NAME_CANNOT_BE_CHANGED);
+                        }
                     }
                     appUserDto.setTPin(appUser.getTPin());
                     appUserDto.setPin(appUser.getPin());

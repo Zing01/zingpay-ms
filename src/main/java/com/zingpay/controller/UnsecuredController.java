@@ -68,7 +68,7 @@ public class UnsecuredController extends BaseController {
                         return response(StatusMessage.CNIC_ALREADY_EXISTS);
                     }
                 } else /*if(e.getLocalizedMessage().contains("app_user_cell_phone_uindex"))*/ {
-                    if(appUser1.getAccountStatusId() != 4) {
+                    if(appUser1.getAccountStatusId() != 2) {
                         return response(StatusMessage.ACCOUNT_ALREADY_EXISTS);
                     }
                     appUser1.setCnicNumber(appUserDto.getCnicNumber());
@@ -113,7 +113,7 @@ public class UnsecuredController extends BaseController {
             appUserService.save(appUser);
             emailService.sendSuccessActivationEmail(appUser);
             smsService.sendSuccessActivationSms(appUser);
-            return response(StatusMessage.ACCOUNT_ACTIVATED_SUCCESS);
+            return response(StatusMessage.ACCOUNT_CREATED_SUCCESS);
         } else {
             return response(StatusMessage.PIN_NOT_VALID);
         }
@@ -160,6 +160,24 @@ public class UnsecuredController extends BaseController {
             return response(StatusMessage.SMS_SENT_SUCCESSFULLY);
         } catch (Exception e) {
             return response(StatusMessage.SMS_SENT_FAILED);
+        }
+    }
+
+    @ApiOperation(value = "Resend, takes in cell phone as request param", response = Status.class)
+    @GetMapping("/resend")
+    public Status resend(@RequestParam(name = "cellPhone", required = true) String cellPhone) {
+        try {
+            AppUser appUser = appUserService.getByCellPhone(cellPhone);
+            if(appUser == null) {
+                return response(StatusMessage.CELL_PHONE_NOT_FOUND);
+            }
+            appUser.setPin(Utils.generateFourDigitPin()+"");
+            appUserService.save(appUser);
+            smsService.sendSignupSms(appUser);
+            emailService.sendSignupEmail(appUser);
+            return response(StatusMessage.SENT_SUCCESSFULLY);
+        } catch (Exception e) {
+            return response(StatusMessage.SENT_FAILED);
         }
     }
 
