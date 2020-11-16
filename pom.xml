@@ -125,5 +125,21 @@
                 </resources>
             </build>
         </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <spring.profiles.active>staging</spring.profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/staging/</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
     </profiles>
 </project>

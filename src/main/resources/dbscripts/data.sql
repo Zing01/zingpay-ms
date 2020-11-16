@@ -4,7 +4,8 @@ INSERT INTO user_account_type (user_account_type_id, account_type_value, descrip
 INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (2, "RETAILER", "Retailer");
 INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (3, "SUPERSUPERREP", "ZingPay executive user");
 INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (4, "SUPERREP", "Executive User");
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (5, "REP", "Reep user");
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (5, "REP", "Reep User");
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (6, "CONSUMER", "Consumer User");
 
 INSERT INTO authority (id, name, description) VALUES (1, 'USER_READ', 'User Read Authority');
 INSERT INTO authority (id, name, description) VALUES (2, 'USER_WRITE', 'User Write Authority');

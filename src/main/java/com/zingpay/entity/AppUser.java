@@ -129,6 +129,8 @@ public class AppUser {
             appUserDto.setAccountType(AccountType.SUPER_REP);
         } else if(appUser.getAccountTypeId() == 5) {
             appUserDto.setAccountType(AccountType.REP);
+        } else if(appUser.getAccountTypeId() == 6) {
+            appUserDto.setAccountType(AccountType.CONSUMER);
         }
 
         if(appUser.getServiceTypeId() == 1) {

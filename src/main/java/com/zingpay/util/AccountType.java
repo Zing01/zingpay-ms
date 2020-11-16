@@ -10,7 +10,8 @@ public enum AccountType {
     RETAILER(2, "RETAILER", "Retailer"),
     SUPER_SUPER_REP(3, "SUPERSUPERREP", "ZingPay executive user"),
     SUPER_REP(4, "SUPERREP", "Executive User"),
-    REP(5, "REP", "Reep user");
+    REP(5, "REP", "Reep User"),
+    CONSUMER(6, "CONSUMER", "Consumer User");
 
     private AccountType(int id, String name, String description) {
         this.id = id;
