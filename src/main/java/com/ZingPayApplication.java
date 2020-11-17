@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 /**
  * @author Bilal Hassan on 09-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 @SpringBootApplication

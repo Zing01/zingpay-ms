@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author Bilal Hassan on 11-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 @EnableSwagger2

@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 
 /**
  * @author Bilal Hassan on 10-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 @Configuration

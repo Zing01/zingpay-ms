@@ -13,7 +13,7 @@ import java.util.Optional;
 
 /**
  * @author Bilal Hassan on 09-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 public class BaseController {

@@ -3,6 +3,12 @@ package com.zingpay.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Bilal Hassan on 11-Sep-2020
+ * @project zingpay-ms
+ */
+
+
 public class Regex {
     public static boolean validateMobileNumber(String mobileNumber) {
         String patterns = "^((\\+92)|(0092))-{0,1}\\d{3}-{0,1}\\d{7}$|^\\d{11}$|^\\d{4}-\\d{7}$";

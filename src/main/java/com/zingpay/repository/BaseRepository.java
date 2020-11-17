@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * @author Bilal Hassan on 09-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 @NoRepositoryBean

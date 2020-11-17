@@ -5,7 +5,7 @@ import org.springframework.core.io.FileSystemResource;
 
 /**
  * @author Bilal Hassan on 11-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 @Data

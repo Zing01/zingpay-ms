@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Bilal Hassan on 9/18/2020
+ * @project zingpay-ms
+ */
+
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class WebSecurityCorsFilter implements Filter {

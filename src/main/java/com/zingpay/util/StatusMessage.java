@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 /**
  * @author Bilal Hassan on 09-Sep-2020
- * @project ZingPay
+ * @project zingpay-ms
  */
 
 public enum StatusMessage {
