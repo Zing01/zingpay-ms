@@ -53,6 +53,7 @@ public class UnsecuredController extends BaseController {
             appUserDto.setUsername(appUserDto.getCellPhone());
             appUserDto.setCreateDateTime(System.currentTimeMillis());
             appUserDto.setModifiedDateTime(System.currentTimeMillis());
+            appUserDto.setKycStatus(KycStatus.PENDING);
 
             AppUser appUser = AppUserDto.convertToEntity(appUserDto);
             try {
