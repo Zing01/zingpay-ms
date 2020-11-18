@@ -3,6 +3,7 @@ package com.zingpay.controller;
 import com.zingpay.dto.AppUserDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
+import com.zingpay.util.KycStatus;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
 import com.zingpay.validator.AppUserValidator;
@@ -64,6 +65,9 @@ public class AppUserController extends BaseController {
                 if(appUserDto.getHouseType() != null) {
                     appUser.setHouseTypeId(appUserDto.getHouseType().getId());
                 }
+                appUser.setModifiedDateTime(System.currentTimeMillis());
+                appUser.setKycStatusId(KycStatus.SUBMIT.getId());
+                appUser.setKycDescription("");
 
                 AppUser savedAppUser = appUserService.update(appUser);
                 return new Status(StatusMessage.ACCOUNT_SETUP_SUCCESS, savedAppUser.getAccountId());
@@ -105,6 +109,7 @@ public class AppUserController extends BaseController {
                     appUserDto.setTPin(appUser.getTPin());
                     appUserDto.setPin(appUser.getPin());
                     appUser = AppUserDto.convertToEntity(appUserDto);
+                    appUser.setModifiedDateTime(System.currentTimeMillis());
                     appUserService.update(appUser);
                     return response(StatusMessage.ACCOUNT_SETTING_SUCCESS);
                 } else {

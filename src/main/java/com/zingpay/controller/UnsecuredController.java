@@ -51,6 +51,8 @@ public class UnsecuredController extends BaseController {
             appUserDto.setAccountType(AccountType.RETAILER);
             appUserDto.setAccountStatus(AccountStatus.PENDING);
             appUserDto.setUsername(appUserDto.getCellPhone());
+            appUserDto.setCreateDateTime(System.currentTimeMillis());
+            appUserDto.setModifiedDateTime(System.currentTimeMillis());
 
             AppUser appUser = AppUserDto.convertToEntity(appUserDto);
             try {

@@ -190,3 +190,9 @@ create table organization_branch
 
 create unique index app_user_cnic_number_uindex
     on app_user (cnic_number);
+
+alter table app_user
+    add kyc_status_id int null;
+
+alter table app_user
+    add kyc_description varchar(255) null;

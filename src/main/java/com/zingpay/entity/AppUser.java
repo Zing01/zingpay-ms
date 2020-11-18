@@ -104,6 +104,10 @@ public class AppUser {
     private String lng;
     @Column(name = "m_pin")
     private String mPin;
+    @Column(name = "kyc_status_id")
+    private int kycStatusId;
+    @Column(name = "kyc_description")
+    private String kycDescription;
 
     public static AppUserDto convertToDto(AppUser appUser) {
         AppUserDto appUserDto = new AppUserDto();
@@ -202,6 +206,18 @@ public class AppUser {
         appUserDto.setLng(appUser.getLng());
 
         //appUserDto.setMPin(appUser.getMPin());
+
+        if(appUser.getKycStatusId() == 1) {
+            appUserDto.setKycStatus(KycStatus.PENDING);
+        } else if(appUser.getKycStatusId() == 2) {
+            appUserDto.setKycStatus(KycStatus.SUBMIT);
+        } else if(appUser.getKycStatusId() == 3){
+            appUserDto.setKycStatus(KycStatus.APPROVE);
+        } else if(appUser.getKycStatusId() == 4){
+            appUserDto.setKycStatus(KycStatus.REJECT);
+        }
+
+        appUserDto.setKycDescription(appUser.getKycDescription());
 
         return appUserDto;
     }

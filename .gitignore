@@ -92,3 +92,4 @@
 /target/classes/com/zingpay/controller/BillPaymentServiceController.class
 /target/classes/com/zingpay/util/HouseType.class
 /target/classes/com/zingpay/controller/BackOfficeServiceController.class
+/target/classes/com/zingpay/util/KycStatus.class

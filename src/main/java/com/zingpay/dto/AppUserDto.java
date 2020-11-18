@@ -60,6 +60,8 @@ public class AppUserDto {
     private String lat;
     private String lng;
     private String mPin;
+    private KycStatus kycStatus;
+    private String kycDescription;
 
     public static AppUser convertToEntity(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();
@@ -126,6 +128,11 @@ public class AppUserDto {
         appUser.setLng(appUserDto.getLng());
 
         appUser.setMPin(appUserDto.getMPin());
+
+        if(appUserDto.getKycStatus() != null) {
+            appUser.setKycStatusId(appUserDto.getKycStatus().getId());
+        }
+        appUser.setKycDescription(appUserDto.getKycDescription());
 
         return appUser;
     }

@@ -82,6 +82,7 @@ public class AppUserService {
             }
             if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
                 appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
+                appUser.setModifiedDateTime(System.currentTimeMillis());
                 AppUser savedAppUser = appUserRepository.save(appUser);
                 return new Status(StatusMessage.PASSWORD_RESET_SUCCESS, savedAppUser.getAccountId());
             } else {
@@ -99,6 +100,7 @@ public class AppUserService {
         if(decodedTPin.equals(appUserDto.getTPin())) {
             if(appUserDto.getPassword().equals(appUserDto.getConfirmPassword())) {
                 appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
+                appUser.setModifiedDateTime(System.currentTimeMillis());
                 AppUser savedAppUser = appUserRepository.save(appUser);
                 return new Status(StatusMessage.PASSWORD_RESET_SUCCESS, savedAppUser.getAccountId());
             } else {
