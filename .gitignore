@@ -93,3 +93,8 @@
 /target/classes/com/zingpay/util/HouseType.class
 /target/classes/com/zingpay/controller/BackOfficeServiceController.class
 /target/classes/com/zingpay/util/KycStatus.class
+/target/classes/com/zingpay/config/FeignClientConfiguration.class
+/target/classes/com/zingpay/dto/LoginResponse.class
+/target/classes/com/zingpay/dto/ZongLoadDto.class
+/target/classes/com/zingpay/feign/ZongIntegrationClient.class
+/target/classes/com/zingpay/token/TokenGenerator.class

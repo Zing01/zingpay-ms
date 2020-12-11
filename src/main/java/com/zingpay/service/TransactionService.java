@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Bilal Hassan on 10/2/2020
@@ -74,8 +75,7 @@ public class TransactionService {
         return TransactionSummaryDto.convertToDto(transactionDtos);
     }
 
-    public void processTransaction(String jsonString) {
-        TransactionDto transactionDto = convertJSONStringToDto(jsonString);
+    public void processTransaction(TransactionDto transactionDto) {
         Transaction transaction = TransactionDto.convertToEntity(transactionDto);
         transactionRepository.save(transaction);
     }
@@ -91,13 +91,25 @@ public class TransactionService {
 
         transactionDto.setTransactionStatus(TransactionStatus.PENDING);
         transactionDto.setTransactionType(TransactionType.DEBIT);
-        if(transactionDto.getRetailerRefNumber().equalsIgnoreCase("Mobile")) {
+        if(transactionDto.getRetailerRefNumber().contains("MOBILE")) {
             transactionDto.setChannelType(ChannelType.MOBILE);
-        } else if(transactionDto.getRetailerRefNumber().equalsIgnoreCase("Web")) {
+        } else if(transactionDto.getRetailerRefNumber().contains("WEB")) {
             transactionDto.setChannelType(ChannelType.WEB);
         }
         transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
-        transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"_"+Utils.generateTenDigitsNumber());
+        transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"-"+Utils.generateTenDigitsNumber());
         return transactionDto;
+    }
+
+    public Transaction getById(long id) {
+        Optional<Transaction> transactionOptional = transactionRepository.findById(id);
+        if(transactionOptional.isPresent()) {
+            return transactionOptional.get();
+        }
+        return null;
+    }
+
+    public void save(Transaction transaction) {
+        transactionRepository.save(transaction);
     }
 }

@@ -1,6 +1,15 @@
 package com.zingpay.rabbitmq;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zingpay.dto.TransactionDto;
+import com.zingpay.dto.ZongLoadDto;
+import com.zingpay.dto.ZongLoadResponseDto;
+import com.zingpay.entity.Transaction;
+import com.zingpay.feign.ZongIntegrationClient;
 import com.zingpay.service.TransactionService;
+import com.zingpay.token.TokenGenerator;
+import com.zingpay.util.TransactionStatus;
+import feign.FeignException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,6 +31,12 @@ public class RabbitMQConsumer {
     @Autowired
     private TransactionService transactionService;
 
+    @Autowired
+    private ZongIntegrationClient zongIntegrationClient;
+
+    @Autowired
+    private TokenGenerator tokenGenerator;
+
     @Value("${queue.name}")
     private String queueName;
 
@@ -30,7 +45,34 @@ public class RabbitMQConsumer {
         try {
             String jsonString = new String(message.getBody(), StandardCharsets.UTF_8);
             System.out.println("Message Received : ------- " + jsonString);
-            transactionService.processTransaction(jsonString);
+            TransactionDto transactionDto = transactionService.convertJSONStringToDto(jsonString);
+            transactionService.processTransaction(transactionDto);
+
+            ZongLoadDto zongLoadDto = ZongLoadDto.convertTransactionToDto(transactionDto);
+            ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
+            try {
+                if(TokenGenerator.token == null) {
+                    try {
+                        zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
+                    } catch (JsonProcessingException ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    zongLoadResponseDto = zongIntegrationClient.zongLoad(TokenGenerator.token, zongLoadDto);
+                }
+            } catch (FeignException.Unauthorized e) {
+                try {
+                    zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if(zongLoadResponseDto.getBossId() != null || !zongLoadResponseDto.getBossId().equals("")) {
+                Transaction transaction = transactionService.getById(transactionDto.getId());
+                transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                transactionService.save(transaction);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

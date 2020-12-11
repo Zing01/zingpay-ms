@@ -1,7 +1,9 @@
 package com.zingpay.controller;
 
 import com.zingpay.service.WalletService;
+import com.zingpay.util.Status;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ public class BackOfficeServiceController extends BaseController {
     @Autowired
     private WalletService walletService;
 
+    @ApiOperation(value = "Get current balance by account id.", response = Double.class)
     @GetMapping("/get-current-balance/{account-id}")
     public double getCurrentBalance(@PathVariable(value = "account-id") int accountId) {
         return walletService.getCurrentBalance(accountId);

@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.zingpay.feign")
+@EnableFeignClients//(basePackages = "com.zingpay.feign")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableResourceServer
 public class ZingPayApplication {

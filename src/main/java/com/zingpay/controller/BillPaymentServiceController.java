@@ -6,6 +6,7 @@ import com.zingpay.service.WalletService;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class BillPaymentServiceController {
     @Autowired
     private WalletService walletService;
 
+    @ApiOperation(value = "Validate user on bill payment by account id and amount.", response = Status.class)
     @GetMapping("/user/{accountId}/amount/{amount}")
     public Status validateUserOnBillPayment(@RequestHeader("Authorization") String token,
                                       @PathVariable("accountId") int accountId,
