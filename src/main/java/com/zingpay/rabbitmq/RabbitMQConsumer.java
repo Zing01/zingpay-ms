@@ -73,6 +73,10 @@ public class RabbitMQConsumer {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
+                } else {
+                    Transaction transaction = transactionService.getById(transactionDto.getId());
+                    transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                    transactionService.save(transaction);
                 }
             }
         } catch (Exception e) {
