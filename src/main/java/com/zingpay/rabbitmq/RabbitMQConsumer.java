@@ -48,30 +48,32 @@ public class RabbitMQConsumer {
             TransactionDto transactionDto = transactionService.convertJSONStringToDto(jsonString);
             transactionService.processTransaction(transactionDto);
 
-            ZongLoadDto zongLoadDto = ZongLoadDto.convertTransactionToDto(transactionDto);
-            ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
-            try {
-                if(TokenGenerator.token == null) {
+            if(transactionDto.getServiceProvider().equals("ZONG")) {
+                ZongLoadDto zongLoadDto = ZongLoadDto.convertTransactionToDto(transactionDto);
+                ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
+                try {
+                    if (TokenGenerator.token == null) {
+                        try {
+                            zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
+                        } catch (JsonProcessingException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        zongLoadResponseDto = zongIntegrationClient.zongLoad(TokenGenerator.token, zongLoadDto);
+                    }
+                } catch (FeignException.Unauthorized e) {
                     try {
                         zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
                     } catch (JsonProcessingException ex) {
                         ex.printStackTrace();
                     }
-                } else {
-                    zongLoadResponseDto = zongIntegrationClient.zongLoad(TokenGenerator.token, zongLoadDto);
                 }
-            } catch (FeignException.Unauthorized e) {
-                try {
-                    zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
-                } catch (JsonProcessingException ex) {
-                    ex.printStackTrace();
-                }
-            }
 
-            if(zongLoadResponseDto.getBossId() != null || !zongLoadResponseDto.getBossId().equals("")) {
-                Transaction transaction = transactionService.getById(transactionDto.getId());
-                transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                transactionService.save(transaction);
+                if (zongLoadResponseDto.getBossId() != null || !zongLoadResponseDto.getBossId().equals("")) {
+                    Transaction transaction = transactionService.getById(transactionDto.getId());
+                    transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                    transactionService.save(transaction);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
