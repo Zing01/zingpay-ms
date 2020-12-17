@@ -23,7 +23,7 @@ public class ZongLoadDto {
     public static ZongLoadDto convertTransactionToDto(TransactionDto transactionDto) {
         ZongLoadDto zongLoadDto = new ZongLoadDto();
         zongLoadDto.setChannelNum("3158540054");
-        zongLoadDto.setChannelPassword("qX3qgeyVnZw=");
+        zongLoadDto.setChannelPassword("aoEt3U+pzUk=");
         zongLoadDto.setUserNum(transactionDto.getRefTo());
         zongLoadDto.setAmount(transactionDto.getAmount().longValue());
         zongLoadDto.setRequestDate(transactionDto.getDateTime());

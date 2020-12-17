@@ -98,3 +98,8 @@
 /target/classes/com/zingpay/dto/ZongLoadDto.class
 /target/classes/com/zingpay/feign/ZongIntegrationClient.class
 /target/classes/com/zingpay/token/TokenGenerator.class
+/target/classes/com/zingpay/dto/ZongLoadResponseDto.class
+/target/classes/com/zingpay/service/ZongLoadService.class
+/target/classes/com/zingpay/dto/TelenorLoadDto.class
+/target/classes/com/zingpay/dto/TelenorLoadResponseDto.class
+/target/classes/com/zingpay/feign/TelenorIntegrationClient.class

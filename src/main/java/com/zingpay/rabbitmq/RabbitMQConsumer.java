@@ -1,10 +1,9 @@
 package com.zingpay.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.zingpay.dto.TransactionDto;
-import com.zingpay.dto.ZongLoadDto;
-import com.zingpay.dto.ZongLoadResponseDto;
+import com.zingpay.dto.*;
 import com.zingpay.entity.Transaction;
+import com.zingpay.feign.TelenorIntegrationClient;
 import com.zingpay.feign.ZongIntegrationClient;
 import com.zingpay.service.TransactionService;
 import com.zingpay.token.TokenGenerator;
@@ -33,6 +32,9 @@ public class RabbitMQConsumer {
 
     @Autowired
     private ZongIntegrationClient zongIntegrationClient;
+
+    @Autowired
+    private TelenorIntegrationClient telenorIntegrationClient;
 
     @Autowired
     private TokenGenerator tokenGenerator;
@@ -77,6 +79,39 @@ public class RabbitMQConsumer {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     transactionService.save(transaction);
+                }
+            } else if(transactionDto.getServiceProvider().equals("TELENOR")) {
+                TelenorLoadDto telenorLoadDto = TelenorLoadDto.convertTransactionToDto(transactionDto);
+                TelenorLoadResponseDto telenorLoadResponseDto = new TelenorLoadResponseDto();
+
+                try {
+                    if (TokenGenerator.token == null) {
+                        try {
+                            telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
+                        } catch (JsonProcessingException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(TokenGenerator.token, telenorLoadDto);
+                    }
+                } catch (FeignException.Unauthorized e) {
+                    try {
+                        telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
+                    } catch (JsonProcessingException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                if(telenorLoadResponseDto != null) {
+                    if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
+                        Transaction transaction = transactionService.getById(transactionDto.getId());
+                        transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                        transactionService.save(transaction);
+                    } else {
+                        Transaction transaction = transactionService.getById(transactionDto.getId());
+                        transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                        transactionService.save(transaction);
+                    }
                 }
             }
         } catch (Exception e) {
