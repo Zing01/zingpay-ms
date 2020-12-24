@@ -96,8 +96,13 @@ public class TransactionService {
         } else if(transactionDto.getRetailerRefNumber().contains("WEB")) {
             transactionDto.setChannelType(ChannelType.WEB);
         }
-        transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
-        transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"-"+Utils.generateTenDigitsNumber());
+        if(transactionDto.getServiceProvider().equals("NADRA")) {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BILL_PAYMENT);
+        } else {
+            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
+            transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"-"+Utils.generateTenDigitsNumber());
+        }
+
         return transactionDto;
     }
 

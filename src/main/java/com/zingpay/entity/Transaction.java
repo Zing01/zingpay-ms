@@ -70,6 +70,9 @@ public class Transaction {
     @Column(name = "datetime")
     private Date dateTime;
 
+    @Column(name = "billing_month")
+    private String billingMonth;
+
     public static TransactionDto convertToDto(Transaction transaction) {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setId(transaction.getId());
@@ -122,6 +125,7 @@ public class Transaction {
         transactionDto.setRefFrom(transaction.getRefFrom());
         transactionDto.setRefTo(transaction.getRefTo());
         transactionDto.setDateTime(transaction.getDateTime());
+        transactionDto.setBillingMonth(transaction.getBillingMonth());
 
         return transactionDto;
     }

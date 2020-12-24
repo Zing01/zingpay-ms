@@ -99,7 +99,7 @@ create unique index user_group_name_uindex
 
 create table channel_type
 (
-    id int auto_increment,
+    id int auto_increment not null,
     value varchar(255) null,
     description varchar(255) null,
     constraint channel_type_pk
@@ -108,16 +108,20 @@ create table channel_type
 
 create table deposit_type
 (
-    id int null,
+    id int auto_increment not null,
     value varchar(255) null,
-    description varchar(255) null
+    description varchar(255) null,
+    constraint deposit_type_pk
+        primary key (id)
 );
 
 create table service_type
 (
-    id int null,
+    id int auto_increment not null,
     value varchar(255) null,
-    description varchar(255) null
+    description varchar(255) null,
+    constraint service_type_pk
+        primary key (id)
 );
 
 create table transaction_status
@@ -156,6 +160,7 @@ create table transaction
     retailer_ref_num varchar(255) null,
     provider_ref_num int null,
     channel_type_id int null,
+    billing_month varchar(255) null,
     constraint transaction_pk
         primary key (transaction_id),
     constraint transaction_app_user_account_id_fk

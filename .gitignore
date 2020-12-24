@@ -103,3 +103,8 @@
 /target/classes/com/zingpay/dto/TelenorLoadDto.class
 /target/classes/com/zingpay/dto/TelenorLoadResponseDto.class
 /target/classes/com/zingpay/feign/TelenorIntegrationClient.class
+/target/classes/com/zingpay/dto/BillPaymentDto.class
+/target/classes/com/zingpay/dto/BillPaymentResponseDto.class
+/target/classes/com/zingpay/feign/BillPaymentIntegrationClient.class
+/target/classes/dbscripts/ambreen.sql
+/target/classes/staging/application.properties

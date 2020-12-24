@@ -3,6 +3,7 @@ package com.zingpay.rabbitmq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.*;
 import com.zingpay.entity.Transaction;
+import com.zingpay.feign.BillPaymentIntegrationClient;
 import com.zingpay.feign.TelenorIntegrationClient;
 import com.zingpay.feign.ZongIntegrationClient;
 import com.zingpay.service.TransactionService;
@@ -37,6 +38,9 @@ public class RabbitMQConsumer {
     private TelenorIntegrationClient telenorIntegrationClient;
 
     @Autowired
+    private BillPaymentIntegrationClient billPaymentIntegrationClient;
+
+    @Autowired
     private TokenGenerator tokenGenerator;
 
     @Value("${queue.name}")
@@ -51,71 +55,115 @@ public class RabbitMQConsumer {
             transactionService.processTransaction(transactionDto);
 
             if(transactionDto.getServiceProvider().equals("ZONG")) {
-                ZongLoadDto zongLoadDto = ZongLoadDto.convertTransactionToDto(transactionDto);
-                ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
-                try {
-                    if (TokenGenerator.token == null) {
-                        try {
-                            zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
-                        } catch (JsonProcessingException ex) {
-                            ex.printStackTrace();
-                        }
-                    } else {
-                        zongLoadResponseDto = zongIntegrationClient.zongLoad(TokenGenerator.token, zongLoadDto);
-                    }
-                } catch (FeignException.Unauthorized e) {
-                    try {
-                        zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
-                    } catch (JsonProcessingException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                if (zongLoadResponseDto.getBossId() != null || !zongLoadResponseDto.getBossId().equals("")) {
-                    Transaction transaction = transactionService.getById(transactionDto.getId());
-                    transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                    transactionService.save(transaction);
-                } else {
-                    Transaction transaction = transactionService.getById(transactionDto.getId());
-                    transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
-                    transactionService.save(transaction);
-                }
+                performZongLoad(transactionDto);
             } else if(transactionDto.getServiceProvider().equals("TELENOR")) {
-                TelenorLoadDto telenorLoadDto = TelenorLoadDto.convertTransactionToDto(transactionDto);
-                TelenorLoadResponseDto telenorLoadResponseDto = new TelenorLoadResponseDto();
-
-                try {
-                    if (TokenGenerator.token == null) {
-                        try {
-                            telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
-                        } catch (JsonProcessingException ex) {
-                            ex.printStackTrace();
-                        }
-                    } else {
-                        telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(TokenGenerator.token, telenorLoadDto);
-                    }
-                } catch (FeignException.Unauthorized e) {
-                    try {
-                        telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
-                    } catch (JsonProcessingException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                if(telenorLoadResponseDto != null) {
-                    if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
-                        Transaction transaction = transactionService.getById(transactionDto.getId());
-                        transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                        transactionService.save(transaction);
-                    } else {
-                        Transaction transaction = transactionService.getById(transactionDto.getId());
-                        transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
-                        transactionService.save(transaction);
-                    }
-                }
+                performTelenorLoad(transactionDto);
+            } else if(transactionDto.getServiceProvider().equals("NADRA")) {
+                performNadraBillPayment(transactionDto);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void performZongLoad(TransactionDto transactionDto) {
+        ZongLoadDto zongLoadDto = ZongLoadDto.convertTransactionToDto(transactionDto);
+        ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
+        try {
+            if (TokenGenerator.token == null) {
+                try {
+                    zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                zongLoadResponseDto = zongIntegrationClient.zongLoad(TokenGenerator.token, zongLoadDto);
+            }
+        } catch (FeignException.Unauthorized e) {
+            try {
+                zongLoadResponseDto = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if (zongLoadResponseDto.getBossId() != null || !zongLoadResponseDto.getBossId().equals("")) {
+            Transaction transaction = transactionService.getById(transactionDto.getId());
+            transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+            transactionService.save(transaction);
+        } else {
+            Transaction transaction = transactionService.getById(transactionDto.getId());
+            transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+            transactionService.save(transaction);
+        }
+    }
+
+    private void performTelenorLoad(TransactionDto transactionDto) {
+        TelenorLoadDto telenorLoadDto = TelenorLoadDto.convertTransactionToDto(transactionDto);
+        TelenorLoadResponseDto telenorLoadResponseDto = new TelenorLoadResponseDto();
+
+        try {
+            if (TokenGenerator.token == null) {
+                try {
+                    telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(TokenGenerator.token, telenorLoadDto);
+            }
+        } catch (FeignException.Unauthorized e) {
+            try {
+                telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if(telenorLoadResponseDto != null) {
+            if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
+                Transaction transaction = transactionService.getById(transactionDto.getId());
+                transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                transactionService.save(transaction);
+            } else {
+                Transaction transaction = transactionService.getById(transactionDto.getId());
+                transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                transactionService.save(transaction);
+            }
+        }
+    }
+
+    private void performNadraBillPayment(TransactionDto transactionDto) {
+        BillPaymentDto billPaymentDto = BillPaymentDto.convertTransactionToDto(transactionDto);
+        BillPaymentResponseDto billPaymentResponseDto = new BillPaymentResponseDto();
+        try {
+            if (TokenGenerator.token == null) {
+                try {
+                    billPaymentResponseDto = billPaymentIntegrationClient.billPayment(tokenGenerator.getTokenFromAuthService(), billPaymentDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                billPaymentResponseDto = billPaymentIntegrationClient.billPayment(TokenGenerator.token, billPaymentDto);
+            }
+        } catch (FeignException.Unauthorized e) {
+            try {
+                billPaymentResponseDto = billPaymentIntegrationClient.billPayment(tokenGenerator.getTokenFromAuthService(), billPaymentDto);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if(billPaymentResponseDto != null) {
+            if(billPaymentResponseDto.getStatus().equals("ok")) {
+                Transaction transaction = transactionService.getById(transactionDto.getId());
+                transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                transactionService.save(transaction);
+            } else {
+                Transaction transaction = transactionService.getById(transactionDto.getId());
+                transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                transactionService.save(transaction);
+            }
         }
     }
 

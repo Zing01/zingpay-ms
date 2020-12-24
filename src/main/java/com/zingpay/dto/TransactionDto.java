@@ -33,6 +33,7 @@ public class TransactionDto {
     private Date dateTime;
     private Double transactionTotal;
     private long transactionCount;
+    private String billingMonth;
 
     public static Transaction convertToEntity(TransactionDto transactionDto) {
         Transaction transaction = new Transaction();
@@ -58,6 +59,7 @@ public class TransactionDto {
         transaction.setRefFrom(transactionDto.getRefFrom());
         transaction.setRefTo(transactionDto.getRefTo());
         transaction.setDateTime(transactionDto.getDateTime());
+        transaction.setBillingMonth(transactionDto.getBillingMonth());
 
         return transaction;
     }
