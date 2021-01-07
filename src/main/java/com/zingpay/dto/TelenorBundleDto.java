@@ -26,7 +26,7 @@ public class TelenorBundleDto {
         telenorBundleDto.setAmount(transactionDto.getAmount()+"");
         telenorBundleDto.setRechargePartyMsisdn(transactionDto.getRefTo());
         telenorBundleDto.setRetailerMsisdn(transactionDto.getRefFrom());
-        telenorBundleDto.setPartnerId("");
+        telenorBundleDto.setPartnerId(transactionDto.getBundleId());
         return telenorBundleDto;
     }
 }

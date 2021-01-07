@@ -212,12 +212,12 @@ public class RabbitMQConsumer {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+                Transaction transaction = transactionService.getById(savedTransaction.getId());
+                transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
                 if (telenorBundleResponseDto.getMessage().contains("Success")) {
-                    Transaction transaction = transactionService.getById(savedTransaction.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
                 } else {
-                    Transaction transaction = transactionService.getById(savedTransaction.getId());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     transactionService.save(transaction);
                 }
