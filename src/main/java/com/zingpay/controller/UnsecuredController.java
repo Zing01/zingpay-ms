@@ -116,7 +116,7 @@ public class UnsecuredController extends BaseController {
             appUserService.save(appUser);
             emailService.sendSuccessActivationEmail(appUser);
             smsService.sendSuccessActivationSms(appUser);
-            return response(StatusMessage.ACCOUNT_CREATED_SUCCESS);
+            return response(StatusMessage.ACCOUNT_CREATED_SUCCESS, appUser.getAccountId());
         } else {
             return response(StatusMessage.PIN_NOT_VALID);
         }
@@ -263,6 +263,17 @@ public class UnsecuredController extends BaseController {
                 return response(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
             }
         } catch (Exception e) {
+            return response(StatusMessage.PASSWORD_RESET_FAILED);
+        }
+    }
+
+    @ApiOperation(value = "Create Password, takes in password, confirm password and accountId as request body", response = Status.class)
+    @PutMapping("/create-password")
+    public Status createPassword(@RequestBody AppUserDto appUserDto) {
+        try {
+            return appUserService.setNewPassword(appUserDto);
+        } catch (Exception e) {
+            e.printStackTrace();
             return response(StatusMessage.PASSWORD_RESET_FAILED);
         }
     }

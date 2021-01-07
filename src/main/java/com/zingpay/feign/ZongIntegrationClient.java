@@ -1,9 +1,11 @@
 package com.zingpay.feign;
 
+import com.zingpay.dto.ZongBundleDto;
 import com.zingpay.dto.ZongLoadDto;
-import com.zingpay.dto.ZongLoadResponseDto;
+import com.zingpay.util.Status;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -16,5 +18,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface ZongIntegrationClient {
 
     @PostMapping("/load")
-    ZongLoadResponseDto zongLoad(@RequestHeader(name = "Authorization") String token, @RequestBody ZongLoadDto zongLoadDto);
+    Status zongLoad(@RequestHeader(name = "Authorization") String token, @RequestBody ZongLoadDto zongLoadDto);
+
+    @PutMapping("/bundles")
+    Status subscribeBundle(@RequestHeader(name = "Authorization") String token, @RequestBody ZongBundleDto zongBundleDto);
 }

@@ -34,6 +34,9 @@ public class TransactionDto {
     private Double transactionTotal;
     private long transactionCount;
     private String billingMonth;
+    private String bundleId;
+
+    private boolean success;
 
     public static Transaction convertToEntity(TransactionDto transactionDto) {
         Transaction transaction = new Transaction();

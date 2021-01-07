@@ -22,7 +22,8 @@ public class BillPaymentDto {
         billPaymentDto.setAmount(transactionDto.getAmount()+"");
         billPaymentDto.setConsumerNumber(transactionDto.getRetailerRefNumber());
         billPaymentDto.setShortName(transactionDto.getRetailerRefNumber().split("-")[0]);
-        billPaymentDto.setTransactionId(transactionDto.getId()+"");
+        //billPaymentDto.setTransactionId(transactionDto.getId()+"");
+        billPaymentDto.setTransactionId(transactionDto.getRetailerRefNumber().split("-")[1]);
         billPaymentDto.setBillingMonth(transactionDto.getBillingMonth());
         return billPaymentDto;
     }

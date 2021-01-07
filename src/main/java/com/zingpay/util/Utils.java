@@ -530,6 +530,10 @@ public class Utils {
 	public static <T> T parseToObject(String jsonString, Class<T> type) throws JsonProcessingException {
 		return json.readValue(jsonString, type);
 	}
+
+	public static String parseObjectToJson(Object obj) throws JsonProcessingException {
+		return json.writeValueAsString(obj);
+	}
 }
 
 

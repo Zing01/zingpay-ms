@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/billpayment/service")
-@Api(value = "billpayment", description = "Controller for billpayment microservice")
-public class BillPaymentServiceController {
+@RequestMapping("/validate/service")
+@Api(value = "validateuser", description = "Controller for validate user")
+public class ValidateUserServiceController {
 
     @Autowired
     private AppUserService appUserService;
@@ -28,7 +28,7 @@ public class BillPaymentServiceController {
 
     @ApiOperation(value = "Validate user on bill payment by account id and amount.", response = Status.class)
     @GetMapping("/user/{accountId}/amount/{amount}")
-    public Status validateUserOnBillPayment(@RequestHeader("Authorization") String token,
+    public Status validateUser(@RequestHeader("Authorization") String token,
                                       @PathVariable("accountId") int accountId,
                                       @PathVariable("amount") double amount) {
         AppUser appUser = appUserService.getById(accountId);

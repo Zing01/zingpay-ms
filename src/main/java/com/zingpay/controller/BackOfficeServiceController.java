@@ -1,7 +1,6 @@
 package com.zingpay.controller;
 
 import com.zingpay.service.WalletService;
-import com.zingpay.util.Status;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

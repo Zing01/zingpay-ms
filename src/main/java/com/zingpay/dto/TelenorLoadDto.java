@@ -25,13 +25,13 @@ public class TelenorLoadDto {
     @JsonProperty("requestID")
     private String requestId;
 
-    public static TelenorLoadDto convertTransactionToDto(TransactionDto transactionDto) {
+    public TelenorLoadDto convertTransactionToDto(TransactionDto transactionDto) {
         TelenorLoadDto telenorLoadDto = new TelenorLoadDto();
-        telenorLoadDto.setRetailerMsisdn(transactionDto.getRefFrom());
+        telenorLoadDto.setRetailerMsisdn("");
         telenorLoadDto.setCustomerMsisdn(transactionDto.getRefTo());
         telenorLoadDto.setAmount(transactionDto.getAmount()+"");
-        telenorLoadDto.setVendorName1("IMTOPUP:CBA");
-        telenorLoadDto.setVendorName2("IMTOPUP:CBA");
+        telenorLoadDto.setVendorName1("");
+        telenorLoadDto.setVendorName2("");
         telenorLoadDto.setRequestId(transactionDto.getRetailerRefNumber());
         return telenorLoadDto;
     }

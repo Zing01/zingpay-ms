@@ -22,6 +22,8 @@ INSERT INTO `transaction_status` VALUES (1,'SUCCESS','Successfull Transactions')
 
 INSERT INTO `transaction_type` VALUES (1,'DEBIT','DEBIT'),(2,'CREDIT','CREDIT');
 
-INSERT INTO user_group(user_group_id, name, type, effective_start_date, effective_end_date, active_ind) VALUES (1, "zingpay", "", "", "", 1);
-
 INSERT INTO `zingpay_transaction_type` VALUES (1,'TX_RECHARGE','rep portal fund transfer',1),(2,'TX_FUND_TRANSFER','customer portal fund transfer',1),(3,'TX_BUY','Buy',1),(4,'TX_BILL_PAYMENT','Bill Payment',0),(5,'TX_COMMISSION','Commission',0),(6,'TX_SERVICE_CHARGE','Service charge',0),(7,'TX_LOAD','Load',1),(8,'TX_CASH_IN','Cash in',1);
+
+INSERT INTO user_group VALUES (1, 'DEFAULT', null, null, null, 1), (2, 'ZINGPAY', null, null, null, 1), (3, 'AGENT_MASTER', null, null, null, 1), (4, 'AGENT', null, null, null, 1);
+
+insert into ref_fee_type (FEE_TYPE_ID, FEE_TYPE, DESCRIPTION) VALUES (1, 'ABSOLUTE', 'Service Fee in amount'), (2, 'VARIABLE', 'Service Fee in percentage');

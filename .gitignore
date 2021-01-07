@@ -108,3 +108,8 @@
 /target/classes/com/zingpay/feign/BillPaymentIntegrationClient.class
 /target/classes/dbscripts/ambreen.sql
 /target/classes/staging/application.properties
+/target/classes/com/zingpay/controller/ValidateUserServiceController.class
+/target/classes/com/zingpay/dto/TelenorBundleDto.class
+/target/classes/com/zingpay/dto/TelenorBundleResponseDto.class
+/target/classes/com/zingpay/dto/ZongBundleDto.class
+/target/classes/com/zingpay/dto/ZongBundleResponseDto.class

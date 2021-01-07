@@ -81,7 +81,7 @@ create table user_account_status
         primary key (user_account_status_id)
 );
 
-create table user_group
+/*create table user_group
 (
     user_group_id int auto_increment,
     name varchar(255) null,
@@ -94,7 +94,7 @@ create table user_group
 );
 
 create unique index user_group_name_uindex
-    on user_group (name);
+    on user_group (name);*/
 
 
 create table channel_type

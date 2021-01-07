@@ -1,7 +1,7 @@
 package com.zingpay.feign;
 
-import com.zingpay.dto.BillPaymentResponseDto;
 import com.zingpay.dto.BillPaymentDto;
+import com.zingpay.util.Status;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,5 +15,5 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(value = "${feign.billpayment.name}", url = "${feign.billpayment.url:#{null}}")
 public interface BillPaymentIntegrationClient {
     @PostMapping("/bill-payment-integration")
-    BillPaymentResponseDto billPayment(@RequestHeader(name = "Authorization") String token, @RequestBody BillPaymentDto billPaymentDto);
+    Status billPayment(@RequestHeader(name = "Authorization") String token, @RequestBody BillPaymentDto billPaymentDto);
 }

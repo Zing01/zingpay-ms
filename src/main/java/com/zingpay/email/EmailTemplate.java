@@ -2,7 +2,6 @@ package com.zingpay.email;
 
 import com.zingpay.dto.EmailDto;
 import com.zingpay.entity.AppUser;
-import com.zingpay.util.Utils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,7 +27,7 @@ public class EmailTemplate {
 
     public EmailDto createSuccessActivationEmail(AppUser appUser) {
         String to = appUser.getEmail();
-        String text = "Hi " + appUser.getFullName() + ",\nYour account has been successfully activated, please use your T-PIN to login:" + Utils.decodePassword(appUser.getTPin());
+        String text = "Hi " + appUser.getFullName() + ",\nYour account has been successfully activated";//, please use your T-PIN to login:" + Utils.decodePassword(appUser.getTPin());
         String subject = "Account Activated successfully";
         //FileSystemResource file;
         EmailDto emailDto = new EmailDto();
