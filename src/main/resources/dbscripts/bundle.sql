@@ -1,0 +1,61 @@
+create table bundle
+(
+	id int not null,
+	network varchar(255) not null,
+	name varchar(255) null,
+	description varchar(255) null,
+	offer_key1 varchar(20) null,
+	offer_key2 varchar(20) null,
+	resources varchar(255) null,
+	price varchar(20) null,
+	validity varchar(20) null,
+	type varchar(255) null,
+	constraint bundle_pk
+		primary key (id)
+);
+
+INSERT INTO bundle VALUES
+(51, 'ZONG', 'Internet SIM 8GB (Inc. 4GB - 4AM to 4PM)', 'Internet SIM 8GB (Inc. 4GB - 4AM to 4PM)', '91027117', '', '4 GB', '750', '30 Days', 'Data'),
+(52, 'ZONG', 'Internet SIM 24GB (Inc. 12GB - 4AM to 4PM)', 'Internet SIM 24GB (Inc. 12GB - 4AM to 4PM)', '91027118', '', '12 GB + 12 GB( 4AM to 4PM)', '1200', '30 Days', 'Data'),
+(53, 'ZONG', 'Internet SIM - 30GB', 'Internet SIM - 30GB', '91029907', '', '30 GB', '1500', '30 Days', 'Data'),
+(54, 'ZONG', 'Prepaid MBB Monthly 60GB', 'Prepaid MBB Monthly 60GB', '91026124', '91026200', '60 GB', '2000', '30 Days', 'Data'),
+(55, 'ZONG', 'Prepaid MBB Monthly 200 GB (Inc. 100 GB - 4AM to 4PM)', 'Prepaid MBB Monthly 200 GB (Inc. 100 GB - 4AM to 4PM)', '91026125', '91026201', '100 GB + 100 GB( 4AM to 4PM)', '3250', '30 Days', 'Data'),
+(56, 'ZONG', 'Prepaid MBB 6 Months Bundle 100GB/Month', 'Prepaid MBB 6 Months Bundle 100GB/Month', '91020166', '', '75 GB + 25 GB( 4AM to 4PM)', '12000', '180 Days', 'Data'),
+(57, 'ZONG', 'Super Weekly Offer', 'Super Weekly Offer', '91000121', '', '2.5 GB', '165', '7 Days', 'Data'),
+(58, 'ZONG', 'Super Weekly Plus', 'Super Weekly Plus', '91029911', '', '7 GB', '240', '7 Days', 'Data'),
+(59, 'ZONG', 'Super Weekly Max', 'Super Weekly Max', '95000646', '', '25 GB [10 GB + 5GB (4am - 4pm) + 15 GB Data for YouTube]', '299', '7 Days', 'Data'),
+(60, 'ZONG', 'Monthly Premium 15GB', 'Monthly Premium 15GB', '91020067', '', '15GB+15GB YouTube& TikTok', '1000', '30 Days', 'Data'),
+(61, 'ZONG', 'Whatsapp Offer', 'Whatsapp Offer', '91020404', '', '4 GB', '50', '30 Days', 'Data'),
+(62, 'ZONG', 'IMO Offer', 'IMO Offer', '91029937', '', '2 GB', '50', '30 Days', 'Data'),
+(63, 'ZONG', 'All-In-One Monthly/ ZONG Super Card', 'All-In-One Monthly/ ZONG Super Card', '91000182', '', '2,500 ON Net & 150 Off Net Minutes, 2,500 SMS, 2,500 MBs Data, 2 GB WhatsApp + 1GB YouTube', '650', '30 Days', 'Hybrid'),
+(64, 'ZONG', 'Supreme Offer', 'Supreme Offer', '91023604', '', '5,000 ON Net & 300 Off Net Minutes, 5,000 SMS, 5,000 MBs Data, 4 GB WhatsApp+ 2 GB YouTube', '1000', '30 Days', 'Hybrid'),
+(65, 'ZONG', 'Supreme Plus Offer', 'Supreme Plus Offer', '91000180', '', '10,000 ON Net & 600 Off Net Minutes, 10,000 SMS, 10,000 MBs Data, 4 GB WhatsApp', '1732', '30 Days', 'Hybrid'),
+(66, 'ZONG', 'Weekly Hybrid Bundle', 'Weekly Hybrid Bundle', '91020181', '', '1,000 ON Net & 40 Off Net Minutes, 1,000 SMS, 1,000 MBs Data', '200', '7 Days', 'Hybrid'),
+(67, 'ZONG', 'Weekly SMS', 'Weekly SMS', '91056273', '', '1,500 SMS', '29', '7 Days', 'SMS'),
+(68, 'ZONG', 'Monthly SMS', 'Monthly SMS', '91056272', '', '500 SMS/ Day for 30 Days', '68', '30 Days', 'SMS'),
+(69, 'ZONG', 'Ilaqai Offer/Punjab', 'Ilaqai Offer/Punjab', '91029939', '', '6GB Internet, 150 Minutes all networks', '230', '7 Days', 'Hybrid'),
+(70, 'ZONG', 'Monthly Facebook', 'Monthly Facebook', '91900004', '', '6 GB', '100', '30 Days', 'Data'),
+(71, 'ZONG', 'Weekly Youtube', 'Weekly Youtube', '95000562', '', '8 GB', '135', '7 Days', 'Data'),
+(72, 'ZONG', 'KSA Offer', 'KSA Offer', '95000474', '', '2000 KSA Prepaid IR bundle 60, 60, 512 (90 days)', '2689', '90 Days', 'IR Bundle'),
+(73, 'ZONG', 'Weekly TIKTok Offer', 'Weekly TIKTok Offer', '95000882', '', '2 GB  (1500 MBs TikTok Resources & 500 MBs free Resources)', '50', '7 Days', 'Data'),
+(74, 'ZONG', 'Haftawar Load Offer', 'Haftawar Load Offer', '91024007', '', '5000 ZONG to ZONG, 5000 MB, 5000 SMS, 80min other network', '250', '7 Days', 'Hybrid'),
+(75, 'ZONG', 'Mega Data Offer', 'Mega Data Offer', '95001185', '', '50GB (1AM-9AM)', '100', '7 Days', 'Data'),
+(76, 'ZONG', 'Super Weekly Premium', 'Super Weekly Premium', '95000966', '95001084', '15 GB Flat + 15 GB (YouTube & TikTok) & 100 All Net Mins', '330', '7 Days', 'Hybrid');
+
+INSERT INTO bundle VALUES
+(151, 'TELENOR', '3G Monthly Starter-ADC', '3G Monthly Starter-ADC', '501937', '', '4 GB Whole Day, 4 GB 1 AM to 7 AM', '400', '30 Days', null),
+(152, 'TELENOR', 'Easycard 150 - replica for alternate channel', 'Easycard 150 - replica for alternate channel', '501807', '', '1500 MB, 1000 Onnet Minutes, 50 Offnet Minutes, 1000 SMS', '150', '7 Days', null),
+(153, 'TELENOR', '4G Weekly Ultra- alternate channels', '4G Weekly Ultra- alternate channels', '501925', '', '8000 MB, 1000 MB for Goonj and Gamebox', '210', '7 Days', null),
+(154, 'TELENOR', 'Easy Card 450 AC', 'Easy Card 450 AC', '501773', '', 'Whatsapp MBs:  2000 mbs, All Network minutes:   50 mins, Onnet+Ptcl  minutes: 500 mins, SMS: 500, Generic MBs: 1000 MBs', '450', '30 Days', null),
+(155, 'TELENOR', 'Easy Card 800 AC', 'Easy Card 800 AC', '501946', '', 'Call Setup charges waived off, All Network minutes: 300 mins, Onnet+Ptcl minutes: 5000 mins, 1) 9,000 generic MB with no time window AND 2) 9,000 MBs only usable between 1am and 11 am time window, SMS: 5000', '800', '30 Days', null),
+(156, 'TELENOR', 'Easy Card 600 Replica', 'Easy Card 600 Replica', '502237', '', 'Generic MBs: 6000  mbs with no time window, AND 2) 6,000 MBs only usable between 1am and 11 am time window, Sms: 3000, Offnet: 150 mins, Onnet + Ptcl: 3000 mins, Call Setup charges waived off, IDD Minutes: 25 IDD Minutes for UK, USA and Canada', '600', '30 Days', null),
+(157, 'TELENOR', 'Monthly Ultra', 'Monthly Ultra', '502240', '', '20 GB (*10GB + 10GB off-peak (12am-8am))', '599', '30 Days', null),
+(158, 'TELENOR', 'CPO Offer', 'CPO Offer', '502110', '', 'Social MBs: 350 mbs, Generic MBs: 70 mbs, On net minutes: Unlimited', '140', '7 Days', null),
+(159, 'TELENOR', 'Sahulat Offer', 'Sahulat Offer', '502092', '', 'Generic MBs: 100  mbs, Social MBs: 350 mbs, Sms: 700, Off net minutes: 70, Onnet mins:  1000 mins', '170', '7 Days', null),
+(160, 'TELENOR', 'Weekly Easy Card Mega', 'Weekly Easy Card Mega', '502099', '', 'Volume: 10,000 MBs (inclusive of 5000 MBs from 1 am till 11 am), Telenor/PTCL mins: 2000, Sms: 2000, All network minutes: 70 mins', '250', '7 Days', null),
+(161, 'TELENOR', 'Monthly Whatsapp & FB Offer', 'Monthly Whatsapp & FB Offer', '502121', '', 'Volume: 3 GB', '50', '30 Days', null),
+(162, 'TELENOR', 'Ticky Pack Offer', 'Ticky Pack Offer', '500947', '', 'Onnet mins:  50 mins', '11', '1 Days', null),
+(163, 'TELENOR', 'Youtube Offer', 'Youtube Offer', '502146', '', 'Social MBs: 500 mbs (for Youtube only)', '10', '1 Days', null),
+(164, 'TELENOR', '4G Weekly Super', '4G Weekly Super', '501721', '', '4000 MBS (2000 MBs can be used between 1 am - 11 am)', '130', '7 Days', null),
+(165, 'TELENOR', '4 G Weekly Late Night Offer', '4 G Weekly Late Night Offer', '502134', '', '20 GBs( offer can be used between 12 am to 9 am)', '60', '7 Days', null),
+(166, 'TELENOR', 'Easy Card - 200', 'Easy Card - 200', '502174', '', 'Onnet/PTCL Minutes: 1,500, Offnet Minutes: 60, SMS: 1,500, Data: 3,000 MBs generic', '199', '7 Days', null);
