@@ -113,3 +113,8 @@
 /target/classes/com/zingpay/dto/TelenorBundleResponseDto.class
 /target/classes/com/zingpay/dto/ZongBundleDto.class
 /target/classes/com/zingpay/dto/ZongBundleResponseDto.class
+/target/classes/com/zingpay/controller/BundleServiceController.class
+/target/classes/com/zingpay/dto/BundleDto.class
+/target/classes/com/zingpay/entity/Bundle.class
+/target/classes/com/zingpay/repository/BundleRepository.class
+/target/classes/com/zingpay/service/BundleService.class
