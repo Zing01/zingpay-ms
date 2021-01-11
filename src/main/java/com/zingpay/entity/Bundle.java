@@ -1,6 +1,8 @@
 package com.zingpay.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.BundleDto;
+import com.zingpay.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,7 +52,7 @@ public class Bundle {
     @Column(name = "type")
     private String type;
 
-    public static BundleDto convertToDto(Bundle bundle) {
+    public static BundleDto convertToDto(Bundle bundle) throws JsonProcessingException {
         BundleDto bundleDto = new BundleDto();
         bundleDto.setId(bundle.getId());
         bundleDto.setNetwork(bundle.getNetwork());
@@ -58,7 +60,7 @@ public class Bundle {
         bundleDto.setDescription(bundle.getDescription());
         bundleDto.setOfferKey1(bundle.getOfferKey1());
         bundleDto.setOfferKey2(bundle.getOfferKey2());
-        bundleDto.setResources(bundle.getResources());
+        bundleDto.setResources(Utils.parseStringToJsonArrayNode(bundle.getResources()));
         bundleDto.setPrice(bundle.getPrice());
         bundleDto.setValidity(bundle.getValidity());
         bundleDto.setType(bundle.getType());
@@ -68,7 +70,11 @@ public class Bundle {
     public static List<BundleDto> convertToDto(List<Bundle> bundles) {
         List<BundleDto> bundleDtos = new ArrayList<BundleDto>();
         bundles.forEach(bundle -> {
-            bundleDtos.add(convertToDto(bundle));
+            try {
+                bundleDtos.add(convertToDto(bundle));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         });
         return bundleDtos;
     }

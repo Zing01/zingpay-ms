@@ -11,6 +11,6 @@ import java.util.List;
  */
 
 @Repository
-public interface BundleRepository extends BaseRepository<Bundle, Long> {
+public interface BundleRepository extends BaseRepository<Bundle, Integer> {
     List<Bundle> findAllByNetwork(String network);
 }

@@ -2,7 +2,9 @@ package com.zingpay.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -533,6 +535,14 @@ public class Utils {
 
 	public static String parseObjectToJson(Object obj) throws JsonProcessingException {
 		return json.writeValueAsString(obj);
+	}
+
+	public static ArrayNode parseStringToJsonArrayNode(String toConvert) throws JsonProcessingException {
+		return json.readValue(toConvert, ArrayNode.class);
+	}
+
+	public static JsonNode parseStringToJsonNode(String toConvert) throws JsonProcessingException {
+		return json.readValue(toConvert, JsonNode.class);
 	}
 }
 

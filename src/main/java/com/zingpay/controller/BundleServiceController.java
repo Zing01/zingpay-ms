@@ -1,5 +1,6 @@
 package com.zingpay.controller;
 
+import com.zingpay.dto.BundleDetailsDto;
 import com.zingpay.dto.BundleDto;
 import com.zingpay.entity.Bundle;
 import com.zingpay.service.BundleService;
@@ -29,6 +30,9 @@ public class BundleServiceController {
                              @PathVariable("network") String network) {
         List<Bundle> bundles = bundleService.getBundles(network);
         List<BundleDto> bundleDtos = Bundle.convertToDto(bundles);
-        return new Status(StatusMessage.SUCCESS, bundleDtos);
+        BundleDetailsDto bundleDetailsDto = new BundleDetailsDto();
+        bundleDetailsDto.setBundleDto(bundleDtos);
+        bundleDetailsDto.setCategories(new String[]{"All", "Popular", "Data", "Monthly Hybrid", "Weekly Hybrid", "SMS", "IR Bundle", "Call"});
+        return new Status(StatusMessage.SUCCESS, bundleDetailsDto);
     }
 }

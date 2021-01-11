@@ -1,11 +1,11 @@
-INSERT INTO `user_account_status` VALUES (1, "ACTIVE", "Active state"), (2, "PENDING", "Pending state is used until user activates his account by verifying email or cell phone number"), (3, "SUSPEND", "Suspend state is used when user tries for wrong password"), (4, "INACTIVE", "Inactive state is used when we need to block user");
+INSERT INTO `user_account_status` VALUES (1, 'ACTIVE', 'Active state'), (2, 'PENDING', 'Pending state is used until user activates his account by verifying email or cell phone number'), (3, 'SUSPEND', 'Suspend state is used when user tries for wrong password'), (4, 'INACTIVE', 'Inactive state is used when we need to block user');
 
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (1, "VIRTUAL_AGENT", "Virtual Agent");
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (2, "RETAILER", "Retailer");
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (3, "SUPERSUPERREP", "ZingPay executive user");
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (4, "SUPERREP", "Executive User");
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (5, "REP", "Reep User");
-INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (6, "CONSUMER", "Consumer User");
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (1, 'VIRTUAL_AGENT', 'Virtual Agent');
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (2, 'RETAILER', 'Retailer');
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (3, 'SUPERSUPERREP', 'ZingPay executive user');
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (4, 'SUPERREP', 'Executive User');
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (5, 'REP', 'Reep User');
+INSERT INTO user_account_type (user_account_type_id, account_type_value, description) VALUES (6, 'CONSUMER', 'Consumer User');
 
 INSERT INTO authority (id, name, description) VALUES (1, 'USER_READ', 'User Read Authority');
 INSERT INTO authority (id, name, description) VALUES (2, 'USER_WRITE', 'User Write Authority');

@@ -1,5 +1,6 @@
 package com.zingpay.dto;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.zingpay.entity.Bundle;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class BundleDto {
     private String description;
     private String offerKey1;
     private String offerKey2;
-    private String resources;
+    private ArrayNode resources;
     private String price;
     private String validity;
     private String type;
@@ -34,7 +35,7 @@ public class BundleDto {
         bundle.setDescription(bundleDto.getDescription());
         bundle.setOfferKey1(bundleDto.getOfferKey1());
         bundle.setOfferKey2(bundleDto.getOfferKey2());
-        bundle.setResources(bundleDto.getResources());
+        bundle.setResources(bundleDto.getResources().asText());
         bundle.setPrice(bundleDto.getPrice());
         bundle.setValidity(bundleDto.getValidity());
         bundle.setType(bundleDto.getType());
