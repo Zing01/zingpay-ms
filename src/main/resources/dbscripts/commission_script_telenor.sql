@@ -1,6 +1,6 @@
 INSERT INTO `zingpay`.`ref_service_broker` (`SERVICE_BROKER_ID`, `SERVICE_BROKER_NAME`, `SERVICE_BROKER_DESC`, `ACTIVE`) VALUES ('3', 'TELENOR', 'TELENOR', '1');
 
-INSERT INTO `zingpay`.`ref_service_provider` (`SERVICE_PROVIDER_ID`, `SERVICE_BROKER_ID`, `SERVICE_PROVIDER_SHORT_NAME`, `SERVICE_PROVIDER_DISPLAY_NAME`, `SERVICE_PROVIDER_TYPE`, `CITY`, `SORT_ORDER`, `ACTIVE`) VALUES ('3', '2', 'TELENOR', 'telenor', 'MOBILE', 'Karachi, Lahore, Islamabad', '1', '1');
+INSERT INTO `zingpay`.`ref_service_provider` (`SERVICE_PROVIDER_ID`, `SERVICE_BROKER_ID`, `SERVICE_PROVIDER_SHORT_NAME`, `SERVICE_PROVIDER_DISPLAY_NAME`, `SERVICE_PROVIDER_TYPE`, `CITY`, `SORT_ORDER`, `ACTIVE`) VALUES ('3', '3', 'TELENOR', 'telenor', 'MOBILE', 'Karachi, Lahore, Islamabad', '1', '1');
 
 INSERT INTO `zingpay`.`ref_service` (`SERVICE_ID`, `SERVICE_NAME`, `SERVICE_TYPE_ID`, `SERVICE_PROVIDER_ID`, `ACTIVE`, `SERVICE_CODE`)
 Select 150, 'ZINGPAY_Load',(Select id from ref_service_type rst where rst.value = 'LOAD'), SERVICE_PROVIDER_ID, 1, '' from ref_service_provider
