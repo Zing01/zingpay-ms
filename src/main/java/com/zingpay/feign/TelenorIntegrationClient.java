@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @project zingpay-ms
  */
 
-@FeignClient(value = "${feign.telenor.name}", url = "${feign.telenor.url:#{null}}")
+@FeignClient(value = "${feign.telenorintegration.name}", url = "${feign.telenorintegration.url:#{null}}")
 public interface TelenorIntegrationClient {
     @PostMapping("/load")
     TelenorLoadResponseDto telenorLoad(@RequestHeader(name = "Authorization") String token, @RequestBody TelenorLoadDto telenorLoadDto);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @project zingpay-ms
  */
 
-@FeignClient(value = "${feign.billpayment.name}", url = "${feign.billpayment.url:#{null}}")
+@FeignClient(value = "${feign.billpaymentintegration.name}", url = "${feign.billpaymentintegration.url:#{null}}")
 public interface BillPaymentIntegrationClient {
     @PostMapping("/bill-payment-integration")
     Status billPayment(@RequestHeader(name = "Authorization") String token, @RequestBody BillPaymentDto billPaymentDto);

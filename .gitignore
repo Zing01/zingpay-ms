@@ -119,3 +119,6 @@
 /target/classes/com/zingpay/repository/BundleRepository.class
 /target/classes/com/zingpay/service/BundleService.class
 /target/classes/com/zingpay/dto/BundleDetailsDto.class
+/target/classes/com/zingpay/dto/CalculateCommissionDto.class
+/target/classes/com/zingpay/dto/CalculateCommissionDtoToPass.class
+/target/classes/com/zingpay/feign/CalculateCommissionClient.class

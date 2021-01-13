@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.*;
 import com.zingpay.entity.Transaction;
 import com.zingpay.feign.BillPaymentIntegrationClient;
+import com.zingpay.feign.CalculateCommissionClient;
 import com.zingpay.feign.TelenorIntegrationClient;
 import com.zingpay.feign.ZongIntegrationClient;
 import com.zingpay.service.TransactionService;
@@ -11,6 +12,7 @@ import com.zingpay.token.TokenGenerator;
 import com.zingpay.util.Status;
 import com.zingpay.util.TransactionStatus;
 import com.zingpay.util.Utils;
+import com.zingpay.util.ZingpayTransactionType;
 import feign.FeignException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
@@ -21,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * @author Bilal Hassan on 10/17/2020
@@ -45,6 +48,9 @@ public class RabbitMQConsumer {
     @Autowired
     private TokenGenerator tokenGenerator;
 
+    @Autowired
+    private CalculateCommissionClient calculateCommissionClient;
+
     @Value("${queue.name}")
     private String queueName;
 
@@ -55,12 +61,13 @@ public class RabbitMQConsumer {
             System.out.println("Message Received : ------- " + jsonString);
             TransactionDto transactionDto = transactionService.convertJSONStringToDto(jsonString);
             Transaction savedTransaction = transactionService.processTransaction(transactionDto);
+            transactionDto.setId(savedTransaction.getId());
 
-            if(transactionDto.getServiceProvider().equals("ZONG")) {
+            if(transactionDto.getServiceProvider().equalsIgnoreCase("ZONG")) {
                 processZongTransaction(savedTransaction, transactionDto);
-            } else if(transactionDto.getServiceProvider().equals("TELENOR")) {
+            } else if(transactionDto.getServiceProvider().equalsIgnoreCase("TELENOR")) {
                 processTelenorTransaction(savedTransaction, transactionDto);
-            } else if(transactionDto.getServiceProvider().equals("NADRA")) {
+            } else if(transactionDto.getServiceProvider().equalsIgnoreCase("NADRA")) {
                 performNadraBillPayment(savedTransaction, transactionDto);
             }
         } catch (Exception e) {
@@ -102,6 +109,8 @@ public class RabbitMQConsumer {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
+                    //call commission microservice to calculate commission
+                    calculateCommission(transaction);
                 } else {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
@@ -140,6 +149,8 @@ public class RabbitMQConsumer {
                     Transaction transaction = transactionService.getById(savedTransaction.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
+                    //call commission microservice to calculate commission
+                    calculateCommission(transaction);
                 } else {
                     Transaction transaction = transactionService.getById(savedTransaction.getId());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
@@ -179,6 +190,8 @@ public class RabbitMQConsumer {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
+                    //call commission microservice to calculate commission
+                    calculateCommission(transaction);
                 } else {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
@@ -217,6 +230,8 @@ public class RabbitMQConsumer {
                 if (telenorBundleResponseDto.getMessage().contains("Success")) {
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
+                    //call commission microservice to calculate commission
+                    calculateCommission(transaction);
                 } else {
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     transactionService.save(transaction);
@@ -256,6 +271,8 @@ public class RabbitMQConsumer {
                         Transaction transaction = transactionService.getById(savedTransaction.getId());
                         transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                         transactionService.save(transaction);
+                        //call commission microservice to calculate commission
+                        calculateCommission(transaction);
                     } else {
                         Transaction transaction = transactionService.getById(savedTransaction.getId());
                         transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
@@ -271,5 +288,35 @@ public class RabbitMQConsumer {
     @Bean
     public Queue queue() {
         return new Queue(queueName);
+    }
+
+    private void calculateCommission(Transaction transaction) {
+        List<CalculateCommissionDto> calculateCommissionDtos = transactionService.getFee(transaction.getServiceId(), ZingpayTransactionType.TX_COMMISSION.getValue());
+
+        TransactionDto transactionDto1 = Transaction.convertToDto(transaction);
+
+        TransactionCommissionDto transactionCommissionDto = new TransactionCommissionDto();
+        transactionCommissionDto.setTransactionDto(transactionDto1);
+        transactionCommissionDto.setCalculateCommissionDtos(calculateCommissionDtos);
+
+        List<TransactionDto> transactionDtos = null;
+        try {
+            if (TokenGenerator.token == null) {
+                try {
+                    transactionDtos = calculateCommissionClient.calculateCommission(tokenGenerator.getTokenFromAuthService(), transactionCommissionDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                transactionDtos = calculateCommissionClient.calculateCommission(TokenGenerator.token, transactionCommissionDto);
+            }
+        } catch (FeignException.Unauthorized e) {
+            try {
+                transactionDtos = calculateCommissionClient.calculateCommission(tokenGenerator.getTokenFromAuthService(), transactionCommissionDto);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+        }
+        transactionService.saveAll(TransactionDto.convertToEntity(transactionDtos));
     }
 }

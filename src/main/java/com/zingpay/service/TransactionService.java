@@ -1,6 +1,7 @@
 package com.zingpay.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zingpay.dto.CalculateCommissionDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.dto.TransactionPaginationDto;
 import com.zingpay.dto.TransactionSummaryDto;
@@ -116,5 +117,14 @@ public class TransactionService {
 
     public void save(Transaction transaction) {
         transactionRepository.save(transaction);
+    }
+
+    public void saveAll(List<Transaction> transactions) {
+        transactionRepository.saveAll(transactions);
+    }
+
+    public List<CalculateCommissionDto> getFee(long serviceId, String feeType) {
+        List<Object> objects = transactionRepository.findFee(serviceId, feeType);
+        return CalculateCommissionDto.convertToDto(objects);
     }
 }

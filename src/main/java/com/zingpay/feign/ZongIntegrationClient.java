@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @project zingpay-ms
  */
 
-@FeignClient(value = "${feign.zong.name}", url = "${feign.zong.url:#{null}}")
+@FeignClient(value = "${feign.zongintegration.name}", url = "${feign.zongintegration.url:#{null}}")
 public interface ZongIntegrationClient {
 
     @PostMapping("/load")

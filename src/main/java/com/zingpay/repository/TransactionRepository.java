@@ -79,4 +79,10 @@ public interface TransactionRepository extends BaseRepository<Transaction, Long>
             "order by T.transaction_status_id, T.transaction_type_id, T.zingpay_transaction_type_id",
             nativeQuery = true)
     List<Object> findTransactionSummary(long accountId, String fromDate, String toDate);
+
+    @Query(value = "SELECT fee, name FROM fee " +
+            "JOIN fee_group ON fee.FEE_GROUP_ID = fee_group.FEE_GROUP_ID " +
+            "JOIN service_fee_group ON fee_group.FEE_GROUP_ID = service_fee_group.FEE_GROUP_ID WHERE SERVICE_ID= :serviceId " +
+            "AND type = :feeType", nativeQuery = true)
+    List<Object> findFee(long serviceId, String feeType);
 }
