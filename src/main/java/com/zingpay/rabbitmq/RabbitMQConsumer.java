@@ -104,8 +104,10 @@ public class RabbitMQConsumer {
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+                System.out.println("zongLoadResponseDto " + zongLoadResponseDto);
 
-                if (zongLoadResponseDto.getBossId() != null || !zongLoadResponseDto.getBossId().equals("")) {
+                if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {
+                    System.out.println("zongLoadResponseDto.getBossId() " + zongLoadResponseDto.getBossId());
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
@@ -121,7 +123,7 @@ public class RabbitMQConsumer {
             ZongBundleDto zongBundleDto1 = new ZongBundleDto();
             ZongBundleDto zongBundleDto = zongBundleDto1.convertTransactionToDto(transactionDto);
             ZongBundleResponseDto zongBundleResponseDto = new ZongBundleResponseDto();
-
+            System.out.println("zongBundleDto.getBundleId() " + zongBundleDto.getBundleId());
             try {
                 if (TokenGenerator.token == null) {
                     try {
@@ -139,12 +141,14 @@ public class RabbitMQConsumer {
                     ex.printStackTrace();
                 }
             }
+            System.out.println("statusResponse.getAdditionalDetail() " + statusResponse.getAdditionalDetail());
             if(statusResponse != null) {
                 try {
                     zongBundleResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), ZongBundleResponseDto.class);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
+                System.out.println("zongBundleResponseDto.getDesc() " + zongBundleResponseDto.getDesc());
                 if (zongBundleResponseDto.getDesc().contains("success")) {
                     Transaction transaction = transactionService.getById(savedTransaction.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());

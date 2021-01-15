@@ -1,6 +1,6 @@
 package com.zingpay.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,30 +12,44 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ZongBundleResponseDto {
-    @JsonProperty(value="RETN")
+    //@JsonProperty(value="RETN")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private int retn;
-    @JsonProperty(value="DESC")
+    //@JsonProperty(value="DESC")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String desc;
-    @JsonProperty(value="BDPNOTAX")
+    //@JsonProperty(value="BDPNOTAX")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double bdpnotax;
-    @JsonProperty(value="BDTAX")
+    //@JsonProperty(value="BDTAX")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double bdtax;
-    @JsonProperty(value="RECHARETAX")
+    //@JsonProperty(value="RECHARETAX")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double recharetax;
-    @JsonProperty(value="DISCOUNT")
+    //@JsonProperty(value="DISCOUNT")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double discount;
-    @JsonProperty(value="DEDUCTAMOUNT")
+    //@JsonProperty(value="DEDUCTAMOUNT")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double deductamount;
-    @JsonProperty(value="SERVICEFEE")
+    //@JsonProperty(value="SERVICEFEE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double servicefee;
-    @JsonProperty(value="SERVICETAX")
+    //@JsonProperty(value="SERVICETAX")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double servicetax;
-    @JsonProperty(value="AIT")
+    //@JsonProperty(value="AIT")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private double ait;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bossId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String requestId;
-    @JsonProperty(value="TRANSDATE")
+    //@JsonProperty(value="TRANSDATE")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private long transdate;
-    @JsonProperty(value="BDNAME")
+    //@JsonProperty(value="BDNAME")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bdname;
 }

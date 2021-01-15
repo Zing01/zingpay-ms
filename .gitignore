@@ -122,3 +122,4 @@
 /target/classes/com/zingpay/dto/CalculateCommissionDto.class
 /target/classes/com/zingpay/dto/CalculateCommissionDtoToPass.class
 /target/classes/com/zingpay/feign/CalculateCommissionClient.class
+/target/classes/com/zingpay/dto/TransactionCommissionDto.class
