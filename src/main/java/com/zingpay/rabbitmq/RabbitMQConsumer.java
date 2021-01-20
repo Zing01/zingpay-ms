@@ -85,7 +85,7 @@ public class RabbitMQConsumer {
             ZongLoadDto zongLoadDto1 = new ZongLoadDto();
             ZongLoadDto zongLoadDto = zongLoadDto1.convertTransactionToDto(transactionDto);
             ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
-            try {
+            /*try {
                 if (TokenGenerator.token == null) {
                     try {
                         statusResponse = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
@@ -101,8 +101,8 @@ public class RabbitMQConsumer {
                 } catch (JsonProcessingException ex) {
                     ex.printStackTrace();
                 }
-            }
-            if(statusResponse != null) {
+            }*/
+            /*if(statusResponse != null) {
                 try {
                     zongLoadResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), ZongLoadResponseDto.class);
                 } catch (JsonProcessingException e) {
@@ -110,21 +110,21 @@ public class RabbitMQConsumer {
                 }
                 System.out.println("zongLoadResponseDto " + zongLoadResponseDto);
 
-                if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {
+                if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {*/
                     //System.out.println("zongLoadResponseDto.getBossId() " + zongLoadResponseDto.getBossId());
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                    transaction.setDescription(zongLoadResponseDto.getDesc());
+                    //transaction.setDescription(zongLoadResponseDto.getDesc());
                     transactionService.save(transaction);
                     //call commission microservice to calculate commission
                     calculateCommission(transaction);
-                } else {
+                /*} else {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setDescription(zongLoadResponseDto.getDesc());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     transactionService.save(transaction);
                 }
-            }
+            }*/
         } else {
             ZongBundleDto zongBundleDto1 = new ZongBundleDto();
             ZongBundleDto zongBundleDto = zongBundleDto1.convertTransactionToDto(transactionDto);
