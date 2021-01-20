@@ -7,6 +7,7 @@ import com.zingpay.feign.BillPaymentIntegrationClient;
 import com.zingpay.feign.CalculateCommissionClient;
 import com.zingpay.feign.TelenorIntegrationClient;
 import com.zingpay.feign.ZongIntegrationClient;
+import com.zingpay.service.AppUserService;
 import com.zingpay.service.TransactionService;
 import com.zingpay.token.TokenGenerator;
 import com.zingpay.util.Status;
@@ -50,6 +51,9 @@ public class RabbitMQConsumer {
 
     @Autowired
     private CalculateCommissionClient calculateCommissionClient;
+
+    @Autowired
+    private AppUserService appUserService;
 
     @Value("${queue.name}")
     private String queueName;
@@ -107,14 +111,16 @@ public class RabbitMQConsumer {
                 System.out.println("zongLoadResponseDto " + zongLoadResponseDto);
 
                 if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {
-                    System.out.println("zongLoadResponseDto.getBossId() " + zongLoadResponseDto.getBossId());
+                    //System.out.println("zongLoadResponseDto.getBossId() " + zongLoadResponseDto.getBossId());
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                    transaction.setDescription(zongLoadResponseDto.getDesc());
                     transactionService.save(transaction);
                     //call commission microservice to calculate commission
                     calculateCommission(transaction);
                 } else {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
+                    transaction.setDescription(zongLoadResponseDto.getDesc());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     transactionService.save(transaction);
                 }
@@ -151,12 +157,14 @@ public class RabbitMQConsumer {
                 System.out.println("zongBundleResponseDto.getDesc() " + zongBundleResponseDto.getDesc());
                 if (zongBundleResponseDto.getDesc().contains("success")) {
                     Transaction transaction = transactionService.getById(savedTransaction.getId());
+                    transaction.setDescription(zongBundleResponseDto.getDesc());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                     transactionService.save(transaction);
                     //call commission microservice to calculate commission
                     calculateCommission(transaction);
                 } else {
                     Transaction transaction = transactionService.getById(savedTransaction.getId());
+                    transaction.setDescription(zongBundleResponseDto.getDesc());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     transactionService.save(transaction);
                 }
@@ -193,12 +201,14 @@ public class RabbitMQConsumer {
                 if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                    transaction.setDescription(telenorLoadResponseDto.getResultMsg());
                     transactionService.save(transaction);
                     //call commission microservice to calculate commission
                     calculateCommission(transaction);
                 } else {
                     Transaction transaction = transactionService.getById(transactionDto.getId());
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                    transaction.setDescription(telenorLoadResponseDto.getResultMsg());
                     transactionService.save(transaction);
                 }
             }
@@ -233,11 +243,13 @@ public class RabbitMQConsumer {
                 transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
                 if (telenorBundleResponseDto.getMessage().contains("Success")) {
                     transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                    transaction.setDescription(telenorBundleResponseDto.getMessage());
                     transactionService.save(transaction);
                     //call commission microservice to calculate commission
                     calculateCommission(transaction);
                 } else {
                     transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                    transaction.setDescription(telenorBundleResponseDto.getErrorMessage());
                     transactionService.save(transaction);
                 }
             }
@@ -274,6 +286,7 @@ public class RabbitMQConsumer {
                     if(billPaymentResponseDto.getStatus().equals("ok")) {
                         Transaction transaction = transactionService.getById(savedTransaction.getId());
                         transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                        transaction.setDescription(billPaymentResponseDto.getStatus());
                         transactionService.save(transaction);
                         //call commission microservice to calculate commission
                         calculateCommission(transaction);
@@ -296,12 +309,14 @@ public class RabbitMQConsumer {
 
     private void calculateCommission(Transaction transaction) {
         List<CalculateCommissionDto> calculateCommissionDtos = transactionService.getFee(transaction.getServiceId(), ZingpayTransactionType.TX_COMMISSION.getValue());
+        List<Object> objs = appUserService.getAllAccountIdUsernameAccountTypeIdParentIdByAccountId(transaction.getAccountId());
 
         TransactionDto transactionDto1 = Transaction.convertToDto(transaction);
 
         TransactionCommissionDto transactionCommissionDto = new TransactionCommissionDto();
-        transactionCommissionDto.setTransactionDto(transactionDto1);
         transactionCommissionDto.setCalculateCommissionDtos(calculateCommissionDtos);
+        transactionCommissionDto.setTransactionDto(transactionDto1);
+        transactionCommissionDto.setAppUserDtoForCommissions(AppUserDtoForCommission.convertToDto(objs));
 
         List<TransactionDto> transactionDtos = null;
         try {

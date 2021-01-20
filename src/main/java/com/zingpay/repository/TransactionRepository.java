@@ -80,7 +80,7 @@ public interface TransactionRepository extends BaseRepository<Transaction, Long>
             nativeQuery = true)
     List<Object> findTransactionSummary(long accountId, String fromDate, String toDate);
 
-    @Query(value = "SELECT fee, name FROM fee " +
+    @Query(value = "SELECT fee, name, fee_type_id FROM fee " +
             "JOIN fee_group ON fee.FEE_GROUP_ID = fee_group.FEE_GROUP_ID " +
             "JOIN service_fee_group ON fee_group.FEE_GROUP_ID = service_fee_group.FEE_GROUP_ID WHERE SERVICE_ID= :serviceId " +
             "AND type = :feeType", nativeQuery = true)

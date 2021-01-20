@@ -101,14 +101,14 @@ insert into user_group_service_fee_group (user_group_id, service_fee_group_id, A
 insert into user_group_service_fee_group (user_group_id, service_fee_group_id, ACTIVE_IND) select 3, service_fee_group_id, 1 from service_fee_group where service_id = 110 and fee_group_id in (select fee_group_id from fee_group where name like '%BILLPAYMENT_NADRA_AGENT_MASTER');
 insert into user_group_service_fee_group (user_group_id, service_fee_group_id, ACTIVE_IND) select 4, service_fee_group_id, 1 from service_fee_group where service_id = 110 and fee_group_id in (select fee_group_id from fee_group where name like '%BILLPAYMENT_NADRA_AGENT');
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 4, 1 from fee_group where name like '%BILLPAYMENT_NADRA_DEFAULT';
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_DEFAULT';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_COMMISSION', 'COMMISSION', 7, 1 from fee_group where name like '%BILLPAYMENT_NADRA_DEFAULT';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_DEFAULT';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 100, 1 from fee_group where name like '%BILLPAYMENT_NADRA_ZINGPAY';
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_ZINGPAY';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_COMMISSION', 'COMMISSION', 100, 1 from fee_group where name like '%BILLPAYMENT_NADRA_ZINGPAY';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_ZINGPAY';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT_MASTER';
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT_MASTER';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT_MASTER';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT_MASTER';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT';
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 1, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%BILLPAYMENT_NADRA_AGENT';

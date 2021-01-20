@@ -16,12 +16,14 @@ import java.util.List;
 public class CalculateCommissionDto {
     private double fee;
     private String feeGroupName;
+    private int feeType;
 
     public static CalculateCommissionDto convertToDto(Object commission) {
         CalculateCommissionDto calculateCommissionDto = new CalculateCommissionDto();
         Object[] objArray = (Object[]) commission;
         calculateCommissionDto.setFee(Double.parseDouble(objArray[0].toString()));
         calculateCommissionDto.setFeeGroupName(objArray[1].toString());
+        calculateCommissionDto.setFeeType(Integer.parseInt(objArray[2].toString()));
         return calculateCommissionDto;
     }
 

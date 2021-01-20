@@ -122,4 +122,8 @@ public class AppUserService {
             return new Status(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
         }
     }
+
+    public List<Object> getAllAccountIdUsernameAccountTypeIdParentIdByAccountId(long accountId) {
+        return appUserRepository.findAllAccountIdUsernameAccountTypeIdParentIdByAccountId(accountId);
+    }
 }
