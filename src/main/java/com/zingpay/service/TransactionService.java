@@ -76,11 +76,6 @@ public class TransactionService {
         return TransactionSummaryDto.convertToDto(transactionDtos);
     }
 
-    public Transaction processTransaction(TransactionDto transactionDto) {
-        Transaction transaction = TransactionDto.convertToEntity(transactionDto);
-        return transactionRepository.save(transaction);
-    }
-
     public TransactionDto convertJSONStringToDto(String jsonString) {
         TransactionDto transactionDto = new TransactionDto();
         try {
@@ -115,8 +110,8 @@ public class TransactionService {
         return null;
     }
 
-    public void save(Transaction transaction) {
-        transactionRepository.save(transaction);
+    public Transaction save(Transaction transaction) {
+        return transactionRepository.save(transaction);
     }
 
     public void saveAll(List<Transaction> transactions) {

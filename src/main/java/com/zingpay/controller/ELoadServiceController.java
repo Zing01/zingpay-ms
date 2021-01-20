@@ -1,10 +1,11 @@
 package com.zingpay.controller;
 
+import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
+import com.zingpay.service.ELoadService;
 import com.zingpay.service.WalletService;
-import com.zingpay.util.Status;
-import com.zingpay.util.StatusMessage;
+import com.zingpay.util.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,19 +26,45 @@ public class ELoadServiceController extends BaseController {
     @Autowired
     private WalletService walletService;
 
-    @GetMapping("/user/{accountId}/amount/{amount}")
-    public Status validateUserOnEload(@RequestHeader("Authorization") String token,
-                                      @PathVariable("accountId") int accountId,
-                                      @PathVariable("amount") double amount) {
-        AppUser appUser = appUserService.getById(accountId);
-        double balance = walletService.getCurrentBalance(accountId);
+    @Autowired
+    private ELoadService eLoadService;
+
+    @PostMapping("/user/eload")
+    public Status validateAndPerformLoad(@RequestHeader("Authorization") String token,
+                                      @RequestBody TransactionDto transactionDto) {
+        AppUser appUser = appUserService.getById(Integer.parseInt(transactionDto.getAccountId()+""));
+        double balance = walletService.getCurrentBalance(Integer.parseInt(transactionDto.getAccountId()+""));
+        Status status = null;
+
+        transactionDto = populateTransactionDtoFields(transactionDto);
+
         if(appUser.getAccountStatusId() == 1) {
-            if(balance < amount) {
+            if(balance < transactionDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }
-            return new Status(StatusMessage.SUCCESS);
+            if(transactionDto.getServiceProvider().equalsIgnoreCase("ZONG")) {
+                status = eLoadService.performZongLoad(transactionDto);
+            } else if(transactionDto.getServiceProvider().equalsIgnoreCase("TELENOR")) {
+                status = eLoadService.performTelenorLoad(transactionDto);
+            }
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
+        return status;
+    }
+
+    private TransactionDto populateTransactionDtoFields(TransactionDto transactionDto) {
+        transactionDto.setRefFrom("zingpay");
+        transactionDto.setTransactionType(TransactionType.DEBIT);
+
+        transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
+        transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"-"+Utils.generateTenDigitsNumber());
+
+        if(transactionDto.getRetailerRefNumber().contains("MOBILE")) {
+            transactionDto.setChannelType(ChannelType.MOBILE);
+        } else if(transactionDto.getRetailerRefNumber().contains("WEB")) {
+            transactionDto.setChannelType(ChannelType.WEB);
+        }
+        return transactionDto;
     }
 }

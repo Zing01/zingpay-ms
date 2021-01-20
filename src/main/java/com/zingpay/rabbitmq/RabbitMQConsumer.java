@@ -64,7 +64,7 @@ public class RabbitMQConsumer {
             String jsonString = new String(message.getBody(), StandardCharsets.UTF_8);
             System.out.println("Message Received : ------- " + jsonString);
             TransactionDto transactionDto = transactionService.convertJSONStringToDto(jsonString);
-            Transaction savedTransaction = transactionService.processTransaction(transactionDto);
+            Transaction savedTransaction = null;//transactionService.processTransaction(transactionDto);
             transactionDto.setId(savedTransaction.getId());
 
             if(transactionDto.getServiceProvider().equalsIgnoreCase("ZONG")) {
@@ -82,49 +82,7 @@ public class RabbitMQConsumer {
     private void processZongTransaction(Transaction savedTransaction, TransactionDto transactionDto) {
         Status statusResponse = null;
         if(transactionDto.getServiceId() == 50) {
-            ZongLoadDto zongLoadDto1 = new ZongLoadDto();
-            ZongLoadDto zongLoadDto = zongLoadDto1.convertTransactionToDto(transactionDto);
-            ZongLoadResponseDto zongLoadResponseDto = new ZongLoadResponseDto();
-            try {
-                if (TokenGenerator.token == null) {
-                    try {
-                        statusResponse = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
-                    } catch (JsonProcessingException ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    statusResponse = zongIntegrationClient.zongLoad(TokenGenerator.token, zongLoadDto);
-                }
-            } catch (FeignException.Unauthorized e) {
-                try {
-                    statusResponse = zongIntegrationClient.zongLoad(tokenGenerator.getTokenFromAuthService(), zongLoadDto);
-                } catch (JsonProcessingException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            if(statusResponse != null) {
-                try {
-                    zongLoadResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), ZongLoadResponseDto.class);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("zongLoadResponseDto " + zongLoadResponseDto);
 
-                if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {
-                    //System.out.println("zongLoadResponseDto.getBossId() " + zongLoadResponseDto.getBossId());
-                    Transaction transaction = transactionService.getById(transactionDto.getId());
-                    transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                    transaction.setDescription(zongLoadResponseDto.getDesc());
-                    transactionService.save(transaction);
-                    //call commission microservice to calculate commission
-                    calculateCommission(transaction);
-                } else {
-                    Transaction transaction = transactionService.getById(transactionDto.getId());
-                    transaction.setDescription(zongLoadResponseDto.getDesc());
-                    transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
-                    transactionService.save(transaction);
-                }
-            }
         } else {
             ZongBundleDto zongBundleDto1 = new ZongBundleDto();
             ZongBundleDto zongBundleDto = zongBundleDto1.convertTransactionToDto(transactionDto);
@@ -175,43 +133,7 @@ public class RabbitMQConsumer {
     private void processTelenorTransaction(Transaction savedTransaction, TransactionDto transactionDto) {
         Status statusResponse = null;
         if(transactionDto.getServiceId() == 150) {
-            TelenorLoadDto telenorLoadDto1 = new TelenorLoadDto();
-            TelenorLoadDto telenorLoadDto = telenorLoadDto1.convertTransactionToDto(transactionDto);
-            TelenorLoadResponseDto telenorLoadResponseDto = new TelenorLoadResponseDto();
 
-            try {
-                if (TokenGenerator.token == null) {
-                    try {
-                        telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
-                    } catch (JsonProcessingException ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(TokenGenerator.token, telenorLoadDto);
-                }
-            } catch (FeignException.Unauthorized e) {
-                try {
-                    telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
-                } catch (JsonProcessingException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-            if (telenorLoadResponseDto != null) {
-                if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
-                    Transaction transaction = transactionService.getById(transactionDto.getId());
-                    transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                    transaction.setDescription(telenorLoadResponseDto.getResultMsg());
-                    transactionService.save(transaction);
-                    //call commission microservice to calculate commission
-                    calculateCommission(transaction);
-                } else {
-                    Transaction transaction = transactionService.getById(transactionDto.getId());
-                    transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
-                    transaction.setDescription(telenorLoadResponseDto.getResultMsg());
-                    transactionService.save(transaction);
-                }
-            }
         } else {
             TelenorBundleDto telenorBundleDto1 = new TelenorBundleDto();
             TelenorBundleDto telenorBundleDto = telenorBundleDto1.convertTransactionToDto(transactionDto);
