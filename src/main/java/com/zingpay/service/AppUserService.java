@@ -117,7 +117,7 @@ public class AppUserService {
             appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
             appUser.setModifiedDateTime(System.currentTimeMillis());
             AppUser savedAppUser = appUserRepository.save(appUser);
-            return new Status(StatusMessage.PASSWORD_RESET_SUCCESS, savedAppUser.getAccountId());
+            return new Status(StatusMessage.PASSWORD_CREATE_SUCCESS, savedAppUser.getAccountId());
         } else {
             return new Status(StatusMessage.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
         }

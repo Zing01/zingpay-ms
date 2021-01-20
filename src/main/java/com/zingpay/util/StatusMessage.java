@@ -21,6 +21,7 @@ public enum StatusMessage {
     SMS_SENT_SUCCESSFULLY(10, "Sms Sent Successfully", HttpStatus.OK),
     USE_EXISTING_TPIN(11, "Please use your existing tpin", HttpStatus.OK),
     SENT_SUCCESSFULLY(12, "Sent Successfully", HttpStatus.OK),
+    PASSWORD_CREATE_SUCCESS(13,"Password created Successfully", HttpStatus.OK),
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(5001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),
     CELL_PHONE_NOT_VALID(5002, "Please enter a valid mobile number", HttpStatus.INTERNAL_SERVER_ERROR),
