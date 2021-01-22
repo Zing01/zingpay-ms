@@ -6,7 +6,10 @@ import com.zingpay.entity.Transaction;
 import com.zingpay.feign.TelenorIntegrationClient;
 import com.zingpay.feign.ZongIntegrationClient;
 import com.zingpay.token.TokenGenerator;
-import com.zingpay.util.*;
+import com.zingpay.util.Status;
+import com.zingpay.util.StatusMessage;
+import com.zingpay.util.TransactionStatus;
+import com.zingpay.util.Utils;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +35,6 @@ public class ELoadService {
 
     @Autowired
     private TelenorIntegrationClient telenorIntegrationClient;
-
-    @Autowired
-    private CalculateCommissionService calculateCommissionService;
 
     public Status performZongLoad(TransactionDto transactionDto) {
         ZongLoadDto zongLoadDto1 = new ZongLoadDto();
@@ -73,8 +73,6 @@ public class ELoadService {
             if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 savedTransaction = transactionService.save(transaction);
-                //call commission microservice to calculate commission
-                calculateCommissionService.calculateCommission(transaction);
                 return new Status(StatusMessage.SUCCESS, savedTransaction);
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
@@ -115,8 +113,6 @@ public class ELoadService {
             if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 savedTransaction = transactionService.save(transaction);
-                //call commission microservice to calculate commission
-                calculateCommissionService.calculateCommission(transaction);
                 return new Status(StatusMessage.SUCCESS, savedTransaction);
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());

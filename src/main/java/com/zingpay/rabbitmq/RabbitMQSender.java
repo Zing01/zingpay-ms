@@ -1,11 +1,12 @@
 package com.zingpay.rabbitmq;
 
-import com.zingpay.dto.TransactionDto;
+import com.zingpay.dto.TransactionCommissionDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 
 /**
  * @author Bilal Hassan on 20-Jan-21
@@ -29,8 +30,8 @@ public class RabbitMQSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void send(TransactionDto transactionDto) {
-        rabbitTemplate.convertAndSend(exchange, routingkey, transactionDto);
-        System.out.println("Send msg = " + transactionDto);
+    public void send(TransactionCommissionDto transactionCommissionDto) {
+        rabbitTemplate.convertAndSend(exchange, routingkey, transactionCommissionDto);
+        System.out.println("Send msg = " + transactionCommissionDto);
     }
 }

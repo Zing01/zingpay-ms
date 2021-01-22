@@ -123,3 +123,10 @@
 /target/classes/com/zingpay/dto/CalculateCommissionDtoToPass.class
 /target/classes/com/zingpay/feign/CalculateCommissionClient.class
 /target/classes/com/zingpay/dto/TransactionCommissionDto.class
+/target/classes/com/zingpay/config/RabbitMQConfig.class
+/target/classes/com/zingpay/controller/CommissionServiceController.class
+/target/classes/com/zingpay/dto/AppUserDtoForCommission.class
+/target/classes/com/zingpay/rabbitmq/RabbitMQSender.class
+/target/classes/com/zingpay/service/BillPaymentService.class
+/target/classes/com/zingpay/service/CalculateCommissionService.class
+/target/classes/com/zingpay/service/ELoadService.class

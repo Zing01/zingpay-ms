@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,30 +77,34 @@ public class TransactionService {
         return TransactionSummaryDto.convertToDto(transactionDtos);
     }
 
-    public TransactionDto convertJSONStringToDto(String jsonString) {
-        TransactionDto transactionDto = new TransactionDto();
+    public List<TransactionDto> convertJSONStringToDto(String jsonString) {
+        List<TransactionDto> transactionDtos = new ArrayList<TransactionDto>();
         try {
-            transactionDto = Utils.parseToObject(jsonString, TransactionDto.class);
-        } catch (JsonProcessingException e) {
+            transactionDtos = Utils.parseJsonToList(jsonString, TransactionDto.class);
+            //transactionDto = Utils.parseToObject(jsonString, TransactionDto.class);
+        } catch (JsonProcessingException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        transactionDto.setRefFrom("zingpay");
 
-        transactionDto.setTransactionStatus(TransactionStatus.PENDING);
-        transactionDto.setTransactionType(TransactionType.DEBIT);
-        if(transactionDto.getRetailerRefNumber().contains("MOBILE")) {
-            transactionDto.setChannelType(ChannelType.MOBILE);
-        } else if(transactionDto.getRetailerRefNumber().contains("WEB")) {
-            transactionDto.setChannelType(ChannelType.WEB);
-        }
-        if(transactionDto.getServiceProvider().equals("NADRA")) {
-            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BILL_PAYMENT);
-        } else {
-            transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
-            transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"-"+Utils.generateTenDigitsNumber());
-        }
+        transactionDtos.forEach(transactionDto -> {
+            transactionDto.setRefFrom("zingpay");
 
-        return transactionDto;
+            transactionDto.setTransactionStatus(TransactionStatus.PENDING);
+            transactionDto.setTransactionType(TransactionType.DEBIT);
+            if(transactionDto.getRetailerRefNumber().contains("MOBILE")) {
+                transactionDto.setChannelType(ChannelType.MOBILE);
+            } else if(transactionDto.getRetailerRefNumber().contains("WEB")) {
+                transactionDto.setChannelType(ChannelType.WEB);
+            }
+            if(transactionDto.getServiceProvider().equals("NADRA")) {
+                transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BILL_PAYMENT);
+            } else {
+                transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
+                transactionDto.setRetailerRefNumber(transactionDto.getRetailerRefNumber()+"-"+Utils.generateTenDigitsNumber());
+            }
+        });
+
+        return transactionDtos;
     }
 
     public Transaction getById(long id) {

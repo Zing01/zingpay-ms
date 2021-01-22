@@ -1,15 +1,12 @@
 package com.zingpay.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.AppUserDtoForCommission;
 import com.zingpay.dto.CalculateCommissionDto;
 import com.zingpay.dto.TransactionCommissionDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.Transaction;
-import com.zingpay.feign.CalculateCommissionClient;
-import com.zingpay.token.TokenGenerator;
+import com.zingpay.rabbitmq.RabbitMQSender;
 import com.zingpay.util.ZingpayTransactionType;
-import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -32,11 +29,14 @@ public class CalculateCommissionService {
     @Autowired
     private TransactionService transactionService;
 
-    @Autowired
+    /*@Autowired
     private CalculateCommissionClient calculateCommissionClient;
 
     @Autowired
-    private TokenGenerator tokenGenerator;
+    private TokenGenerator tokenGenerator;*/
+
+    @Autowired
+    private RabbitMQSender rabbitMQSender;
 
     @Async
     public void calculateCommission(Transaction transaction) {
@@ -50,7 +50,9 @@ public class CalculateCommissionService {
         transactionCommissionDto.setTransactionDto(transactionDto1);
         transactionCommissionDto.setAppUserDtoForCommissions(AppUserDtoForCommission.convertToDto(objs));
 
-        List<TransactionDto> transactionDtos = null;
+        rabbitMQSender.send(transactionCommissionDto);
+
+        /*List<TransactionDto> transactionDtos = null;
         try {
             if (TokenGenerator.token == null) {
                 try {
@@ -68,6 +70,6 @@ public class CalculateCommissionService {
                 ex.printStackTrace();
             }
         }
-        transactionService.saveAll(TransactionDto.convertToEntity(transactionDtos));
+        transactionService.saveAll(TransactionDto.convertToEntity(transactionDtos));*/
     }
 }

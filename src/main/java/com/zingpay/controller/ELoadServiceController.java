@@ -3,6 +3,7 @@ package com.zingpay.controller;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
+import com.zingpay.service.CalculateCommissionService;
 import com.zingpay.service.ELoadService;
 import com.zingpay.service.WalletService;
 import com.zingpay.util.*;
@@ -29,7 +30,10 @@ public class ELoadServiceController extends BaseController {
     @Autowired
     private ELoadService eLoadService;
 
-    @PostMapping("/user/eload")
+    @Autowired
+    private CalculateCommissionService calculateCommissionService;
+
+    @PostMapping
     public Status validateAndPerformLoad(@RequestHeader("Authorization") String token,
                                       @RequestBody TransactionDto transactionDto) {
         AppUser appUser = appUserService.getById(Integer.parseInt(transactionDto.getAccountId()+""));
@@ -49,6 +53,9 @@ public class ELoadServiceController extends BaseController {
             }
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
+        }
+        if(status.getCode()==1) {
+            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDto));
         }
         return status;
     }

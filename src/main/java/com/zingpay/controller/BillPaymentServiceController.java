@@ -1,12 +1,9 @@
 package com.zingpay.controller;
 
-import com.zingpay.dto.BundleDetailsDto;
-import com.zingpay.dto.BundleDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
-import com.zingpay.entity.Bundle;
 import com.zingpay.service.AppUserService;
-import com.zingpay.service.BundleService;
+import com.zingpay.service.BillPaymentService;
 import com.zingpay.service.CalculateCommissionService;
 import com.zingpay.service.WalletService;
 import com.zingpay.util.*;
@@ -14,20 +11,21 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- * @author Bilal Hassan on 07-Jan-21
+ * @author Bilal Hassan on 22-Jan-21
  * @project zingpay-ms
  */
 
 @RestController
-@RequestMapping("/bundle/service")
-@Api(value = "bundle", description = "Controller for bundles")
-public class BundleServiceController extends BaseController {
+@RequestMapping("/billpayment/service")
+@Api(value = "billpayment", description = "Controller for billpayment")
+public class BillPaymentServiceController extends BaseController {
 
     @Autowired
-    private BundleService bundleService;
+    private BillPaymentService billPaymentService;
+
+    @Autowired
+    private CalculateCommissionService calculateCommissionService;
 
     @Autowired
     private AppUserService appUserService;
@@ -35,23 +33,9 @@ public class BundleServiceController extends BaseController {
     @Autowired
     private WalletService walletService;
 
-    @Autowired
-    private CalculateCommissionService calculateCommissionService;
-
-    @GetMapping("/{network}")
-    public Status getBundles(@RequestHeader("Authorization") String token,
-                             @PathVariable("network") String network) {
-        List<Bundle> bundles = bundleService.getBundles(network);
-        List<BundleDto> bundleDtos = Bundle.convertToDto(bundles);
-        BundleDetailsDto bundleDetailsDto = new BundleDetailsDto();
-        bundleDetailsDto.setBundleDto(bundleDtos);
-        bundleDetailsDto.setCategories(new String[]{"All", "Popular", "Data", "Monthly Hybrid", "Weekly Hybrid", "SMS", "IR Bundle", "Call"});
-        return new Status(StatusMessage.SUCCESS, bundleDetailsDto);
-    }
-
     @PostMapping
-    public Status validateUserAndSubscribeBundle(@RequestHeader("Authorization") String token,
-                                                 @RequestBody TransactionDto transactionDto) {
+    public Status performNadraBillPayment(@RequestHeader("Authorization") String token,
+                                          @RequestBody TransactionDto transactionDto) {
         AppUser appUser = appUserService.getById(Integer.parseInt(transactionDto.getAccountId()+""));
         double balance = walletService.getCurrentBalance(Integer.parseInt(transactionDto.getAccountId()+""));
         Status status = null;
@@ -62,14 +46,11 @@ public class BundleServiceController extends BaseController {
             if(balance < transactionDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }
-            if(transactionDto.getServiceProvider().equalsIgnoreCase("ZONG")) {
-                status = bundleService.subscribeZongBundle(transactionDto);
-            } else if(transactionDto.getServiceProvider().equalsIgnoreCase("TELENOR")) {
-                status = bundleService.subscribeTelenorBundle(transactionDto);
-            }
+            billPaymentService.performNadraBillPayment(transactionDto);
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
+
         if(status.getCode()==1) {
             calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDto));
         }
