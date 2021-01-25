@@ -25,20 +25,26 @@ public class SmsService {
     private SmsSender smsSender;
 
     @Async
-    public void sendSignupSms(AppUser appUser) throws MessagingException {
+    public void sendSignupSms(AppUser appUser) {
         SmsDto smsDto = smsTemplate.createSignupSms(appUser);
         smsSender.sendSms(smsDto);
     }
 
     @Async
-    public void sendSuccessActivationSms(AppUser appUser) throws MessagingException {
+    public void sendSuccessActivationSms(AppUser appUser) {
         SmsDto smsDto = smsTemplate.createSuccessActivationSms(appUser);
         smsSender.sendSms(smsDto);
     }
 
     @Async
-    public void sendForgetPasswordSms(AppUser appUser) throws MessagingException {
+    public void sendForgetPasswordSms(AppUser appUser) {
         SmsDto smsDto = smsTemplate.createForgetPasswordSms(appUser);
+        smsSender.sendSms(smsDto);
+    }
+
+    @Async
+    public void sendNewDeviceSms(AppUser appUser) {
+        SmsDto smsDto = smsTemplate.createNewDeviceSms(appUser);
         smsSender.sendSms(smsDto);
     }
 }

@@ -277,4 +277,31 @@ public class UnsecuredController extends BaseController {
             return response(StatusMessage.PASSWORD_RESET_FAILED);
         }
     }
+
+    @ApiOperation(value = "Send notification when user is trying to login from new device", response = Status.class)
+    @PostMapping("/new-device-notification")
+    public void sendNotificationForNewDevice(@RequestBody int accountId) {
+        AppUser appUser = appUserService.getById(accountId);
+        appUser.setPin(Utils.generateFourDigitPin()+"");
+        appUserService.saveWithoutChangingPassword(appUser);
+        try {
+            emailService.sendNewDeviceEmail(appUser);
+            smsService.sendNewDeviceSms(appUser);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ApiOperation(value = "Verify otp when logged in from new device and update device id", response = Status.class)
+    @PostMapping("/verify-otp-and-register-new-device")
+    public Status verifyOTPAndRegisterNewDevice(@RequestBody AppUserDto appUserDto) {
+        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+        if(appUser.getPin().equals(appUserDto.getPin())) {
+            appUser.setDeviceId(appUserDto.getDeviceId());
+            appUserService.saveWithoutChangingPassword(appUser);
+            return response(StatusMessage.PIN_VALIDATION_SUCCESS);
+        } else {
+            return response(StatusMessage.PIN_NOT_VALID);
+        }
+    }
 }

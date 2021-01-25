@@ -39,4 +39,13 @@ public class SmsTemplate {
         smsDto.setText(text);
         return smsDto;
     }
+
+    public SmsDto createNewDeviceSms(AppUser appUser) {
+        String to = appUser.getCellPhone();
+        String text = "<#>Hi " + appUser.getFullName() + ",\nPlease use this code for verification of new device: " + appUser.getPin();
+        SmsDto smsDto = new SmsDto();
+        smsDto.setTo(to);
+        smsDto.setText(text);
+        return smsDto;
+    }
 }

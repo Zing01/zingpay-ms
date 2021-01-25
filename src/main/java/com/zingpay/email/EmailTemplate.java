@@ -49,4 +49,15 @@ public class EmailTemplate {
         return emailDto;
     }
 
+    public EmailDto createNewDeviceEmail(AppUser appUser) {
+        String to = appUser.getEmail();
+        String text = "Hi " + appUser.getFullName() + ",\nPlease use this code for verification of new device: " + appUser.getPin();
+        String subject = "Logged in from new Device";
+        EmailDto emailDto = new EmailDto();
+        emailDto.setTo(to);
+        emailDto.setText(text);
+        emailDto.setSubject(subject);
+        return emailDto;
+    }
+
 }

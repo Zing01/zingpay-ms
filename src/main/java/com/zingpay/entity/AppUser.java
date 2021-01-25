@@ -108,6 +108,8 @@ public class AppUser {
     private int kycStatusId;
     @Column(name = "kyc_description")
     private String kycDescription;
+    @Column(name = "device_id")
+    private String deviceId;
 
     public static AppUserDto convertToDto(AppUser appUser) {
         AppUserDto appUserDto = new AppUserDto();
@@ -218,6 +220,7 @@ public class AppUser {
         }
 
         appUserDto.setKycDescription(appUser.getKycDescription());
+        appUserDto.setDeviceId(appUser.getDeviceId());
 
         return appUserDto;
     }

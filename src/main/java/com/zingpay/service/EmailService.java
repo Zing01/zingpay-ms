@@ -41,4 +41,10 @@ public class EmailService {
         EmailDto emailDto = emailTemplate.createForgetPasswordEmail(appUser);
         emailSender.sendEmail(emailDto);
     }
+
+    @Async
+    public void sendNewDeviceEmail(AppUser appUser) throws MessagingException {
+        EmailDto emailDto = emailTemplate.createNewDeviceEmail(appUser);
+        emailSender.sendEmail(emailDto);
+    }
 }

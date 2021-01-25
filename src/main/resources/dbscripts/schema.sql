@@ -201,3 +201,6 @@ alter table app_user
 
 alter table app_user
     add kyc_description varchar(255) null;
+
+alter table app_user
+    add device_id varchar(255) not null;

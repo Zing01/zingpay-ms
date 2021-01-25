@@ -62,6 +62,7 @@ public class AppUserDto {
     private String mPin;
     private KycStatus kycStatus;
     private String kycDescription;
+    private String deviceId;
 
     public static AppUser convertToEntity(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();
@@ -133,6 +134,7 @@ public class AppUserDto {
             appUser.setKycStatusId(appUserDto.getKycStatus().getId());
         }
         appUser.setKycDescription(appUserDto.getKycDescription());
+        appUser.setDeviceId(appUserDto.getDeviceId());
 
         return appUser;
     }

@@ -126,4 +126,8 @@ public class AppUserService {
     public List<Object> getAllAccountIdUsernameAccountTypeIdParentIdByAccountId(long accountId) {
         return appUserRepository.findAllAccountIdUsernameAccountTypeIdParentIdByAccountId(accountId);
     }
+
+    public void saveWithoutChangingPassword(AppUser appUser) {
+        appUserRepository.save(appUser);
+    }
 }
