@@ -73,7 +73,8 @@ public class ELoadService {
             if (zongLoadResponseDto.getBossId() != null && !zongLoadResponseDto.getBossId().equals("")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 savedTransaction = transactionService.save(transaction);
-                return new Status(StatusMessage.SUCCESS, savedTransaction);
+                TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                 savedTransaction = transactionService.save(transaction);
