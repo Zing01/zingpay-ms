@@ -85,7 +85,8 @@ public class BundleService {
             if (zongBundleResponseDto.getDesc().contains("success")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 savedTransaction = transactionService.save(transaction);
-                return new Status(StatusMessage.SUCCESS, savedTransaction);
+                TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                 savedTransaction = transactionService.save(transaction);
@@ -129,7 +130,8 @@ public class BundleService {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 transaction.setDescription(telenorBundleResponseDto.getMessage());
                 savedTransaction = transactionService.save(transaction);
-                return new Status(StatusMessage.SUCCESS, savedTransaction);
+                TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                 transaction.setDescription(telenorBundleResponseDto.getErrorMessage());
