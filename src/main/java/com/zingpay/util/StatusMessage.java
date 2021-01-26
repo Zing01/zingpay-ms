@@ -60,6 +60,7 @@ public enum StatusMessage {
     CNIC_ISSUE_DATE_CANNOT_BE_OF_FUTURE(5034, "You cannot enter future date", HttpStatus.INTERNAL_SERVER_ERROR),
     TRANSACTION_DATE_CANNOT_BE_OF_FUTURE(5035, "You cannot enter future date", HttpStatus.INTERNAL_SERVER_ERROR),
     SENT_FAILED(5036, "Unable to send", HttpStatus.INTERNAL_SERVER_ERROR),
+    ACCOUNT_NOT_ACTIVE_OR_USER_DOES_NOT_EXIST(5037, "User with this mobile number does not exist or account is not active", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

@@ -132,3 +132,7 @@
 /target/classes/com/zingpay/service/ELoadService.class
 /target/classes/com/zingpay/dto/AppUserDtoForCommission.class
 /target/classes/com/zingpay/service/ELoadService.class
+/target/classes/com/zingpay/controller/CashDepositController.class
+/target/classes/com/zingpay/dto/AppUserCashDepositDto.class
+/target/classes/com/zingpay/dto/TransactionCashDepositDto.class
+/target/classes/com/zingpay/util/PaymentType.class

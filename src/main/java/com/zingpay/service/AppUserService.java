@@ -130,4 +130,8 @@ public class AppUserService {
     public void saveWithoutChangingPassword(AppUser appUser) {
         appUserRepository.save(appUser);
     }
+
+    public AppUser getActiveByUsername(String cellPhone) {
+        return appUserRepository.findByUsernameAndAccountStatusId(cellPhone, 1);
+    }
 }
