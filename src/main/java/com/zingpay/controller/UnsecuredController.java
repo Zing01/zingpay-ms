@@ -280,16 +280,19 @@ public class UnsecuredController extends BaseController {
 
     @ApiOperation(value = "Send notification when user is trying to login from new device", response = Status.class)
     @PostMapping("/new-device-notification")
-    public Status sendNotificationForNewDevice(@RequestBody int accountId) {
-        AppUser appUser = appUserService.getById(accountId);
-        appUser.setPin(Utils.generateFourDigitPin()+"");
-        appUserService.saveWithoutChangingPassword(appUser);
-        try {
-            emailService.sendNewDeviceEmail(appUser);
-            smsService.sendNewDeviceSms(appUser);
-            return response(StatusMessage.SUCCESS);
-        } catch (MessagingException e) {
-            e.printStackTrace();
+    public Status sendNotificationForNewDevice(@RequestBody AppUserDto appUserDto) {
+        AppUser appUser = appUserService.getById(appUserDto.getAccountId());
+        if(appUser != null) {
+            appUser.setPin(Utils.generateFourDigitPin() + "");
+            appUserService.saveWithoutChangingPassword(appUser);
+            try {
+                emailService.sendNewDeviceEmail(appUser);
+                smsService.sendNewDeviceSms(appUser);
+                return response(StatusMessage.SUCCESS);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            return response(StatusMessage.FAILURE);
         }
         return response(StatusMessage.FAILURE);
     }
