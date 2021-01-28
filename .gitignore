@@ -136,3 +136,9 @@
 /target/classes/com/zingpay/dto/AppUserCashDepositDto.class
 /target/classes/com/zingpay/dto/TransactionCashDepositDto.class
 /target/classes/com/zingpay/util/PaymentType.class
+/target/classes/com/zingpay/controller/CashWithdrawalController.class
+/target/classes/com/zingpay/dto/AppUserCashDepositWithdrawalDto.class
+/target/classes/com/zingpay/dto/CashDepositDto.class
+/target/classes/com/zingpay/dto/CashDepositTransactionDto.class
+/target/classes/com/zingpay/dto/CashWithdrawalDto.class
+/target/classes/com/zingpay/entity/CashDepositTransaction.class

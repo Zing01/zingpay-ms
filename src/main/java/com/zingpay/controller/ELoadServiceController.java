@@ -1,5 +1,6 @@
 package com.zingpay.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
@@ -55,7 +56,13 @@ public class ELoadServiceController extends BaseController {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
         if(status.getCode()==1) {
-            TransactionDto transactionDtoForCommission = (TransactionDto) status.getAdditionalDetail();
+            TransactionDto transactionDtoForCommission = null;
+            try {
+                transactionDtoForCommission = Utils.parseToObject(Utils.parseObjectToJson(status.getAdditionalDetail()), TransactionDto.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
             calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
         }
         return status;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(value = "${feign.telenorintegration.name}", url = "${feign.telenorintegration.url:#{null}}")
 public interface TelenorIntegrationClient {
     @PostMapping("/load")
-    TelenorLoadResponseDto telenorLoad(@RequestHeader(name = "Authorization") String token, @RequestBody TelenorLoadDto telenorLoadDto);
+    Status telenorLoad(@RequestHeader(name = "Authorization") String token, @RequestBody TelenorLoadDto telenorLoadDto);
 
     @PostMapping("/bundle")
     Status subscribeBundle(@RequestHeader(name = "Authorization") String token, @RequestBody TelenorBundleDto telenorBundleDto);

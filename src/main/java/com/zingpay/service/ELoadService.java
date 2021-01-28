@@ -92,25 +92,30 @@ public class ELoadService {
         try {
             if (TokenGenerator.token == null) {
                 try {
-                    telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
+                    statusResponse = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
                 } catch (JsonProcessingException ex) {
                     ex.printStackTrace();
                 }
             } else {
-                telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(TokenGenerator.token, telenorLoadDto);
+                statusResponse = telenorIntegrationClient.telenorLoad(TokenGenerator.token, telenorLoadDto);
             }
         } catch (FeignException.Unauthorized e) {
             try {
-                telenorLoadResponseDto = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
+                statusResponse = telenorIntegrationClient.telenorLoad(tokenGenerator.getTokenFromAuthService(), telenorLoadDto);
             } catch (JsonProcessingException ex) {
                 ex.printStackTrace();
             }
         }
 
-        Transaction transaction = TransactionDto.convertToEntity(transactionDto);
-        transaction.setDescription(telenorLoadResponseDto.getResultMsg());
-
-        if (telenorLoadResponseDto != null) {
+        if (statusResponse != null) {
+            try {
+                telenorLoadResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), TelenorLoadResponseDto.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            Transaction transaction = TransactionDto.convertToEntity(transactionDto);
+            transaction.setDescription(telenorLoadResponseDto.getResultMsg());
+            
             if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 savedTransaction = transactionService.save(transaction);
