@@ -69,7 +69,8 @@ public class BillPaymentService {
                         transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                         transaction.setDescription(billPaymentResponseDto.getStatus());
                         savedTransaction = transactionService.save(transaction);
-                        return new Status(StatusMessage.SUCCESS, savedTransaction);
+                        TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                        return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
                     } else {
                         transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                         savedTransaction = transactionService.save(transaction);

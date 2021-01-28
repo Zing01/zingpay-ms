@@ -8,7 +8,8 @@ package com.zingpay.util;
 public enum ChannelType {
 
     MOBILE(1, "Mobile", "mobile"),
-    WEB(2, "Web", "web");
+    WEB(2, "Web", "web"),
+    PARTNER(3, "Partner", "partner");
 
     private ChannelType(int id, String value, String description) {
         this.id = id;

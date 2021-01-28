@@ -55,7 +55,8 @@ public class ELoadServiceController extends BaseController {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
         if(status.getCode()==1) {
-            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDto));
+            TransactionDto transactionDtoForCommission = (TransactionDto) status.getAdditionalDetail();
+            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
         }
         return status;
     }

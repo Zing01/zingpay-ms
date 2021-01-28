@@ -14,8 +14,11 @@ import java.util.List;
 @Repository
 public interface AppUserRepository extends BaseRepository<AppUser, Integer> {
     AppUser findByEmail(String email);
+
     AppUser findByAccountId(int accountId);
+
     AppUser findByCellPhone(String cellPhone);
+
     AppUser findByUsernameAndAccountStatusId(String username, int status);
 
     /*@Query(value = "SELECT account_id, username, parent_id, account_type_id, name as group_name FROM " +

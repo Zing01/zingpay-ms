@@ -14,7 +14,8 @@ public enum ZingpayTransactionType {
     TX_COMMISSION(5, "TX_COMMISSION", "Commission", false),
     TX_SERVICE_CHARGE(6, "TX_SERVICE_CHARGE", "Service charge", false),
     TX_LOAD(7, "TX_LOAD", "Load", true),
-    TX_CASH_IN(8, "TX_CASH_IN", "Cash in", true);
+    TX_CASH_IN(8, "TX_CASH_IN", "Cash in", true),
+    TX_CASH_OUT(9, "TX_CASH_OUT", "Cash out", true);
 
 
     private ZingpayTransactionType(int id, String value, String description, boolean primaryFlag) {

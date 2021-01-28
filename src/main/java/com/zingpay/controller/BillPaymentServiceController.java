@@ -46,13 +46,14 @@ public class BillPaymentServiceController extends BaseController {
             if(balance < transactionDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }
-            billPaymentService.performNadraBillPayment(transactionDto);
+            status = billPaymentService.performNadraBillPayment(transactionDto);
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
 
         if(status.getCode()==1) {
-            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDto));
+            TransactionDto transactionDtoForCommission = (TransactionDto) status.getAdditionalDetail();
+            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
         }
         return status;
     }
