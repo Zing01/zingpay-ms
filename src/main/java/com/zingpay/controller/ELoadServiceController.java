@@ -3,10 +3,8 @@ package com.zingpay.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
-import com.zingpay.service.AppUserService;
-import com.zingpay.service.CalculateCommissionService;
-import com.zingpay.service.ELoadService;
-import com.zingpay.service.WalletService;
+import com.zingpay.entity.ServiceProvider;
+import com.zingpay.service.*;
 import com.zingpay.util.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,9 @@ public class ELoadServiceController extends BaseController {
     @Autowired
     private CalculateCommissionService calculateCommissionService;
 
+    @Autowired
+    private ServiceProviderService serviceProviderService;
+
     @PostMapping
     public Status validateAndPerformLoad(@RequestHeader("Authorization") String token,
                                       @RequestBody TransactionDto transactionDto) {
@@ -47,9 +48,14 @@ public class ELoadServiceController extends BaseController {
             if(balance < transactionDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }
+
             if(transactionDto.getServiceProvider().equalsIgnoreCase("ZONG")) {
+                ServiceProvider serviceProvider = serviceProviderService.getByServiceProviderDisplayName("zong");
+                transactionDto.setServiceProvider(serviceProvider.getId()+"");
                 status = eLoadService.performZongLoad(transactionDto);
             } else if(transactionDto.getServiceProvider().equalsIgnoreCase("TELENOR")) {
+                ServiceProvider serviceProvider = serviceProviderService.getByServiceProviderDisplayName("telenor");
+                transactionDto.setServiceProvider(serviceProvider.getId()+"");
                 status = eLoadService.performTelenorLoad(transactionDto);
             }
         } else {

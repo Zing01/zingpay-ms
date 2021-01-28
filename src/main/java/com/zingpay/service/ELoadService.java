@@ -66,6 +66,10 @@ public class ELoadService {
                 e.printStackTrace();
             }
             System.out.println("zongLoadResponseDto " + zongLoadResponseDto);
+            System.out.println("zongLoadResponseDto.getDesc() " + zongLoadResponseDto.getDesc());
+            System.out.println("zongLoadResponseDto.getBossId() " + zongLoadResponseDto.getBossId());
+            System.out.println("zongLoadResponseDto.getRequestId() " + zongLoadResponseDto.getRequestId());
+            System.out.println("zongLoadResponseDto.getRetn() " + zongLoadResponseDto.getRetn());
 
             Transaction transaction = TransactionDto.convertToEntity(transactionDto);
             transaction.setDescription(zongLoadResponseDto.getDesc());
