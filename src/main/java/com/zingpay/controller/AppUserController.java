@@ -69,7 +69,7 @@ public class AppUserController extends BaseController {
                 appUser.setKycStatusId(KycStatus.SUBMIT.getId());
                 appUser.setKycDescription("");
 
-                AppUser savedAppUser = appUserService.update(appUser);
+                AppUser savedAppUser = appUserService.saveWithoutChangingPassword(appUser);
                 return new Status(StatusMessage.ACCOUNT_SETUP_SUCCESS, savedAppUser.getAccountId());
             } else {
                 return status;

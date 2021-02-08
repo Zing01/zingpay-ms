@@ -127,8 +127,8 @@ public class AppUserService {
         return appUserRepository.findAllAccountIdUsernameAccountTypeIdParentIdByAccountId(accountId);
     }
 
-    public void saveWithoutChangingPassword(AppUser appUser) {
-        appUserRepository.save(appUser);
+    public AppUser saveWithoutChangingPassword(AppUser appUser) {
+        return appUserRepository.save(appUser);
     }
 
     public AppUser getActiveByUsername(String cellPhone) {
