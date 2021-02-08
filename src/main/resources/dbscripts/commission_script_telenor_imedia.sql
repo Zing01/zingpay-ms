@@ -140,39 +140,39 @@ insert into user_group_service_fee_group (user_group_id, service_fee_group_id, A
 insert into user_group_service_fee_group (user_group_id, service_fee_group_id, ACTIVE_IND) select (SELECT USER_GROUP_ID from user_group where NAME = 'IMEDIA_CABLE_DISTRIBUTOR_HANDLERS'), service_fee_group_id, 1 from service_fee_group where service_id = 166 and fee_group_id in (select fee_group_id from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS');
 
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 4, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 100, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_HANDLERS';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_HANDLERS';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_OPERATOR';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_OPERATOR';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_OPERATOR';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_OPERATOR_HANDLERS';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_OPERATOR_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_OPERATOR_HANDLERS';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_DISTRIBUTOR';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_DISTRIBUTOR';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_DISTRIBUTOR';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS';
 
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 4, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 100, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_HANDLERS';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_HANDLERS';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_OPERATOR';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_OPERATOR';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_OPERATOR';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_OPERATOR_HANDLERS';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_OPERATOR_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_OPERATOR_HANDLERS';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR';
 
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'BUNDLE_TELENOR_IMEDIA_CABLE_DISTRIBUTOR_HANDLERS';
