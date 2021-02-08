@@ -2,6 +2,7 @@ package com.zingpay.controller;
 
 import com.zingpay.dto.BundleDetailsDto;
 import com.zingpay.dto.BundleDto;
+import com.zingpay.dto.CommissionDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.entity.Bundle;
@@ -71,7 +72,12 @@ public class BundleServiceController extends BaseController {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
         if(status.getCode()==1) {
-            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDto));
+            //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
+            CommissionDto commissionDto = new CommissionDto();
+            commissionDto.setAccountId(Integer.parseInt(transactionDto.getAccountId()+""));
+            commissionDto.setServiceId(transactionDto.getServiceId());
+            commissionDto.setTransactionId(transactionDto.getId());
+            calculateCommissionService.calculateCommission(commissionDto);
         }
         return status;
     }

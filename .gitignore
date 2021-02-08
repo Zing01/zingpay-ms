@@ -142,3 +142,9 @@
 /target/classes/com/zingpay/dto/CashDepositTransactionDto.class
 /target/classes/com/zingpay/dto/CashWithdrawalDto.class
 /target/classes/com/zingpay/entity/CashDepositTransaction.class
+/target/classes/com/zingpay/dto/CommissionDto.class
+/target/classes/com/zingpay/dto/ServiceProviderDto.class
+/target/classes/com/zingpay/entity/ServiceProvider.class
+/target/classes/com/zingpay/repository/ServiceProviderRepository.class
+/target/classes/com/zingpay/service/ServiceProviderService.class
+/target/classes/com/zingpay/util/FeeType.class

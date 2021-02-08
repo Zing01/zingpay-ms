@@ -41,6 +41,8 @@ create table app_user
     cnic_back longblob null,
     other_attachment longblob null,
     m_pin varchar(255) null,
+    lat varchar(255) null,
+    lng varchar(255) null,
     constraint app_user_pk
         primary key (account_id)
 );
@@ -181,7 +183,7 @@ create table zingpay_transaction_type
         primary key (zingpay_transaction_type_id)
 );
 
-create table organization_branch
+/*create table organization_branch
 (
     branch_id int auto_increment,
     organization_id int null,
@@ -191,6 +193,38 @@ create table organization_branch
     default_retailer_group_id int null,
     constraint organization_branch_pk
         primary key (branch_id)
+);*/
+
+CREATE TABLE organization
+(
+    ORGANIZATION_ID int(11) NOT NULL AUTO_INCREMENT,
+    ORGANIZATION_NAME varchar(45) DEFAULT NULL,
+    DESCRIPTION varchar(45) DEFAULT NULL,
+    PRIMARY KEY (ORGANIZATION_ID),
+    UNIQUE KEY ORG_NAME_UNQ (ORGANIZATION_NAME)
+);
+
+CREATE TABLE org_branch
+(
+    BRANCH_ID int(15) NOT NULL AUTO_INCREMENT,
+    ORGANIZATION_ID int(15) NOT NULL,
+    BRANCH_NAME varchar(45) DEFAULT NULL,
+    DESCRIPTION varchar(45) DEFAULT NULL,
+    IS_DEFAULT tinyint(4) DEFAULT '0',
+    DEFAULT_RETAILER_GROUP_ID int(15) DEFAULT NULL,
+    PRIMARY KEY (BRANCH_ID),
+    KEY FK_ORGANIZATION_BRANCH (ORGANIZATION_ID),
+    CONSTRAINT FK_ORGANIZATION_BRANCH FOREIGN KEY (ORGANIZATION_ID)
+        REFERENCES organization (ORGANIZATION_ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+create table ref_payment_type
+(
+    id int auto_increment not null,
+    value varchar(255) null,
+    description varchar(255) null,
+    constraint ref_payment_type_pk
+        primary key (id)
 );
 
 create unique index app_user_cnic_number_uindex
@@ -204,3 +238,37 @@ alter table app_user
 
 alter table app_user
     add device_id varchar(255) not null;
+
+CREATE TABLE cash_deposit_transaction (
+    CASH_DEPOSIT_TRANSACTION_ID int(11) NOT NULL AUTO_INCREMENT,
+    ACCOUNT_ID int(11) DEFAULT NULL,
+    TRANSACTION_REFERENCE varchar(45) DEFAULT NULL,
+    RECEPIENT_ACCOUNT_ID int(11) DEFAULT NULL,
+    CASH_DEPOSIT_TYPE_ID int(11) DEFAULT NULL,
+    CURRENT_STATUS_ID int(11) DEFAULT NULL,
+    SENDER_ACCOUNT_ID int(11) DEFAULT NULL,
+    AMOUNT double(21,2) DEFAULT NULL,
+    DESCRIPTION varchar(100) DEFAULT NULL,
+    CASH_DEPOSIT_DATETIME datetime DEFAULT NULL,
+    BANK_NAME varchar(45) DEFAULT NULL,
+    BANK_BRANCH varchar(45) DEFAULT NULL,
+    CASH_DEPOSIT_REFERENCE varchar(45) DEFAULT NULL,
+    SENDER_CNIC varchar(45) DEFAULT NULL,
+    SENDER_FULL_NAME varchar(45) DEFAULT NULL,
+    SENDER_CELL_PHONE varchar(15) DEFAULT NULL,
+    MODIFIED_BY int(11) DEFAULT NULL,
+    MODIFIED_DATETIME datetime DEFAULT NULL,
+    PRIMARY KEY (CASH_DEPOSIT_TRANSACTION_ID) USING BTREE,
+    KEY FK_CASH_DEPOSIT_TRANSACTION_02_idx (CASH_DEPOSIT_TYPE_ID),
+    KEY FK_CASH_DEPOSIT_TRANSACTION_03_idx (CURRENT_STATUS_ID),
+    KEY FK_CASH_DEPOSIT_TRANSACTION_04_idx (RECEPIENT_ACCOUNT_ID),
+    KEY FK_CASH_DEPOSIT_TRANSACTION_05_idx (SENDER_ACCOUNT_ID),
+    KEY FK_CASH_DEPOSIT_TRANSACTION_06 (CASH_DEPOSIT_DATETIME),
+    KEY FK_CASH_DEPOSIT_TRANSACTION_07_idx (TRANSACTION_REFERENCE),
+    KEY CASH_DEPOSIT_TRAN_IDX (ACCOUNT_ID,CURRENT_STATUS_ID),
+    CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_01 FOREIGN KEY (ACCOUNT_ID) REFERENCES app_user (ACCOUNT_ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_02 FOREIGN KEY (CASH_DEPOSIT_TYPE_ID) REFERENCES ref_payment_type (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    -- CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_03 FOREIGN KEY (CURRENT_STATUS_ID) REFERENCES ref_request_status (REQUEST_STATUS_ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_04 FOREIGN KEY (RECEPIENT_ACCOUNT_ID) REFERENCES app_user (ACCOUNT_ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_05 FOREIGN KEY (SENDER_ACCOUNT_ID) REFERENCES app_user (ACCOUNT_ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+);

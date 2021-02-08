@@ -1,6 +1,7 @@
 package com.zingpay.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.zingpay.dto.CommissionDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.entity.ServiceProvider;
@@ -69,7 +70,12 @@ public class ELoadServiceController extends BaseController {
                 e.printStackTrace();
             }
 
-            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
+            //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
+            CommissionDto commissionDto = new CommissionDto();
+            commissionDto.setAccountId(Integer.parseInt(transactionDto.getAccountId()+""));
+            commissionDto.setServiceId(transactionDto.getServiceId());
+            commissionDto.setTransactionId(transactionDtoForCommission.getId());
+            calculateCommissionService.calculateCommission(commissionDto);
         }
         return status;
     }

@@ -26,4 +26,6 @@ INSERT INTO `zingpay_transaction_type` VALUES (1,'TX_RECHARGE','rep portal fund 
 
 INSERT INTO user_group VALUES (1, 'DEFAULT', null, null, null, 1), (2, 'ZINGPAY', null, null, null, 1), (3, 'AGENT_MASTER', null, null, null, 1), (4, 'AGENT', null, null, null, 1);
 
-insert into ref_fee_type (FEE_TYPE_ID, FEE_TYPE, DESCRIPTION) VALUES (1, 'ABSOLUTE', 'Service Fee in amount'), (2, 'VARIABLE', 'Service Fee in percentage');
+INSERT INTO ref_fee_type (FEE_TYPE_ID, FEE_TYPE, DESCRIPTION) VALUES (1, 'ABSOLUTE', 'Service Fee in amount'), (2, 'VARIABLE', 'Service Fee in percentage');
+
+INSERT INTO ref_payment_type (id, value, description) VALUES (1, 'Cash', 'cash'), (2, 'Credit', 'credit');

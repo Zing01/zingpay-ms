@@ -1,5 +1,6 @@
 package com.zingpay.controller;
 
+import com.zingpay.dto.CommissionDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
@@ -53,7 +54,12 @@ public class BillPaymentServiceController extends BaseController {
 
         if(status.getCode()==1) {
             TransactionDto transactionDtoForCommission = (TransactionDto) status.getAdditionalDetail();
-            calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
+            //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
+            CommissionDto commissionDto = new CommissionDto();
+            commissionDto.setAccountId(Integer.parseInt(transactionDto.getAccountId()+""));
+            commissionDto.setServiceId(transactionDto.getServiceId());
+            commissionDto.setTransactionId(transactionDto.getId());
+            calculateCommissionService.calculateCommission(commissionDto);
         }
         return status;
     }
