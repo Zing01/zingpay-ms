@@ -29,3 +29,11 @@ INSERT INTO user_group VALUES (1, 'DEFAULT', null, null, null, 1), (2, 'ZINGPAY'
 INSERT INTO ref_fee_type (FEE_TYPE_ID, FEE_TYPE, DESCRIPTION) VALUES (1, 'ABSOLUTE', 'Service Fee in amount'), (2, 'VARIABLE', 'Service Fee in percentage');
 
 INSERT INTO ref_payment_type (id, value, description) VALUES (1, 'Cash', 'cash'), (2, 'Credit', 'credit');
+
+INSERT INTO ref_service_broker (SERVICE_BROKER_ID, SERVICE_BROKER_NAME, SERVICE_BROKER_DESC, ACTIVE) VALUES ('4', 'TELENOR_BANK', 'TELENOR_BANK', '1');
+
+INSERT INTO ref_service_provider (SERVICE_PROVIDER_ID, SERVICE_BROKER_ID, SERVICE_PROVIDER_SHORT_NAME, SERVICE_PROVIDER_DISPLAY_NAME, SERVICE_PROVIDER_TYPE, CITY, SORT_ORDER, ACTIVE) VALUES ('4', '4', 'telenor bank', 'Telenor Bank', 'Mobile', 'All', '1', '1');
+
+INSERT INTO ref_service_type (id, value, description) VALUES ('4', 'CASHIN', 'Cash Deposit');
+
+INSERT INTO ref_service (SERVICE_ID, SERVICE_NAME, SERVICE_TYPE_ID,SERVICE_PROVIDER_ID,ACTIVE,PRICE,RETAIL_PRICE,SORT_ORDER) Select 1, 'CASHIN',(Select id from ref_service_type rst where rst.value = 'CASHIN'), SERVICE_PROVIDER_ID, 1,0,0,0 from ref_service_provider where SERVICE_PROVIDER_SHORT_NAME = 'telenor bank' and SERVICE_BROKER_ID =(select SERVICE_BROKER_ID from ref_service_broker where SERVICE_BROKER_NAME = 'TELENOR_BANK');

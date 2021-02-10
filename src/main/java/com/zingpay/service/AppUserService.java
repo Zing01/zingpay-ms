@@ -134,4 +134,8 @@ public class AppUserService {
     public AppUser getActiveByUsername(String cellPhone) {
         return appUserRepository.findByUsernameAndAccountStatusId(cellPhone, 1);
     }
+
+    public AppUser getByUsername(String username) {
+        return appUserRepository.findByUsername(username);
+    }
 }

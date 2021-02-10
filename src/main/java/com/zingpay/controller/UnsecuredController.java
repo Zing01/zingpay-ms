@@ -1,6 +1,7 @@
 package com.zingpay.controller;
 
 import com.zingpay.dto.AppUserDto;
+import com.zingpay.dto.CashDepositDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
 import com.zingpay.service.EmailService;
@@ -307,6 +308,26 @@ public class UnsecuredController extends BaseController {
             return response(StatusMessage.PIN_VALIDATION_SUCCESS);
         } else {
             return response(StatusMessage.PIN_NOT_VALID);
+        }
+    }
+
+    @ApiOperation(value = "Takes in AppUserDto object as requestbody and checks if username and password are correct", response = Status.class)
+    @PostMapping("/validate-credentials")
+    public Status validateCredentials(@RequestBody CashDepositDto cashDepositDto) {
+        AppUser telenorAppUser = appUserService.getByUsername(cashDepositDto.getUsername());
+        if(telenorAppUser != null && passwordEncoder.matches(cashDepositDto.getPassword(), telenorAppUser.getPassword())) {
+            AppUser appUser = appUserService.getByUsername(cashDepositDto.getConsumerNumber());
+            if(appUser != null) {
+                if (appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
+                    return response(StatusMessage.SUCCESS);
+                } else {
+                    return response(StatusMessage.ACCOUNT_NOT_ACTIVE);
+                }
+            } else {
+                return response(StatusMessage.CELL_PHONE_NOT_VALID);
+            }
+        } else {
+            return response(StatusMessage.INCORRECT_USERNAME_OR_PASSWORD);
         }
     }
 }

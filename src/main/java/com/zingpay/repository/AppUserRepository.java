@@ -38,4 +38,6 @@ public interface AppUserRepository extends BaseRepository<AppUser, Integer> {
             "SELECT account_id, username, parent_id, account_type_id, name as group_name FROM cte " +
             "INNER JOIN user_group ON user_group.USER_GROUP_ID = cte.group_id", nativeQuery = true)
     List<Object> findAllAccountIdUsernameAccountTypeIdParentIdByAccountId(long accountId);
+
+    AppUser findByUsername(String username);
 }
