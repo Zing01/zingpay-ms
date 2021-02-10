@@ -148,3 +148,4 @@
 /target/classes/com/zingpay/repository/ServiceProviderRepository.class
 /target/classes/com/zingpay/service/ServiceProviderService.class
 /target/classes/com/zingpay/util/FeeType.class
+/target/classes/com/zingpay/ZingPayApplication.class
