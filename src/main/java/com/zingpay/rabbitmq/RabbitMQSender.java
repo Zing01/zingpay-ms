@@ -1,7 +1,6 @@
 package com.zingpay.rabbitmq;
 
 import com.zingpay.dto.CommissionDto;
-import com.zingpay.dto.TransactionCommissionDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

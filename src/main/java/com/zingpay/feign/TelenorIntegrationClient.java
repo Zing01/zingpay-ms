@@ -2,7 +2,6 @@ package com.zingpay.feign;
 
 import com.zingpay.dto.TelenorBundleDto;
 import com.zingpay.dto.TelenorLoadDto;
-import com.zingpay.dto.TelenorLoadResponseDto;
 import com.zingpay.util.Status;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
