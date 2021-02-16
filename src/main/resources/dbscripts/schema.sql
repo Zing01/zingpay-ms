@@ -272,3 +272,25 @@ CREATE TABLE cash_deposit_transaction (
     CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_04 FOREIGN KEY (RECEPIENT_ACCOUNT_ID) REFERENCES app_user (ACCOUNT_ID) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT FK_CASH_DEPOSIT_TRANSACTION_05 FOREIGN KEY (SENDER_ACCOUNT_ID) REFERENCES app_user (ACCOUNT_ID) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
+
+create table kyc
+(
+    id int auto_increment,
+    account_id int null,
+    cnic boolean default false null,
+    police boolean default false null,
+    latlng boolean default false null,
+    reference_check boolean default false null,
+    remarks varchar(255) null,
+    file_upload longblob null,
+    payment_reconcilation boolean default false null,
+    payment_amount_reconciled varchar(255) default false null,
+    constraint kyc_pk
+        primary key (id),
+    constraint kyc_app_user_account_id_fk
+        foreign key (account_id) references app_user (account_id)
+);
+
+create unique index kyc_account_id_uindex
+    on kyc (account_id);
+
