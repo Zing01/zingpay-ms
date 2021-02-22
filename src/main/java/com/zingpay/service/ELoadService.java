@@ -111,9 +111,6 @@ public class ELoadService {
             }
         }
 
-        System.out.println("statusResponse " + statusResponse);
-        System.out.println("statusResponse.getAdditionalDetail() " + statusResponse.getAdditionalDetail());
-
         if (statusResponse != null) {
             try {
                 telenorLoadResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), TelenorLoadResponseDto.class);
