@@ -118,6 +118,8 @@ public class BundleService {
                 ex.printStackTrace();
             }
         }
+        System.out.println("statusResponse.getMessage() " + statusResponse.getMessage());
+        System.out.println("statusResponse.getReturnId() " + statusResponse.getReturnId());
         System.out.println("statusResponse.AdditionalDetail()" + statusResponse.getAdditionalDetail());
         if(statusResponse != null) {
             try {
