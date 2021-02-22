@@ -59,7 +59,7 @@ public class BundleServiceController extends BaseController {
 
         transactionDto = populateTransactionDtoFields(transactionDto);
 
-        if(appUser.getAccountStatusId() == 1) {
+        if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
             if(balance < transactionDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }
@@ -71,6 +71,7 @@ public class BundleServiceController extends BaseController {
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
+        System.out.println("status.getAdditionalDetail() " + status.getAdditionalDetail());
         if(status.getCode()==1) {
             //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
             CommissionDto commissionDto = new CommissionDto();
