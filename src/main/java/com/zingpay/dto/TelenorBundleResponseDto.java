@@ -18,7 +18,7 @@ public class TelenorBundleResponseDto {
     private String timestamp;
     @JsonProperty("resultmsg")
     private String resultMsg;
-    @JsonProperty("message")
+    @JsonProperty("Message")
     private String message;
     @JsonProperty("errorCode")
     private String errorCode;
