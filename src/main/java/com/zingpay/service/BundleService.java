@@ -135,7 +135,9 @@ public class BundleService {
             if (telenorBundleResponseDto.getMessage().contains("Success")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 transaction.setDescription(telenorBundleResponseDto.getMessage());
+                System.out.println("just before saving");
                 savedTransaction = transactionService.save(transaction);
+                System.out.println("just after saving");
                 System.out.println("savedTransaction.getId() " + savedTransaction.getId());
                 TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
                 System.out.println("transactionDtoToReturn.getId() " + transactionDtoToReturn.getId());
