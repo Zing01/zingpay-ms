@@ -131,7 +131,7 @@ public class BundleService {
             System.out.println("telenorBundleResponseDto.getRequestId() " + telenorBundleResponseDto.getRequestId());
             System.out.println("telenorBundleResponseDto.getTimestamp() " + telenorBundleResponseDto.getTimestamp());
             System.out.println("*******************************before get transaction******************************************************");
-            Transaction transaction = transactionService.getById(savedTransaction.getId());
+            Transaction transaction = TransactionDto.convertToEntity(transactionDto);
             System.out.println("*************************************after get transaction************************************************");
             transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
             System.out.println("just brefore if condition");
