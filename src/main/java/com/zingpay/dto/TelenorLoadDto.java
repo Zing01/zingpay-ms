@@ -29,7 +29,7 @@ public class TelenorLoadDto {
         TelenorLoadDto telenorLoadDto = new TelenorLoadDto();
         telenorLoadDto.setRetailerMsisdn("");
         telenorLoadDto.setCustomerMsisdn(transactionDto.getRefTo());
-        telenorLoadDto.setAmount(transactionDto.getAmount()+"");
+        telenorLoadDto.setAmount(transactionDto.getAmount().intValue()+"");
         telenorLoadDto.setVendorName1("");
         telenorLoadDto.setVendorName2("");
         telenorLoadDto.setRequestId(transactionDto.getRetailerRefNumber());
