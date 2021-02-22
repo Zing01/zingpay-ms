@@ -45,7 +45,7 @@ public class ELoadServiceController extends BaseController {
 
         transactionDto = populateTransactionDtoFields(transactionDto);
 
-        if(appUser.getAccountStatusId() == 1) {
+        if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
             if(balance < transactionDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }

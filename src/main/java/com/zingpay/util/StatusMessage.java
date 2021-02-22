@@ -22,6 +22,7 @@ public enum StatusMessage {
     USE_EXISTING_TPIN(11, "Please use your existing tpin", HttpStatus.OK),
     SENT_SUCCESSFULLY(12, "Sent Successfully", HttpStatus.OK),
     PASSWORD_CREATE_SUCCESS(13,"Password created Successfully", HttpStatus.OK),
+    BALANCE_TRANSFER_SUCCSS(14,"Balance transferred Successfully", HttpStatus.OK),
 
     PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED(5001, "Password and confirm password fields not matched", HttpStatus.INTERNAL_SERVER_ERROR),
     CELL_PHONE_NOT_VALID(5002, "Please enter a valid mobile number", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -62,6 +63,7 @@ public enum StatusMessage {
     SENT_FAILED(5036, "Unable to send", HttpStatus.INTERNAL_SERVER_ERROR),
     ACCOUNT_NOT_ACTIVE_OR_USER_DOES_NOT_EXIST(5037, "User with this mobile number does not exist or account is not active", HttpStatus.INTERNAL_SERVER_ERROR),
     INCORRECT_USERNAME_OR_PASSWORD(5038, "Username or password incorrect", HttpStatus.INTERNAL_SERVER_ERROR),
+    BALANCE_TRANSFER_FAILED(5039,"Unable to transfer balance", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private StatusMessage(int id, String description, HttpStatus statusCode) {

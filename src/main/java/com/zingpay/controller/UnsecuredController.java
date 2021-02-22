@@ -72,7 +72,7 @@ public class UnsecuredController extends BaseController {
                         return response(StatusMessage.CNIC_ALREADY_EXISTS);
                     }
                 } else /*if(e.getLocalizedMessage().contains("app_user_cell_phone_uindex"))*/ {
-                    if(appUser1.getAccountStatusId() != 2 && appUser1.getPassword() != null && !appUser1.getPassword().isEmpty()) {
+                    if(appUser1.getAccountStatusId() != AccountStatus.PENDING.getId() && appUser1.getPassword() != null && !appUser1.getPassword().isEmpty()) {
                         return response(StatusMessage.ACCOUNT_ALREADY_EXISTS);
                     }
                     appUser1.setCnicNumber(appUserDto.getCnicNumber());

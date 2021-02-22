@@ -5,6 +5,7 @@ import com.zingpay.dto.CalculateCommissionDto;
 import com.zingpay.dto.TransactionDto;
 import com.zingpay.dto.TransactionPaginationDto;
 import com.zingpay.dto.TransactionSummaryDto;
+import com.zingpay.entity.AppUser;
 import com.zingpay.entity.Transaction;
 import com.zingpay.repository.TransactionRepository;
 import com.zingpay.util.*;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,5 +128,48 @@ public class TransactionService {
     public List<CalculateCommissionDto> getFee(long serviceId, String feeType) {
         List<Object> objects = transactionRepository.findFee(serviceId, feeType);
         return CalculateCommissionDto.convertToDto(objects);
+    }
+
+    public void balanceTransfer(double amount, AppUser fromAccountAppUser, AppUser toAccountAppUser, ChannelType channelType) {
+        List<Transaction> transactions = new ArrayList<Transaction>();
+        transactions.add(createCreditTransaction(amount, fromAccountAppUser, toAccountAppUser, channelType));
+        transactions.add(createDebitTransaction(amount, fromAccountAppUser, toAccountAppUser, channelType));
+        transactionRepository.saveAll(transactions);
+    }
+
+    private Transaction createDebitTransaction(double amount, AppUser fromAccountAppUser, AppUser toAccountAppUser, ChannelType channelType) {
+        Transaction transaction = new Transaction();
+        transaction.setDateTime(new Date());
+        transaction.setRefTo(toAccountAppUser.getUsername());
+        transaction.setRefFrom(fromAccountAppUser.getUsername());
+        transaction.setAccountId(fromAccountAppUser.getAccountId());
+        transaction.setAmount(amount);
+        transaction.setZingpayTransactionTypeId(ZingpayTransactionType.TX_FUND_TRANSFER.getId());
+        transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+        transaction.setTransactionTypeId(TransactionType.DEBIT.getId());
+        transaction.setChannelTypeId(channelType.getId());
+        transaction.setDescription("Balance Transfer to " + toAccountAppUser.getUsername());
+        transaction.setRetailerRefNumber(channelType.getValue()+"-"+Utils.generateTenDigitsNumber());
+        transaction.setServiceProvider("Zingpay");
+
+        return transaction;
+    }
+
+    private Transaction createCreditTransaction(double amount, AppUser fromAccountAppUser, AppUser toAccountAppUser, ChannelType channelType) {
+        Transaction transaction = new Transaction();
+        transaction.setDateTime(new Date());
+        transaction.setRefTo(toAccountAppUser.getUsername());
+        transaction.setRefFrom(fromAccountAppUser.getUsername());
+        transaction.setAccountId(toAccountAppUser.getAccountId());
+        transaction.setAmount(amount);
+        transaction.setZingpayTransactionTypeId(ZingpayTransactionType.TX_FUND_TRANSFER.getId());
+        transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+        transaction.setTransactionTypeId(TransactionType.CREDIT.getId());
+        transaction.setChannelTypeId(channelType.getId());
+        transaction.setDescription("Balance Transfer from " + fromAccountAppUser.getUsername());
+        transaction.setRetailerRefNumber(channelType.getValue()+"-"+Utils.generateTenDigitsNumber());
+        transaction.setServiceProvider("Zingpay");
+
+        return transaction;
     }
 }

@@ -79,41 +79,41 @@ public class Transaction {
         transactionDto.setAccountId(transaction.getAccountId());
         transactionDto.setServiceId(transaction.getServiceId());
 
-        if(transaction.getTransactionStatusId() == 1) {
+        if(transaction.getTransactionStatusId() == TransactionStatus.SUCCESS.getId()) {
             transactionDto.setTransactionStatus(TransactionStatus.SUCCESS);
-        } else if(transaction.getTransactionStatusId() == 2) {
+        } else if(transaction.getTransactionStatusId() == TransactionStatus.FAILED.getId()) {
             transactionDto.setTransactionStatus(TransactionStatus.FAILED);
-        } else if(transaction.getTransactionStatusId() == 3) {
+        } else if(transaction.getTransactionStatusId() == TransactionStatus.PENDING.getId()) {
             transactionDto.setTransactionStatus(TransactionStatus.PENDING);
         }
 
-        if(transaction.getTransactionTypeId() == 1) {
+        if(transaction.getTransactionTypeId() == TransactionType.DEBIT.getId()) {
             transactionDto.setTransactionType(TransactionType.DEBIT);
-        } else if(transaction.getTransactionTypeId() == 2) {
+        } else if(transaction.getTransactionTypeId() == TransactionType.CREDIT.getId()) {
             transactionDto.setTransactionType(TransactionType.CREDIT);
         }
 
-        if(transaction.getZingpayTransactionTypeId() == 1) {
+        if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_RECHARGE.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_RECHARGE);
-        } else if(transaction.getZingpayTransactionTypeId() == 2) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_FUND_TRANSFER.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_FUND_TRANSFER);
-        } else if(transaction.getZingpayTransactionTypeId() == 3) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_BUY.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BUY);
-        } else if(transaction.getZingpayTransactionTypeId() == 4) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_BILL_PAYMENT.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_BILL_PAYMENT);
-        } else if(transaction.getZingpayTransactionTypeId() == 5) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_COMMISSION.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_COMMISSION);
-        } else if(transaction.getZingpayTransactionTypeId() == 6) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_SERVICE_CHARGE.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_SERVICE_CHARGE);
-        } else if(transaction.getZingpayTransactionTypeId() == 7) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_LOAD.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
-        } else if(transaction.getZingpayTransactionTypeId() == 8) {
+        } else if(transaction.getZingpayTransactionTypeId() == ZingpayTransactionType.TX_CASH_IN.getId()) {
             transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_CASH_IN);
         }
 
-        if(transaction.getChannelTypeId() == 1) {
+        if(transaction.getChannelTypeId() == ChannelType.MOBILE.getId()) {
             transactionDto.setChannelType(ChannelType.MOBILE);
-        } else if(transaction.getChannelTypeId() == 2) {
+        } else if(transaction.getChannelTypeId() == ChannelType.WEB.getId()) {
             transactionDto.setChannelType(ChannelType.WEB);
         }
 

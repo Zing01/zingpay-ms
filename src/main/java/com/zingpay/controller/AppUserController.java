@@ -3,6 +3,8 @@ package com.zingpay.controller;
 import com.zingpay.dto.AppUserDto;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
+import com.zingpay.service.WalletService;
+import com.zingpay.util.AccountStatus;
 import com.zingpay.util.KycStatus;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
@@ -24,6 +26,9 @@ public class AppUserController extends BaseController {
 
     @Autowired
     private AppUserService appUserService;
+
+    @Autowired
+    private WalletService walletService;
 
     @ApiOperation(value = "Account Setup call takes in UserDto object as request body.", response = Status.class)
     @PutMapping("/account-setup")
@@ -149,4 +154,29 @@ public class AppUserController extends BaseController {
             return response(StatusMessage.PASSWORD_RESET_FAILED);
         }
     }
+
+    @ApiOperation(value = "Get user details for balance transfer by cellphone", response = Status.class)
+    @GetMapping("/{cell-phone}")
+    public Status getByCellPhone(@PathVariable(value = "cell-phone") String cellPhone) {
+        AppUser appUser = appUserService.getByCellPhone(cellPhone);
+        if(appUser != null) {
+            AppUserDto appUserDto = new AppUserDto();
+            if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
+                appUserDto.setAccountStatus(AccountStatus.ACTIVE);
+            } else if(appUser.getAccountStatusId() == AccountStatus.PENDING.getId()) {
+                appUserDto.setAccountStatus(AccountStatus.PENDING);
+            } else if(appUser.getAccountStatusId() == AccountStatus.SUSPEND.getId()) {
+                appUserDto.setAccountStatus(AccountStatus.SUSPEND);
+            } else if(appUser.getAccountStatusId() == AccountStatus.INACTIVE.getId()) {
+                appUserDto.setAccountStatus(AccountStatus.INACTIVE);
+            }
+            appUserDto.setCreateDateTime(appUser.getCreateDateTime());
+            appUserDto.setFullName(appUser.getFullName());
+            appUserDto.setBalance(walletService.getCurrentBalance(appUser.getAccountId()));
+            return response(new Status(StatusMessage.SUCCESS, appUserDto));
+        } else {
+            return response(StatusMessage.CELL_PHONE_NOT_FOUND);
+        }
+    }
+
 }

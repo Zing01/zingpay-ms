@@ -3,6 +3,7 @@ package com.zingpay.controller;
 import com.zingpay.entity.AppUser;
 import com.zingpay.service.AppUserService;
 import com.zingpay.service.WalletService;
+import com.zingpay.util.AccountStatus;
 import com.zingpay.util.Status;
 import com.zingpay.util.StatusMessage;
 import io.swagger.annotations.Api;
@@ -33,7 +34,7 @@ public class ValidateUserServiceController {
                                       @PathVariable("amount") double amount) {
         AppUser appUser = appUserService.getById(accountId);
         double balance = walletService.getCurrentBalance(accountId);
-        if(appUser.getAccountStatusId() == 1) {
+        if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
             if(balance < amount) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }

@@ -63,6 +63,7 @@ public class AppUserDto {
     private KycStatus kycStatus;
     private String kycDescription;
     private String deviceId;
+    private double balance;
 
     public static AppUser convertToEntity(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();

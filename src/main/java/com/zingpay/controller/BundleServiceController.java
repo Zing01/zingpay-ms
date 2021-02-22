@@ -71,7 +71,6 @@ public class BundleServiceController extends BaseController {
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
-        System.out.println("status.getAdditionalDetail() " + status.getAdditionalDetail());
         if(status.getCode()==1) {
             //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
             CommissionDto commissionDto = new CommissionDto();
