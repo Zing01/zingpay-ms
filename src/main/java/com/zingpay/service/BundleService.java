@@ -118,12 +118,16 @@ public class BundleService {
                 ex.printStackTrace();
             }
         }
+        System.out.println("statusResponse.AdditionalDetail()" + statusResponse.getAdditionalDetail());
         if(statusResponse != null) {
             try {
                 telenorBundleResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), TelenorBundleResponseDto.class);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
+            System.out.println("telenorBundleResponseDto.getMessage() " + telenorBundleResponseDto.getMessage());
+            System.out.println("telenorBundleResponseDto.getRequestId() " + telenorBundleResponseDto.getRequestId());
+            System.out.println("telenorBundleResponseDto.getTimestamp() " + telenorBundleResponseDto.getTimestamp());
             Transaction transaction = transactionService.getById(savedTransaction.getId());
             transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
             if (telenorBundleResponseDto.getMessage().contains("Success")) {
