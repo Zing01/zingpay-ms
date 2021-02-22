@@ -18,4 +18,7 @@ public class TelenorLoadResponseDto {
     private String timestamp;
     @JsonProperty("ResultMessage")
     private String resultMsg;
+    private String message;
+    private String errorCode;
+    private String errorMessage;
 }
