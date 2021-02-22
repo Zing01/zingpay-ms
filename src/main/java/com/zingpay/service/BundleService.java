@@ -132,7 +132,9 @@ public class BundleService {
             System.out.println("telenorBundleResponseDto.getTimestamp() " + telenorBundleResponseDto.getTimestamp());
             Transaction transaction = transactionService.getById(savedTransaction.getId());
             transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
+            System.out.println("just brefore if condition");
             if (telenorBundleResponseDto.getMessage().contains("Success")) {
+                System.out.println("if condition start");
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 transaction.setDescription(telenorBundleResponseDto.getMessage());
                 System.out.println("just before saving");
