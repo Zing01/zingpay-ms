@@ -143,6 +143,7 @@ public class BundleService {
                 System.out.println("transactionDtoToReturn.getId() " + transactionDtoToReturn.getId());
                 return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
             } else {
+                System.out.println("else condition");
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                 transaction.setDescription(telenorBundleResponseDto.getErrorMessage());
                 savedTransaction = transactionService.save(transaction);
