@@ -51,7 +51,6 @@ public class BundleService {
         ZongBundleDto zongBundleDto1 = new ZongBundleDto();
         ZongBundleDto zongBundleDto = zongBundleDto1.convertTransactionToDto(transactionDto);
         ZongBundleResponseDto zongBundleResponseDto = new ZongBundleResponseDto();
-        System.out.println("zongBundleDto.getBundleId() " + zongBundleDto.getBundleId());
         Transaction savedTransaction = new Transaction();
         Status statusResponse = null;
         try {
@@ -71,14 +70,14 @@ public class BundleService {
                 ex.printStackTrace();
             }
         }
-        System.out.println("statusResponse.getAdditionalDetail() " + statusResponse.getAdditionalDetail());
+
         if(statusResponse != null) {
             try {
                 zongBundleResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), ZongBundleResponseDto.class);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            System.out.println("zongBundleResponseDto.getDesc() " + zongBundleResponseDto.getDesc());
+
             Transaction transaction = TransactionDto.convertToEntity(transactionDto);
             transaction.setDescription(zongBundleResponseDto.getDesc());
 
@@ -118,36 +117,24 @@ public class BundleService {
                 ex.printStackTrace();
             }
         }
-        System.out.println("statusResponse.getMessage() " + statusResponse.getMessage());
-        System.out.println("statusResponse.getReturnId() " + statusResponse.getReturnId());
-        System.out.println("statusResponse.AdditionalDetail()" + statusResponse.getAdditionalDetail());
+
         if(statusResponse != null) {
             try {
                 telenorBundleResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), TelenorBundleResponseDto.class);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            System.out.println("telenorBundleResponseDto.getMessage() " + telenorBundleResponseDto.getMessage());
-            System.out.println("telenorBundleResponseDto.getRequestId() " + telenorBundleResponseDto.getRequestId());
-            System.out.println("telenorBundleResponseDto.getTimestamp() " + telenorBundleResponseDto.getTimestamp());
-            System.out.println("*******************************before get transaction******************************************************");
+
             Transaction transaction = TransactionDto.convertToEntity(transactionDto);
-            System.out.println("*************************************after get transaction************************************************");
             transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
-            System.out.println("just brefore if condition");
+
             if (telenorBundleResponseDto.getMessage().contains("Success")) {
-                System.out.println("if condition start");
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 transaction.setDescription(telenorBundleResponseDto.getMessage());
-                System.out.println("just before saving");
                 savedTransaction = transactionService.save(transaction);
-                System.out.println("just after saving");
-                System.out.println("savedTransaction.getId() " + savedTransaction.getId());
                 TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
-                System.out.println("transactionDtoToReturn.getId() " + transactionDtoToReturn.getId());
                 return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
             } else {
-                System.out.println("else condition");
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                 transaction.setDescription(telenorBundleResponseDto.getErrorMessage());
                 savedTransaction = transactionService.save(transaction);
