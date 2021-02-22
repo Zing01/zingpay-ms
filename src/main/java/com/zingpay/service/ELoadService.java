@@ -117,9 +117,13 @@ public class ELoadService {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
+            System.out.println("telenorLoadResponseDto.getResultMsg() " + telenorLoadResponseDto.getResultMsg());
+            System.out.println("telenorLoadResponseDto.getRequestId() " + telenorLoadResponseDto.getRequestId());
+            System.out.println("telenorLoadResponseDto.getTimestamp() " + telenorLoadResponseDto.getTimestamp());
+
             Transaction transaction = TransactionDto.convertToEntity(transactionDto);
             transaction.setDescription(telenorLoadResponseDto.getResultMsg());
-            
+
             if (telenorLoadResponseDto.getResultMsg() != null || !telenorLoadResponseDto.getResultMsg().equals("")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 savedTransaction = transactionService.save(transaction);
