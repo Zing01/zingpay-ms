@@ -23,7 +23,7 @@ public class TelenorBundleDto {
 
     public TelenorBundleDto convertTransactionToDto(TransactionDto transactionDto) {
         TelenorBundleDto telenorBundleDto = new TelenorBundleDto();
-        telenorBundleDto.setAmount(transactionDto.getAmount()+"");
+        telenorBundleDto.setAmount(transactionDto.getAmount().intValue()+"");
         telenorBundleDto.setRechargePartyMsisdn(transactionDto.getRefTo());
         telenorBundleDto.setRetailerMsisdn(transactionDto.getRefFrom());
         telenorBundleDto.setPartnerId(transactionDto.getBundleId());
