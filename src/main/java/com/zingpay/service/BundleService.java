@@ -132,12 +132,13 @@ public class BundleService {
             System.out.println("telenorBundleResponseDto.getTimestamp() " + telenorBundleResponseDto.getTimestamp());
             Transaction transaction = transactionService.getById(savedTransaction.getId());
             transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + telenorBundleResponseDto.getRequestId());
-            if (telenorBundleResponseDto.getMessage().contains("SUCCESS")) {
+            if (telenorBundleResponseDto.getMessage().contains("Success")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
                 transaction.setDescription(telenorBundleResponseDto.getMessage());
                 savedTransaction = transactionService.save(transaction);
                 System.out.println("savedTransaction.getId() " + savedTransaction.getId());
                 TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                System.out.println("transactionDtoToReturn.getId() " + transactionDtoToReturn.getId());
                 return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
