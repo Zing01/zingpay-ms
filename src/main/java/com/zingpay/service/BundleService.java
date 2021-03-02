@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zingpay.dto.*;
 import com.zingpay.entity.Bundle;
 import com.zingpay.entity.Transaction;
+import com.zingpay.feign.CardWallaIntegrationClient;
 import com.zingpay.feign.TelenorIntegrationClient;
 import com.zingpay.feign.ZongIntegrationClient;
 import com.zingpay.repository.BundleRepository;
@@ -43,8 +44,15 @@ public class BundleService {
     @Autowired
     private TelenorIntegrationClient telenorIntegrationClient;
 
-    public List<Bundle> getBundles(String network) {
+    @Autowired
+    private CardWallaIntegrationClient cardWallaIntegrationClient;
+
+    public List<Bundle> getBundlesByNetwork(String network) {
         return bundleRepository.findAllByNetwork(network);
+    }
+
+    public List<Bundle> getBundlesByNetworkAndProductId(String network, String type) {
+        return bundleRepository.findAllByNetworkAndType(network, type);
     }
 
     public Status subscribeZongBundle(TransactionDto transactionDto) {
@@ -137,6 +145,55 @@ public class BundleService {
             } else {
                 transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                 transaction.setDescription(telenorBundleResponseDto.getErrorMessage());
+                savedTransaction = transactionService.save(transaction);
+            }
+        }
+        return new Status(StatusMessage.FAILURE, savedTransaction);
+    }
+
+    public Status subscribeCardwallaBundle(TransactionDto transactionDto) {
+        CardWallaBundleDto cardWallaBundleDto1 = new CardWallaBundleDto();
+        CardWallaBundleDto cardWallaBundleDto = cardWallaBundleDto1.convertTransactionToDto(transactionDto);
+        CardWallaBundleResponseDto cardWallaBundleResponseDto = new CardWallaBundleResponseDto();
+        Transaction savedTransaction = new Transaction();
+        Status statusResponse = null;
+        try {
+            if (TokenGenerator.token == null) {
+                try {
+                    statusResponse = cardWallaIntegrationClient.subscribeBundle(tokenGenerator.getTokenFromAuthService(), cardWallaBundleDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                statusResponse = cardWallaIntegrationClient.subscribeBundle(TokenGenerator.token, cardWallaBundleDto);
+            }
+        } catch (FeignException.Unauthorized e) {
+            try {
+                statusResponse = cardWallaIntegrationClient.subscribeBundle(tokenGenerator.getTokenFromAuthService(), cardWallaBundleDto);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if(statusResponse != null) {
+            try {
+                cardWallaBundleResponseDto = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), CardWallaBundleResponseDto.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            Transaction transaction = TransactionDto.convertToEntity(transactionDto);
+            transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + cardWallaBundleResponseDto.getTransactionId());
+
+            if (cardWallaBundleResponseDto.getResultCode().equals("0")) {
+                transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                transaction.setDescription(cardWallaBundleResponseDto.getResultDescription());
+                savedTransaction = transactionService.save(transaction);
+                TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
+            } else {
+                transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                transaction.setDescription(cardWallaBundleResponseDto.getResultDescription());
                 savedTransaction = transactionService.save(transaction);
             }
         }

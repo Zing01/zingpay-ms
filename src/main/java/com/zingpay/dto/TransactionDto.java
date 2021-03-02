@@ -37,6 +37,7 @@ public class TransactionDto {
     private String bundleId;
 
     private boolean success;
+    private String email;
 
     public static Transaction convertToEntity(TransactionDto transactionDto) {
         Transaction transaction = new Transaction();
