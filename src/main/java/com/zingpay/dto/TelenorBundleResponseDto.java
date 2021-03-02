@@ -20,7 +20,7 @@ public class TelenorBundleResponseDto {
     @JsonProperty("Timestamp")
     private String timestamp;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("resultmsg")
+    @JsonProperty("ResultMessage")
     private String resultMsg;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("Message")
