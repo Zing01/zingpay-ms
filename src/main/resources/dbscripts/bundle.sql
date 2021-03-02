@@ -59,3 +59,13 @@ INSERT INTO bundle VALUES
 (164, 'TELENOR', '4G Weekly Super', 'Bundle includes 2 GB is usable from 1AM to 11AM', '501721', '', '[{"resourceType":"SMS","resourceValue":"4000"}]', '130', '7 Days', 'Data'),
 (165, 'TELENOR', '4 G Weekly Late Night Offer', 'Offer can only be used between 12AM to 9AM', '502134', '', '[{"resourceType":"GBs","resourceValue":"20"}]', '60', '7 Days', 'Data'),
 (166, 'TELENOR', 'Easy Card - 200', 'Onnet minutes includes PTCL minutes also', '502174', '', '[{"resourceType":"GBs","resourceValue":"3"},{"resourceType":"On Net+PTCL","resourceValue":"1500"},{"resourceType":"Off Net","resourceValue":"60"},{"resourceType":"SMS","resourceValue":"1500"}]', '199', '7 Days', 'Weekly Hybrid');
+
+INSERT INTO bundle VALUES
+(200, 'CARDWALLA', 'Facebook [US]', 'Test Facebook $10', 'TESTFACEBOOK10', 'FB001', 'USD', '10', '', 'Facebook'),
+(201, 'CARDWALLA', 'Amazon [US]', 'Test Amazon [USA Store] $15', 'TESTAMAZON15', 'AMZ001', 'USD', '15', '',	'Amazon'),
+(202, 'CARDWALLA', 'iTunes [US]', 'Test iTunes $10', 'TESTITUNES10', 'ITU001', 'USD', '10', '',	'iTunes'),
+(203, 'CARDWALLA', 'Netflix [US]', 'Test Netflix $15', 'TESTNETFLIX15', 'NF001', 'USD', '15', '', 'Netflix'),
+(204, 'CARDWALLA', 'Google Play [US]', 'Test Google [US] $50', 'TESTGOOGLE50', 'GP001', 'USD', '50', '', 'Google'),
+(205, 'CARDWALLA', 'Amazon [US]', 'Test Amazon [USA Store] $25', 'TESTPRODUCT01', 'AMZ001', 'USD', '25', '', 'Amazon'),
+(206, 'CARDWALLA', 'Google Play [US]', 'Test Google [US] $5', 'TESTPRODUCT02', 'GP001', 'USD', '5', '',	'Google'),
+(207, 'CARDWALLA', 'PlayStation [US]', 'Test PlayStation $20', 'TESTPRODUCT03', 'PSN001', 'USD', '20', '', 'PlayStation');
