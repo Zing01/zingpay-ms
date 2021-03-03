@@ -183,7 +183,7 @@ public class BundleService {
             }
 
             Transaction transaction = TransactionDto.convertToEntity(transactionDto);
-            transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + cardWallaBundleResponseDto.getTransactionId());
+            transaction.setRetailerRefNumber(transactionDto.getRetailerRefNumber() + "-" + cardWallaBundleResponseDto.getAgentTransactionId());
 
             if (cardWallaBundleResponseDto.getResultCode().equals("0")) {
                 transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());

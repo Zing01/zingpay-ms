@@ -108,6 +108,7 @@ public class BundleServiceController extends BaseController {
         } else if (transactionDto.getRetailerRefNumber().contains("WEB")) {
             transactionDto.setChannelType(ChannelType.WEB);
         }
+        transactionDto.setEmail(transactionDto.getEmail());
         return transactionDto;
     }
 }

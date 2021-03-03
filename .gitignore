@@ -150,3 +150,6 @@
 /target/classes/com/zingpay/util/FeeType.class
 /target/classes/com/zingpay/ZingPayApplication.class
 /target/classes/com/zingpay/entity/Kyc.class
+/target/classes/com/zingpay/dto/CardWallaBundleDto.class
+/target/classes/com/zingpay/dto/CardWallaBundleResponseDto.class
+/target/classes/com/zingpay/feign/CardWallaIntegrationClient.class

@@ -229,7 +229,7 @@ insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) sel
 
 
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 70, 1 from fee_group where name like 'LOAD_ZONG_IMEDIA_CABLE_OPERATOR';
-insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like '%LOAD_ZONG_IMEDIA_CABLE_OPERATOR';
+insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_ZONG_IMEDIA_CABLE_OPERATOR';
 
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_COMMISSION', 'COMMISSION', 0, 1 from fee_group where name like 'LOAD_ZONG_IMEDIA_CABLE_OPERATOR_HANDLERS';
 insert into fee (fee_group_id, fee_type_id, type, fee_name, fee, active_ind) select fee_group_id, 2, 'TX_SERVICE_CHARGE', 'SERVICE CHARGE', 0, 1 from fee_group where name like 'LOAD_ZONG_IMEDIA_CABLE_OPERATOR_HANDLERS';

@@ -60,7 +60,9 @@ public class Bundle {
         bundleDto.setDescription(bundle.getDescription());
         bundleDto.setOfferKey1(bundle.getOfferKey1());
         bundleDto.setOfferKey2(bundle.getOfferKey2());
-        bundleDto.setResources(Utils.parseStringToJsonArrayNode(bundle.getResources()));
+        if(!bundle.getResources().equalsIgnoreCase("USD")) {
+            bundleDto.setResources(Utils.parseStringToJsonArrayNode(bundle.getResources()));
+        }
         bundleDto.setPrice(bundle.getPrice());
         bundleDto.setValidity(bundle.getValidity());
         bundleDto.setType(bundle.getType());

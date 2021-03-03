@@ -37,3 +37,9 @@ INSERT INTO ref_service_provider (SERVICE_PROVIDER_ID, SERVICE_BROKER_ID, SERVIC
 INSERT INTO ref_service_type (id, value, description) VALUES ('4', 'CASHIN', 'Cash Deposit');
 
 INSERT INTO ref_service (SERVICE_ID, SERVICE_NAME, SERVICE_TYPE_ID,SERVICE_PROVIDER_ID,ACTIVE,PRICE,RETAIL_PRICE,SORT_ORDER) Select 1, 'CASHIN',(Select id from ref_service_type rst where rst.value = 'CASHIN'), SERVICE_PROVIDER_ID, 1,0,0,0 from ref_service_provider where SERVICE_PROVIDER_SHORT_NAME = 'telenor bank' and SERVICE_BROKER_ID =(select SERVICE_BROKER_ID from ref_service_broker where SERVICE_BROKER_NAME = 'TELENOR_BANK');
+
+INSERT INTO ref_payment_method VALUES ('1', 'Cash', 'cash'), ('2', 'Bank', 'bank');
+
+INSERT INTO ref_request_status VALUES ('1', 'Pending', 'pending'),('2', 'Submitted', 'submitted'), ('3', 'Approved', 'approved'), ('4', 'Rejected', 'rejected');
+
+INSERT INTO app_user (account_type_id, account_status_id, username, password, full_name, cell_phone, alternate_cell_phone, is_generated_t_pin, device_id) VALUES (3, 1, 'GJHERJKGH', '{bcrypt}$2a$10$VlhfyywhdHwEBZTJD5Wk5u8qFImoN/ZhDQPFlC15KPIXivGR3hz36', 'TELENOR BANK', '22222222222', '00000000000', 1, 0);
