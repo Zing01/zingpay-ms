@@ -153,3 +153,9 @@
 /target/classes/com/zingpay/dto/CardWallaBundleDto.class
 /target/classes/com/zingpay/dto/CardWallaBundleResponseDto.class
 /target/classes/com/zingpay/feign/CardWallaIntegrationClient.class
+/target/classes/com/zingpay/controller/BookMeServiceController.class
+/target/classes/com/zingpay/dto/BookMeEventDto.class
+/target/classes/com/zingpay/dto/BookMeEventPassesDto.class
+/target/classes/com/zingpay/dto/BookMeEventRequestDto.class
+/target/classes/com/zingpay/feign/BookMeIntegrationClient.class
+/target/classes/com/zingpay/service/BookMeService.class

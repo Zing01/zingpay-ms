@@ -1,5 +1,8 @@
 package com.zingpay.dto;
 
+import com.zingpay.util.TransactionStatus;
+import com.zingpay.util.TransactionType;
+import com.zingpay.util.ZingpayTransactionType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,26 +31,26 @@ public class TransactionSummaryDto {
         TransactionSummaryDto transactionSummaryDto = new TransactionSummaryDto();
         transactionDtos.forEach(transactionDto -> {
             transactionSummaryDto.setTotalTransactionsCount(transactionSummaryDto.getTotalTransactionsCount() + 1);
-            if(transactionDto.getTransactionStatus().getId() == 1 || transactionDto.getTransactionStatus().getId() == 3) {
-                if(transactionDto.getTransactionType().getId() == 1) {
+            if(transactionDto.getTransactionStatus().getId() == TransactionStatus.SUCCESS.getId() || transactionDto.getTransactionStatus().getId() == TransactionStatus.PENDING.getId()) {
+                if(transactionDto.getTransactionType().getId() == TransactionType.DEBIT.getId()) {
                     transactionSummaryDto.setTotalDebit(transactionSummaryDto.getTotalDebit()+transactionDto.getTransactionTotal());
 
-                    if(transactionDto.getZingpayTransactionType().getId() == 3) {
+                    if(transactionDto.getZingpayTransactionType().getId() == ZingpayTransactionType.TX_BUY.getId()) {
                         transactionSummaryDto.setTotalBuy(transactionSummaryDto.getTotalBuy()+transactionDto.getTransactionTotal());
-                    } else if(transactionDto.getZingpayTransactionType().getId() == 4) {
+                    } else if(transactionDto.getZingpayTransactionType().getId() == ZingpayTransactionType.TX_BILL_PAYMENT.getId()) {
                         transactionSummaryDto.setTotalBill(transactionSummaryDto.getTotalBill()+transactionDto.getTransactionTotal());
                     }
 
-                } else if(transactionDto.getTransactionType().getId() == 2) {
+                } else if(transactionDto.getTransactionType().getId() == TransactionType.CREDIT.getId()) {
                     transactionSummaryDto.setTotalCredit(transactionSummaryDto.getTotalCredit()+transactionDto.getTransactionTotal());
 
-                    if(transactionDto.getZingpayTransactionType().getId() == 1) {
+                    if(transactionDto.getZingpayTransactionType().getId() == ZingpayTransactionType.TX_RECHARGE.getId()) {
                         transactionSummaryDto.setTotalRecharge(transactionSummaryDto.getTotalRecharge()+transactionDto.getTransactionTotal());
-                    } else if(transactionDto.getZingpayTransactionType().getId() == 2) {
+                    } else if(transactionDto.getZingpayTransactionType().getId() == ZingpayTransactionType.TX_FUND_TRANSFER.getId()) {
                         transactionSummaryDto.setTotalTransfer(transactionSummaryDto.getTotalTransfer()+transactionDto.getTransactionTotal());
-                    } else if(transactionDto.getZingpayTransactionType().getId() == 5) {
+                    } else if(transactionDto.getZingpayTransactionType().getId() == ZingpayTransactionType.TX_COMMISSION.getId()) {
                         transactionSummaryDto.setTotalCommission(transactionSummaryDto.getTotalCommission()+transactionDto.getTransactionTotal());
-                    } else if(transactionDto.getZingpayTransactionType().getId() == 6) {
+                    } else if(transactionDto.getZingpayTransactionType().getId() == ZingpayTransactionType.TX_SERVICE_CHARGE.getId()) {
                         transactionSummaryDto.setTotalServiceCharge(transactionSummaryDto.getTotalServiceCharge()+transactionDto.getTransactionTotal());
                     }
                 }

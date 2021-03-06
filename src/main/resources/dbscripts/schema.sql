@@ -294,3 +294,9 @@ create table kyc
 create unique index kyc_account_id_uindex
     on kyc (account_id);
 
+CREATE TABLE ref_request_status (
+    REQUEST_STATUS_ID int(11) NOT NULL AUTO_INCREMENT,
+    REQUEST_STATUS_VALUE varchar(45) DEFAULT NULL,
+    DESCRIPTION varchar(45) DEFAULT NULL,
+    PRIMARY KEY (`REQUEST_STATUS_ID`)
+)
