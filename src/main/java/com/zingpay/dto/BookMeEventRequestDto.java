@@ -30,7 +30,6 @@ public class BookMeEventRequestDto {
     private String address;
     private String city;
     private String name;
-    private String phone;
     private String email;
     private ArrayNode passes;
 }

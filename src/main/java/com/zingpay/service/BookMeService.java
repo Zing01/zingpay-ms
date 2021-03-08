@@ -2,6 +2,7 @@ package com.zingpay.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.zingpay.dto.BookMeBusDto;
 import com.zingpay.dto.BookMeEventDto;
 import com.zingpay.dto.TransactionDto;
@@ -104,19 +105,19 @@ public class BookMeService {
         System.out.println("statusResponse.getAdditionalDetail() " + statusResponse.getAdditionalDetail());
         if(statusResponse.getAdditionalDetail() != null) {
             try {
-                JsonNode jsonNode = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), JsonNode.class);
+                ArrayNode arrayNode = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), ArrayNode.class);
                 Transaction transaction = TransactionDto.convertToEntity(transactionDto);
-                if(jsonNode != null && !jsonNode.equals("")) {
-                    if(jsonNode.get("response").asText().equalsIgnoreCase("Success")) {
+                for (JsonNode jsonNode : arrayNode) {
+                    if(jsonNode.get("status").asText().equalsIgnoreCase("success")) {
+                        transaction.setDescription(jsonNode.get("booking_id").asText());
                         transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                        transaction.setDescription(jsonNode.get("response").asText());
-                        savedTransaction = transactionService.save(transaction);
                         TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
                         return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
                     } else {
+                        transaction.setDescription(jsonNode.get("message").asText());
                         transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
-                        savedTransaction = transactionService.save(transaction);
                     }
+                    savedTransaction = transactionService.save(transaction);
                 }
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

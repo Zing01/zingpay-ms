@@ -33,7 +33,7 @@ public class BookMeEventDto {
         bookMeEventDto.setTicket(bookMeEventRequestDto.getTickets());
         bookMeEventDto.setEventId(bookMeEventRequestDto.getEventId());
         bookMeEventDto.setName(bookMeEventRequestDto.getName());
-        bookMeEventDto.setPhone(bookMeEventRequestDto.getPhone());
+        bookMeEventDto.setPhone(bookMeEventRequestDto.getRefTo());
         bookMeEventDto.setEmail(bookMeEventRequestDto.getEmail());
         bookMeEventDto.setPasses(bookMeEventRequestDto.getPasses());
 

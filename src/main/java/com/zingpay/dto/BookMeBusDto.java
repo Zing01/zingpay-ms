@@ -12,27 +12,35 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookMeBusDto {
-    @JsonProperty("api_key")
-    private String apiKey;
 
     @JsonProperty("service_id")
-    private long serviceId;
-
+    private int busServiceId;
     @JsonProperty("origin_city_id")
     private int originCityId;
-
-    @JsonProperty("arrival_city_id")
-    private int arrivalCityId;
-
+    @JsonProperty("destination_city_id")
+    private int destinationCityId;
+    @JsonProperty("date")
     private String date;
     @JsonProperty("deptime")
-    private String depTime;
+    private String departureTime;
+    @JsonProperty("depdate")
+    private String depDate;
     @JsonProperty("time_id")
     private int timeId;
     @JsonProperty("schedule_id")
     private int scheduleId;
     @JsonProperty("route_id")
     private int routeId;
+    @JsonProperty("seats")
+    private int seats;
+    @JsonProperty("no_of_seats")
+    private int noOfSeats;
+    @JsonProperty("seat_ids")
+    private String seatIds;
+    @JsonProperty("arrival_city_id")
+    private int arrivalCityId;
+    @JsonProperty("departure_city_id")
+    private int departureCityId;
     @JsonProperty("number_of_seats")
     private int numberOfSeats;
     private String name;
@@ -44,16 +52,17 @@ public class BookMeBusDto {
     @JsonProperty("seat_numbers_female")
     private String seatNumbersFemale;
     private String email;
-    @JsonProperty("service_id")
-    private int busServiceId;
+    @JsonProperty("total_price")
+    private int totalPrice;
+    private int tickets;
 
     public static BookMeBusDto convertToDto(BookMeBusRequestDto bookMeBusRequestDto) {
         BookMeBusDto bookMeBusDto = new BookMeBusDto();
-        bookMeBusDto.setServiceId(bookMeBusRequestDto.getServiceId());
+        bookMeBusDto.setBusServiceId(bookMeBusRequestDto.getBusServiceId());
         bookMeBusDto.setOriginCityId(bookMeBusRequestDto.getOriginCityId());
         bookMeBusDto.setArrivalCityId(bookMeBusRequestDto.getArrivalCityId());
         bookMeBusDto.setDate(bookMeBusRequestDto.getDate());
-        bookMeBusDto.setDepTime(bookMeBusRequestDto.getDepTime());
+        bookMeBusDto.setDepartureTime(bookMeBusRequestDto.getDepTime());
         bookMeBusDto.setTimeId(bookMeBusRequestDto.getTimeId());
         bookMeBusDto.setScheduleId(bookMeBusRequestDto.getScheduleId());
         bookMeBusDto.setRouteId(bookMeBusRequestDto.getRouteId());
@@ -65,6 +74,8 @@ public class BookMeBusDto {
         bookMeBusDto.setSeatNumbersFemale(bookMeBusRequestDto.getSeatNumbersFemale());
         bookMeBusDto.setEmail(bookMeBusRequestDto.getEmail());
         bookMeBusDto.setBusServiceId(bookMeBusRequestDto.getBusServiceId());
+        bookMeBusDto.setTotalPrice(bookMeBusRequestDto.getTotalPrice());
+        bookMeBusDto.setTickets(bookMeBusRequestDto.getTickets());
 
         return bookMeBusDto;
     }

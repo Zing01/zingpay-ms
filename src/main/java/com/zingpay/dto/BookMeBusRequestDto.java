@@ -23,6 +23,7 @@ public class BookMeBusRequestDto {
     private Date dateTime;
     private String bundleId;
 
+    private int tickets;
     private int originCityId;
     private int arrivalCityId;
     private String date;
