@@ -1,5 +1,6 @@
 package com.zingpay.feign;
 
+import com.zingpay.dto.BookMeAirlineDto;
 import com.zingpay.dto.BookMeBusDto;
 import com.zingpay.dto.BookMeEventDto;
 import com.zingpay.util.Status;
@@ -19,5 +20,8 @@ public interface BookMeIntegrationClient {
     Status bookEvent(@RequestHeader(name = "Authorization") String token, @RequestBody BookMeEventDto bookMeEventDto);
 
     @PostMapping("/bus/book-seats")
-    Status bookSeats(@RequestHeader(name = "Authorization") String token, @RequestBody BookMeBusDto bookMeBusDto);
+    Status bookBusSeats(@RequestHeader(name = "Authorization") String token, @RequestBody BookMeBusDto bookMeBusDto);
+
+    @PostMapping("/airline/reserve-seats")
+    Status reserverAirlineSeats(@RequestHeader(name = "Authorization") String token, @RequestBody BookMeAirlineDto bookMeAirlineDto);
 }

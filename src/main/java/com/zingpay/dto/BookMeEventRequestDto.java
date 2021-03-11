@@ -1,6 +1,10 @@
 package com.zingpay.dto;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.zingpay.util.ChannelType;
+import com.zingpay.util.TransactionType;
+import com.zingpay.util.Utils;
+import com.zingpay.util.ZingpayTransactionType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,4 +36,29 @@ public class BookMeEventRequestDto {
     private String name;
     private String email;
     private ArrayNode passes;
+
+    public static TransactionDto populateTransactionDtoFields(BookMeEventRequestDto bookMeEventRequestDto) {
+        TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setAccountId(bookMeEventRequestDto.getAccountId());
+        transactionDto.setServiceId(bookMeEventRequestDto.getServiceId());
+        transactionDto.setAmount(bookMeEventRequestDto.getAmount());
+        transactionDto.setServiceProvider(bookMeEventRequestDto.getServiceProvider());
+
+        if(bookMeEventRequestDto.getRetailerRefNumber().contains("MOBILE")) {
+            transactionDto.setChannelType(ChannelType.MOBILE);
+        } else if(bookMeEventRequestDto.getRetailerRefNumber().contains("WEB")) {
+            transactionDto.setChannelType(ChannelType.WEB);
+        }
+
+        transactionDto.setRefTo(bookMeEventRequestDto.getRefTo());
+        transactionDto.setBundleId(bookMeEventRequestDto.getBundleId());
+        transactionDto.setDateTime(bookMeEventRequestDto.getDateTime());
+        transactionDto.setEmail(bookMeEventRequestDto.getEmail());
+        transactionDto.setRefFrom("zingpay");
+        transactionDto.setTransactionType(TransactionType.DEBIT);
+        transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
+        transactionDto.setRetailerRefNumber(bookMeEventRequestDto.getRetailerRefNumber()+"-"+ Utils.generateTenDigitsNumber());
+
+        return transactionDto;
+    }
 }

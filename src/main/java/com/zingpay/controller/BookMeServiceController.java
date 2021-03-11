@@ -6,7 +6,9 @@ import com.zingpay.service.AppUserService;
 import com.zingpay.service.BookMeService;
 import com.zingpay.service.CalculateCommissionService;
 import com.zingpay.service.WalletService;
-import com.zingpay.util.*;
+import com.zingpay.util.AccountStatus;
+import com.zingpay.util.Status;
+import com.zingpay.util.StatusMessage;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +44,7 @@ public class BookMeServiceController extends BaseController {
         double balance = walletService.getCurrentBalance(Integer.parseInt(bookMeEventRequestDto.getAccountId()+""));
         Status status = null;
 
-        TransactionDto transactionDto = populateTransactionDtoFields(bookMeEventRequestDto);
+        TransactionDto transactionDto = BookMeEventRequestDto.populateTransactionDtoFields(bookMeEventRequestDto);
         BookMeEventDto bookMeEventDto = BookMeEventDto.convertToDto(bookMeEventRequestDto);
 
         if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
@@ -55,8 +57,6 @@ public class BookMeServiceController extends BaseController {
         }
 
         if(status.getCode()==1) {
-            TransactionDto transactionDtoForCommission = (TransactionDto) status.getAdditionalDetail();
-            //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
             CommissionDto commissionDto = new CommissionDto();
             commissionDto.setAccountId(Integer.parseInt(transactionDto.getAccountId()+""));
             commissionDto.setServiceId(transactionDto.getServiceId());
@@ -66,27 +66,25 @@ public class BookMeServiceController extends BaseController {
         return status;
     }
 
-    @PostMapping("/book-seats")
-    public Status validateUserAndBookSeats(@RequestBody BookMeBusRequestDto bookMeBusRequestDto) {
+    @PostMapping("/book-bus-seats")
+    public Status validateUserAndBookBusSeats(@RequestBody BookMeBusRequestDto bookMeBusRequestDto) {
         AppUser appUser = appUserService.getById(Integer.parseInt(bookMeBusRequestDto.getAccountId()+""));
         double balance = walletService.getCurrentBalance(Integer.parseInt(bookMeBusRequestDto.getAccountId()+""));
         Status status = null;
 
-        TransactionDto transactionDto = populateTransactionDtoFields(bookMeBusRequestDto);
+        TransactionDto transactionDto = BookMeBusRequestDto.populateTransactionDtoFields(bookMeBusRequestDto);
         BookMeBusDto bookMeBusDto = BookMeBusDto.convertToDto(bookMeBusRequestDto);
 
         if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
             if(balance < bookMeBusRequestDto.getAmount()) {
                 return new Status(StatusMessage.INSUFFICIENT_BALANCE);
             }
-            status = bookMeService.bookSeats(transactionDto, bookMeBusDto);
+            status = bookMeService.bookBusSeats(transactionDto, bookMeBusDto);
         } else {
             return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
 
         if(status.getCode()==1) {
-            TransactionDto transactionDtoForCommission = (TransactionDto) status.getAdditionalDetail();
-            //calculateCommissionService.calculateCommission(TransactionDto.convertToEntity(transactionDtoForCommission));
             CommissionDto commissionDto = new CommissionDto();
             commissionDto.setAccountId(Integer.parseInt(transactionDto.getAccountId()+""));
             commissionDto.setServiceId(transactionDto.getServiceId());
@@ -96,53 +94,33 @@ public class BookMeServiceController extends BaseController {
         return status;
     }
 
-    private TransactionDto populateTransactionDtoFields(BookMeBusRequestDto bookMeBusRequestDto) {
-        TransactionDto transactionDto = new TransactionDto();
-        transactionDto.setAccountId(bookMeBusRequestDto.getAccountId());
-        transactionDto.setServiceId(bookMeBusRequestDto.getServiceId());
-        transactionDto.setAmount(bookMeBusRequestDto.getAmount());
-        transactionDto.setServiceProvider(bookMeBusRequestDto.getServiceProvider());
+    @PostMapping("/reserve-airline-seats")
+    public Status validateUserAndReserveAirlineSeats(@RequestBody BookMeAirlineRequestDto bookMeAirlineRequestDto) {
+        AppUser appUser = appUserService.getById(Integer.parseInt(bookMeAirlineRequestDto.getAccountId()+""));
+        double balance = walletService.getCurrentBalance(Integer.parseInt(bookMeAirlineRequestDto.getAccountId()+""));
+        Status status = null;
 
-        if(bookMeBusRequestDto.getRetailerRefNumber().contains("MOBILE")) {
-            transactionDto.setChannelType(ChannelType.MOBILE);
-        } else if(bookMeBusRequestDto.getRetailerRefNumber().contains("WEB")) {
-            transactionDto.setChannelType(ChannelType.WEB);
+        TransactionDto transactionDto = BookMeAirlineRequestDto.populateTransactionDtoFields(bookMeAirlineRequestDto);
+        BookMeAirlineDto bookMeAirlineDto = BookMeAirlineDto.convertToDto(bookMeAirlineRequestDto);
+
+        if(appUser.getAccountStatusId() == AccountStatus.ACTIVE.getId()) {
+            if(balance < bookMeAirlineRequestDto.getAmount()) {
+                return new Status(StatusMessage.INSUFFICIENT_BALANCE);
+            }
+            status = bookMeService.reserveAirlineSeats(transactionDto, bookMeAirlineDto);
+        } else {
+            return new Status(StatusMessage.ACCOUNT_NOT_ACTIVE);
         }
 
-        transactionDto.setRefTo(bookMeBusRequestDto.getRefTo());
-        transactionDto.setBundleId(bookMeBusRequestDto.getBundleId());
-        transactionDto.setDateTime(bookMeBusRequestDto.getDateTime());
-        transactionDto.setEmail(bookMeBusRequestDto.getEmail());
-        transactionDto.setRefFrom("zingpay");
-        transactionDto.setTransactionType(TransactionType.DEBIT);
-        transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
-        transactionDto.setRetailerRefNumber(bookMeBusRequestDto.getRetailerRefNumber()+"-"+ Utils.generateTenDigitsNumber());
-
-        return transactionDto;
-    }
-
-    private TransactionDto populateTransactionDtoFields(BookMeEventRequestDto bookMeEventRequestDto) {
-        TransactionDto transactionDto = new TransactionDto();
-        transactionDto.setAccountId(bookMeEventRequestDto.getAccountId());
-        transactionDto.setServiceId(bookMeEventRequestDto.getServiceId());
-        transactionDto.setAmount(bookMeEventRequestDto.getAmount());
-        transactionDto.setServiceProvider(bookMeEventRequestDto.getServiceProvider());
-
-        if(bookMeEventRequestDto.getRetailerRefNumber().contains("MOBILE")) {
-            transactionDto.setChannelType(ChannelType.MOBILE);
-        } else if(bookMeEventRequestDto.getRetailerRefNumber().contains("WEB")) {
-            transactionDto.setChannelType(ChannelType.WEB);
+        if(status.getCode()==1) {
+            CommissionDto commissionDto = new CommissionDto();
+            commissionDto.setAccountId(Integer.parseInt(transactionDto.getAccountId()+""));
+            commissionDto.setServiceId(transactionDto.getServiceId());
+            commissionDto.setTransactionId(transactionDto.getId());
+            calculateCommissionService.calculateCommission(commissionDto);
         }
-
-        transactionDto.setRefTo(bookMeEventRequestDto.getRefTo());
-        transactionDto.setBundleId(bookMeEventRequestDto.getBundleId());
-        transactionDto.setDateTime(bookMeEventRequestDto.getDateTime());
-        transactionDto.setEmail(bookMeEventRequestDto.getEmail());
-        transactionDto.setRefFrom("zingpay");
-        transactionDto.setTransactionType(TransactionType.DEBIT);
-        transactionDto.setZingpayTransactionType(ZingpayTransactionType.TX_LOAD);
-        transactionDto.setRetailerRefNumber(bookMeEventRequestDto.getRetailerRefNumber()+"-"+ Utils.generateTenDigitsNumber());
-
-        return transactionDto;
+        return status;
     }
+
+
 }

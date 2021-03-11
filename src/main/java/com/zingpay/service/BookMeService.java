@@ -3,6 +3,7 @@ package com.zingpay.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.zingpay.dto.BookMeAirlineDto;
 import com.zingpay.dto.BookMeBusDto;
 import com.zingpay.dto.BookMeEventDto;
 import com.zingpay.dto.TransactionDto;
@@ -65,7 +66,7 @@ public class BookMeService {
                 if(jsonNode != null && !jsonNode.equals("")) {
                     if(jsonNode.get("response").asText().equalsIgnoreCase("Success")) {
                         transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
-                        transaction.setDescription(jsonNode.get("response").asText());
+                        transaction.setDescription(jsonNode.get("booking_id").asText());
                         savedTransaction = transactionService.save(transaction);
                         TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
                         return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
@@ -81,22 +82,72 @@ public class BookMeService {
         return new Status(StatusMessage.FAILURE, savedTransaction);
     }
 
-    public Status bookSeats(TransactionDto transactionDto, BookMeBusDto bookMeBusDto) {
+    public Status bookBusSeats(TransactionDto transactionDto, BookMeBusDto bookMeBusDto) {
         Status statusResponse = null;
         Transaction savedTransaction = new Transaction();
         try {
             if (TokenGenerator.token == null) {
                 try {
-                    statusResponse = bookMeIntegrationClient.bookSeats(tokenGenerator.getTokenFromAuthService(), bookMeBusDto);
+                    statusResponse = bookMeIntegrationClient.bookBusSeats(tokenGenerator.getTokenFromAuthService(), bookMeBusDto);
                 } catch (JsonProcessingException ex) {
                     ex.printStackTrace();
                 }
             } else {
-                statusResponse = bookMeIntegrationClient.bookSeats(TokenGenerator.token, bookMeBusDto);
+                statusResponse = bookMeIntegrationClient.bookBusSeats(TokenGenerator.token, bookMeBusDto);
             }
         } catch (FeignException.Unauthorized e) {
             try {
-                statusResponse = bookMeIntegrationClient.bookSeats(tokenGenerator.getTokenFromAuthService(), bookMeBusDto);
+                statusResponse = bookMeIntegrationClient.bookBusSeats(tokenGenerator.getTokenFromAuthService(), bookMeBusDto);
+            } catch (JsonProcessingException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        System.out.println("statusResponse.getAdditionalDetail() " + statusResponse.getAdditionalDetail());
+        if(statusResponse.getAdditionalDetail() != null) {
+            try {
+                ArrayNode arrayNode = Utils.parseToObject(Utils.parseObjectToJson(statusResponse.getAdditionalDetail()), ArrayNode.class);
+                Transaction transaction = TransactionDto.convertToEntity(transactionDto);
+                for (JsonNode jsonNode : arrayNode) {
+                    if(jsonNode.get("status").asText().equalsIgnoreCase("success")) {
+                        transaction.setDescription(jsonNode.get("booking_id").asText());
+                        transaction.setTransactionStatusId(TransactionStatus.SUCCESS.getId());
+                        savedTransaction = transactionService.save(transaction);
+                        TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
+                        return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
+                    } else {
+                        if(jsonNode.get("msg") != null) {
+                            transaction.setDescription(jsonNode.get("msg").asText());
+                        } else if(jsonNode.get("message") != null) {
+                            transaction.setDescription(jsonNode.get("message").asText());
+                        }
+                        transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
+                        savedTransaction = transactionService.save(transaction);
+                    }
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return new Status(StatusMessage.FAILURE, savedTransaction);
+    }
+
+    public Status reserveAirlineSeats(TransactionDto transactionDto, BookMeAirlineDto bookMeAirlineDto) {
+        Status statusResponse = null;
+        Transaction savedTransaction = new Transaction();
+        try {
+            if (TokenGenerator.token == null) {
+                try {
+                    statusResponse = bookMeIntegrationClient.reserverAirlineSeats(tokenGenerator.getTokenFromAuthService(), bookMeAirlineDto);
+                } catch (JsonProcessingException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                statusResponse = bookMeIntegrationClient.reserverAirlineSeats(TokenGenerator.token, bookMeAirlineDto);
+            }
+        } catch (FeignException.Unauthorized e) {
+            try {
+                statusResponse = bookMeIntegrationClient.reserverAirlineSeats(tokenGenerator.getTokenFromAuthService(), bookMeAirlineDto);
             } catch (JsonProcessingException ex) {
                 ex.printStackTrace();
             }
@@ -114,7 +165,7 @@ public class BookMeService {
                         TransactionDto transactionDtoToReturn = Transaction.convertToDto(savedTransaction);
                         return new Status(StatusMessage.SUCCESS, transactionDtoToReturn);
                     } else {
-                        transaction.setDescription(jsonNode.get("message").asText());
+                        transaction.setDescription(jsonNode.get("msg").asText());
                         transaction.setTransactionStatusId(TransactionStatus.FAILED.getId());
                     }
                     savedTransaction = transactionService.save(transaction);
